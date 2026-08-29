@@ -123,7 +123,7 @@
     .journey-grid { position: relative; display: grid; gap: var(--space-16); }
     .journey-line { position: absolute; left: calc(50% - 1px); top: 0; bottom: 0; width: 2px; background: linear-gradient(180deg, transparent 0%, rgba(203,154,109,0.28) 7%, rgba(142,53,87,0.40) 50%, rgba(203,154,109,0.28) 93%, transparent 100%); pointer-events: none; }
     
-    /* Stage & Sticky Column */
+    /* Stage Layout */
     .stage { 
       position: relative; 
       display: grid; 
@@ -141,7 +141,7 @@
     .stage:nth-child(odd) .stage-gallery { grid-column: 1; } 
     .stage:nth-child(odd) .stage-card { grid-column: 3; }
     
-    /* Waypoint Sticky Container */
+    /* Spalte für die Zeitleiste über die volle Höhe des Verses */
     .waypoint-col {
       grid-column: 2;
       height: 100%;
@@ -150,10 +150,10 @@
       position: relative;
     }
 
-    /* Fixed / Sticky Waypoint Button */
+    /* Das Icon bewegt sich beim Scrollen entlang des Versabschnitts */
     .waypoint { 
       position: sticky; 
-      top: 42vh; 
+      top: calc(50vh - 2.25rem); 
       z-index: 10; 
       width: 4.5rem; 
       height: 4.5rem; 
@@ -189,13 +189,13 @@
       transition: opacity 500ms ease, transform 600ms cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
-    /* Pulse transformation when stage is active */
+    /* Pulsieren & Transformation sobald der Vers aktiv ist */
     .stage.is-active .waypoint {
       border-color: var(--color-primary);
       animation: pulseGlow 1.8s infinite ease-in-out;
     }
 
-    /* Transform Roman Numeral -> Cover Art */
+    /* Ziffer schrumpft und macht Platz für das Cover */
     .stage.is-active .waypoint-num {
       opacity: 0;
       transform: scale(0.3);
@@ -206,7 +206,7 @@
       transform: scale(1) rotate(0deg);
     }
 
-    /* Continuous Cover Rotation while playing */
+    /* Rotiert kontinuierlich solange Musik abgespielt wird */
     .stage.is-active.is-playing .waypoint-cover {
       animation: spinCover 10s linear infinite;
     }
@@ -259,7 +259,7 @@
       .journey-line { left: 1.95rem; } 
       .stage { grid-template-columns: 4rem 1fr; min-height: auto; padding-bottom: var(--space-8); } 
       .waypoint-col { grid-column: 1; grid-row: 1 / span 2; }
-      .waypoint { top: 6rem; width: 3.8rem; height: 3.8rem; font-size: 1.1rem; } 
+      .waypoint { top: 50vh; width: 3.8rem; height: 3.8rem; font-size: 1.1rem; } 
       .stage-card, .stage-gallery { grid-column: 2 !important; } 
       .stage-gallery { order: 2; } 
       .stage-card { order: 1; } 
@@ -302,9 +302,11 @@
     <section class="hero shell" id="top"><div class="hero-layout"><div><span class="eyebrow">For your nineteenth birthday — September 8</span><h1>Daniel</h1><p>For your birthday, I tried to put our journey into words — the places, the music, the warmth, and all the little moments that became ours. I hope you like it.</p><div class="hero-actions"><button class="btn btn-primary" id="unlockAudioHero">Tap once for music</button><a class="btn" href="#verse-1">Start with June</a></div></div><div class="journey-preview" aria-hidden="true"><div class="preview-track"></div><span class="preview-stop one"></span><span class="preview-stop two"></span><span class="preview-stop three"></span><span class="preview-stop four"></span><span class="preview-stop five"></span><span class="preview-stop six"></span><div class="preview-card a"><small>First stop</small><strong>Our beginning</strong><p>Mountains, late trains, a chocolate croissant.</p></div><div class="preview-card b"><small>Middle</small><strong>Our risk</strong><p>Somewhere between songs and silence, love becomes a choice.</p></div><div class="preview-card c"><small>Arrival</small><strong>Our love</strong><p>The whole poem returns one last time at the end.</p></div></div></div></section>
     
     <section class="journey shell" aria-label="Poem journey"><div class="journey-grid"><div class="journey-line" aria-hidden="true"></div>
-      <article class="stage" id="verse-1" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-1.mp3" data-title="A World Alone – Lorde">
-        <div class="stage-gallery"><div class="gallery-grid"><img src="https://picsum.photos/seed/daniel-v1-a/1200/900" alt="Placeholder image for our beginning, wide memory" width="1200" height="900" loading="lazy"><img src="https://picsum.photos/seed/daniel-v1-b/800/800" alt="Placeholder image for our beginning, memory two" width="800" height="800" loading="lazy"><img src="https://picsum.photos/seed/daniel-v1-c/800/800" alt="Placeholder image for our beginning, memory three" width="800" height="800" loading="lazy"></div></div>
-        <div class="waypoint-col"><div class="waypoint"><span class="waypoint-num">I</span><img class="waypoint-cover" src="" alt="Song cover" /></div></div>
+      
+      <!-- Verse 1 -->
+      <article class="stage" id="verse-1" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-1.mp3">
+        <div class="stage-gallery"><div class="gallery-grid"><img src="https://picsum.photos/seed/daniel-v1-a/1200/900" alt="Memory picture" width="1200" height="900" loading="lazy"><img src="https://picsum.photos/seed/daniel-v1-b/800/800" alt="Memory picture" width="800" height="800" loading="lazy"><img src="https://picsum.photos/seed/daniel-v1-c/800/800" alt="Memory picture" width="800" height="800" loading="lazy"></div></div>
+        <div class="waypoint-col"><div class="waypoint"><span class="waypoint-num">I</span><img class="waypoint-cover" src="assets/images/output-1.jpg" alt="Song cover - Verse 1" /></div></div>
         <div class="stage-card"><span class="stage-kicker">June</span><h2>Our beginning</h2><div class="stage-sub">Mountains, late trains, a chocolate croissant.</div><div class="poem">It began in June—  
 with mountains, late trains,  
 a chocolate croissant,  
@@ -312,9 +314,10 @@ and the feeling that
 "with you it's better."</div><div class="track-card"><div class="track-row"><div class="track-meta"><strong>A World Alone – Lorde</strong></div><button class="audio-btn" type="button">Play this song</button></div></div></div>
       </article>
 
-      <article class="stage" id="verse-2" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-2.mp3" data-title="Michelle Pfeiffer – Ethel Cain">
-        <div class="stage-gallery"><div class="gallery-grid"><img src="https://picsum.photos/seed/daniel-v2-a/1200/900" alt="Placeholder image for home, wide memory" width="1200" height="900" loading="lazy"><img src="https://picsum.photos/seed/daniel-v2-b/800/800" alt="Placeholder image for home, memory two" width="800" height="800" loading="lazy"><img src="https://picsum.photos/seed/daniel-v2-c/800/800" alt="Placeholder image for home, memory three" width="800" height="800" loading="lazy"></div></div>
-        <div class="waypoint-col"><div class="waypoint"><span class="waypoint-num">II</span><img class="waypoint-cover" src="" alt="Song cover" /></div></div>
+      <!-- Verse 2 -->
+      <article class="stage" id="verse-2" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-2.mp3">
+        <div class="stage-gallery"><div class="gallery-grid"><img src="https://picsum.photos/seed/daniel-v2-a/1200/900" alt="Memory picture" width="1200" height="900" loading="lazy"><img src="https://picsum.photos/seed/daniel-v2-b/800/800" alt="Memory picture" width="800" height="800" loading="lazy"><img src="https://picsum.photos/seed/daniel-v2-c/800/800" alt="Memory picture" width="800" height="800" loading="lazy"></div></div>
+        <div class="waypoint-col"><div class="waypoint"><span class="waypoint-num">II</span><img class="waypoint-cover" src="assets/images/output-2.jpg" alt="Song cover - Verse 2" /></div></div>
         <div class="stage-card"><span class="stage-kicker">Home</span><h2>Our hot summer nights</h2><div class="stage-sub">The Danube, still summer evenings, and home appearing in ordinary places.</div><div class="poem">We found romance in wrong turns,  
 in Ulm beside the Danube,  
 in summer evenings  
@@ -328,9 +331,10 @@ because you were there.
 "Home's not home unless you're there."</div><div class="track-card"><div class="track-row"><div class="track-meta"><strong>Michelle Pfeiffer – Ethel Cain</strong></div><button class="audio-btn" type="button">Play this song</button></div></div></div>
       </article>
 
-      <article class="stage" id="verse-3" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-3.mp3" data-title="Risk – Gracie Abrams">
-        <div class="stage-gallery"><div class="gallery-grid"><img src="https://picsum.photos/seed/daniel-v3-a/1200/900" alt="Placeholder image for belonging, wide memory" width="1200" height="900" loading="lazy"><img src="https://picsum.photos/seed/daniel-v3-b/800/800" alt="Placeholder image for belonging, memory two" width="800" height="800" loading="lazy"><img src="https://picsum.photos/seed/daniel-v3-c/800/800" alt="Placeholder image for belonging, memory three" width="800" height="800" loading="lazy"></div></div>
-        <div class="waypoint-col"><div class="waypoint"><span class="waypoint-num">III</span><img class="waypoint-cover" src="" alt="Song cover" /></div></div>
+      <!-- Verse 3 -->
+      <article class="stage" id="verse-3" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-3.mp3">
+        <div class="stage-gallery"><div class="gallery-grid"><img src="https://picsum.photos/seed/daniel-v3-a/1200/900" alt="Memory picture" width="1200" height="900" loading="lazy"><img src="https://picsum.photos/seed/daniel-v3-b/800/800" alt="Memory picture" width="800" height="800" loading="lazy"><img src="https://picsum.photos/seed/daniel-v3-c/800/800" alt="Memory picture" width="800" height="800" loading="lazy"></div></div>
+        <div class="waypoint-col"><div class="waypoint"><span class="waypoint-num">III</span><img class="waypoint-cover" src="assets/images/output-3.jpg" alt="Song cover - Verse 3" /></div></div>
         <div class="stage-card"><span class="stage-kicker">Belonging</span><h2>Our risk</h2><div class="stage-sub">Sunlight, language, belonging, and choosing love again.</div><div class="poem">You carry Spain with you:  
 its sunlight, its language,  
 the place that shaped you  
@@ -343,9 +347,10 @@ one I would take again.
 "You're the risk, I'm gonna take it."</div><div class="track-card"><div class="track-row"><div class="track-meta"><strong>Risk – Gracie Abrams</strong></div><button class="audio-btn" type="button">Play this song</button></div></div></div>
       </article>
 
-      <article class="stage" id="verse-4" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-4.mp3" data-title="teenage dream – Olivia Rodrigo">
-        <div class="stage-gallery"><div class="gallery-grid"><img src="https://picsum.photos/seed/daniel-v4-a/1200/900" alt="Placeholder image for our life ahead, wide memory" width="1200" height="900" loading="lazy"><img src="https://picsum.photos/seed/daniel-v4-b/800/800" alt="Placeholder image for our life ahead, memory two" width="800" height="800" loading="lazy"><img src="https://picsum.photos/seed/daniel-v4-c/800/800" alt="Placeholder image for our life ahead, memory three" width="800" height="800" loading="lazy"></div></div>
-        <div class="waypoint-col"><div class="waypoint"><span class="waypoint-num">IV</span><img class="waypoint-cover" src="" alt="Song cover" /></div></div>
+      <!-- Verse 4 -->
+      <article class="stage" id="verse-4" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-4.mp3">
+        <div class="stage-gallery"><div class="gallery-grid"><img src="https://picsum.photos/seed/daniel-v4-a/1200/900" alt="Memory picture" width="1200" height="900" loading="lazy"><img src="https://picsum.photos/seed/daniel-v4-b/800/800" alt="Memory picture" width="800" height="800" loading="lazy"><img src="https://picsum.photos/seed/daniel-v4-c/800/800" alt="Memory picture" width="800" height="800" loading="lazy"></div></div>
+        <div class="waypoint-col"><div class="waypoint"><span class="waypoint-num">IV</span><img class="waypoint-cover" src="assets/images/output-4.jpg" alt="Song cover - Verse 4" /></div></div>
         <div class="stage-card"><span class="stage-kicker">Nineteen</span><h2>Our life ahead</h2><div class="stage-sub">New roads, new cities, and a life still opening in front of you.</div><div class="poem">You are nineteen now,  
 with your whole life ahead of you,  
 new roads, new cities,  
@@ -353,9 +358,10 @@ and so much still waiting.
 "Got your whole life ahead of you, you're only 19."</div><div class="track-card"><div class="track-row"><div class="track-meta"><strong>teenage dream – Olivia Rodrigo</strong></div><button class="audio-btn" type="button">Play this song</button></div></div></div>
       </article>
 
-      <article class="stage" id="verse-5" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-5.mp3" data-title="Coat of Many Colors – Dolly Parton">
-        <div class="stage-gallery"><div class="gallery-grid"><img src="https://picsum.photos/seed/daniel-v5-a/1200/900" alt="Placeholder image for colors, wide memory" width="1200" height="900" loading="lazy"><img src="https://picsum.photos/seed/daniel-v5-b/800/800" alt="Placeholder image for colors, memory two" width="800" height="800" loading="lazy"><img src="https://picsum.photos/seed/daniel-v5-c/800/800" alt="Placeholder image for colors, memory three" width="800" height="800" loading="lazy"></div></div>
-        <div class="waypoint-col"><div class="waypoint"><span class="waypoint-num">V</span><img class="waypoint-cover" src="" alt="Song cover" /></div></div>
+      <!-- Verse 5 -->
+      <article class="stage" id="verse-5" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-5.mp3">
+        <div class="stage-gallery"><div class="gallery-grid"><img src="https://picsum.photos/seed/daniel-v5-a/1200/900" alt="Memory picture" width="1200" height="900" loading="lazy"><img src="https://picsum.photos/seed/daniel-v5-b/800/800" alt="Memory picture" width="800" height="800" loading="lazy"><img src="https://picsum.photos/seed/daniel-v5-c/800/800" alt="Memory picture" width="800" height="800" loading="lazy"></div></div>
+        <div class="waypoint-col"><div class="waypoint"><span class="waypoint-num">V</span><img class="waypoint-cover" src="assets/images/output-5.jpg" alt="Song cover - Verse 5" /></div></div>
         <div class="stage-card"><span class="stage-kicker">Colors</span><h2>Our beauty</h2><div class="stage-sub">Softness, humour, curiosity, and moments stitched together with love.</div><div class="poem">I hope you keep your softness,  
 your humour, your curiosity,  
 and the beautiful chaos  
@@ -371,9 +377,10 @@ stitched together with love.
 "Coat of many colors."</div><div class="track-card"><div class="track-row"><div class="track-meta"><strong>Coat of Many Colors – Dolly Parton</strong></div><button class="audio-btn" type="button">Play this song</button></div></div></div>
       </article>
 
-      <article class="stage" id="verse-6" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-6.mp3" data-title="I Will Always Love You – Dolly Parton">
-        <div class="stage-gallery"><div class="gallery-grid"><img src="https://picsum.photos/seed/daniel-v6-a/1200/900" alt="Placeholder image for our love, wide memory" width="1200" height="900" loading="lazy"><img src="https://picsum.photos/seed/daniel-v6-b/800/800" alt="Placeholder image for our love, memory two" width="800" height="800" loading="lazy"><img src="https://picsum.photos/seed/daniel-v6-c/800/800" alt="Placeholder image for our love, memory three" width="800" height="800" loading="lazy"></div></div>
-        <div class="waypoint-col"><div class="waypoint"><span class="waypoint-num">VI</span><img class="waypoint-cover" src="" alt="Song cover" /></div></div>
+      <!-- Verse 6 -->
+      <article class="stage" id="verse-6" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-6.mp3">
+        <div class="stage-gallery"><div class="gallery-grid"><img src="https://picsum.photos/seed/daniel-v6-a/1200/900" alt="Memory picture" width="1200" height="900" loading="lazy"><img src="https://picsum.photos/seed/daniel-v6-b/800/800" alt="Memory picture" width="800" height="800" loading="lazy"><img src="https://picsum.photos/seed/daniel-v6-c/800/800" alt="Memory picture" width="800" height="800" loading="lazy"></div></div>
+        <div class="waypoint-col"><div class="waypoint"><span class="waypoint-num">VI</span><img class="waypoint-cover" src="assets/images/output-6.jpg" alt="Song cover - Verse 6" /></div></div>
         <div class="stage-card"><span class="stage-kicker">Daniel</span><h2>Our love</h2><div class="stage-sub">A last wish, and a love carried into what comes next.</div><div class="poem">So wherever life takes you,  
 whether close or far away,  
 remember that you were loved  
@@ -473,91 +480,6 @@ And wherever you go:
         renderThemeIcon();
       });
 
-      // Direct Vanilla JS ID3v2 APIC (Cover Art) Parser
-      const fetchMP3Cover = async (url) => {
-        try {
-          // Versuche zunächst nur die ersten 512KB für ID3 Tags abzurufen
-          let res = await fetch(url, { headers: { 'Range': 'bytes=0-524288' } });
-          if (!res.ok && res.status !== 206) {
-            res = await fetch(url);
-            if (!res.ok) return null;
-          }
-          const buffer = await res.arrayBuffer();
-          const view = new DataView(buffer);
-          
-          // Prüfe auf "ID3" Header (Byte 0-2)
-          if (view.getUint8(0) !== 0x49 || view.getUint8(1) !== 0x44 || view.getUint8(2) !== 0x33) {
-            return null;
-          }
-
-          const version = view.getUint8(3);
-          let offset = 10;
-          const totalTagSize = ((view.getUint8(6) & 0x7f) << 21) |
-                              ((view.getUint8(7) & 0x7f) << 14) |
-                              ((view.getUint8(8) & 0x7f) << 7) |
-                               (view.getUint8(9) & 0x7f);
-
-          while (offset < buffer.byteLength && offset < totalTagSize + 10) {
-            let frameId = '', frameSize = 0;
-
-            if (version === 3 || version === 4) {
-              if (offset + 10 > buffer.byteLength) break;
-              frameId = String.fromCharCode(view.getUint8(offset), view.getUint8(offset+1), view.getUint8(offset+2), view.getUint8(offset+3));
-              frameSize = version === 4 
-                ? ((view.getUint8(offset+4) & 0x7f) << 21) | ((view.getUint8(offset+5) & 0x7f) << 14) | ((view.getUint8(offset+6) & 0x7f) << 7) | (view.getUint8(offset+7) & 0x7f)
-                : view.getUint32(offset + 4);
-              offset += 10;
-            } else if (version === 2) {
-              if (offset + 6 > buffer.byteLength) break;
-              frameId = String.fromCharCode(view.getUint8(offset), view.getUint8(offset+1), view.getUint8(offset+2));
-              frameSize = (view.getUint8(offset+3) << 16) | (view.getUint8(offset+4) << 8) | view.getUint8(offset+5);
-              offset += 6;
-            } else {
-              break;
-            }
-
-            if (!frameId || frameId.replace(/\0/g, '') === '') break;
-
-            if (frameId === 'APIC' || frameId === 'PIC') {
-              const frameData = new Uint8Array(buffer, offset, frameSize);
-              let pos = 0;
-              const encoding = frameData[pos++];
-              
-              let mime = '';
-              if (frameId === 'APIC') {
-                while (pos < frameData.length && frameData[pos] !== 0) {
-                  mime += String.fromCharCode(frameData[pos++]);
-                }
-                pos++;
-              } else {
-                const fmt = String.fromCharCode(frameData[pos++], frameData[pos++], frameData[pos++]);
-                mime = fmt.toLowerCase() === 'png' ? 'image/png' : 'image/jpeg';
-              }
-
-              const picType = frameData[pos++];
-              
-              // Description überspringen
-              if (encoding === 0 || encoding === 3) {
-                while (pos < frameData.length && frameData[pos] !== 0) pos++;
-                pos++;
-              } else {
-                while (pos < frameData.length - 1 && !(frameData[pos] === 0 && frameData[pos+1] === 0)) pos += 2;
-                pos += 2;
-              }
-
-              const imgData = frameData.subarray(pos);
-              const blob = new Blob([imgData], { type: mime || 'image/jpeg' });
-              return URL.createObjectURL(blob);
-            }
-
-            offset += frameSize;
-          }
-        } catch (err) {
-          console.warn("Cover extraction error:", err);
-        }
-        return null;
-      };
-
       const stages = [...document.querySelectorAll('.stage')];
       const audio = document.getElementById('globalAudio');
       const unlockAudioBtn = document.getElementById('unlockAudio');
@@ -565,40 +487,9 @@ And wherever you go:
 
       let audioUnlocked = false;
       let currentActiveStage = null;
-      const coverCache = new Map();
 
       const musicNoteIcon = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>';
       const musicMuteIcon = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle><line x1="2" y1="2" x2="22" y2="22"></line></svg>';
-
-      const loadStageCover = async (stage) => {
-        const audioUrl = stage.dataset.audio;
-        if (!audioUrl) return;
-
-        if (coverCache.has(audioUrl)) {
-          setStageCover(stage, coverCache.get(audioUrl));
-          return;
-        }
-
-        const extractedCover = await fetchMP3Cover(audioUrl);
-        if (extractedCover) {
-          coverCache.set(audioUrl, extractedCover);
-          setStageCover(stage, extractedCover);
-        } else {
-          // Fallback auf das erste Galeriebild des Abschnitts
-          const galleryImg = stage.querySelector('.gallery-grid img');
-          if (galleryImg) {
-            coverCache.set(audioUrl, galleryImg.src);
-            setStageCover(stage, galleryImg.src);
-          }
-        }
-      };
-
-      const setStageCover = (stage, imgUrl) => {
-        const coverEl = stage.querySelector('.waypoint-cover');
-        if (coverEl && imgUrl) {
-          coverEl.src = imgUrl;
-        }
-      };
 
       const updateAudioUI = () => {
         const isPlaying = audioUnlocked && !audio.paused;
@@ -638,8 +529,6 @@ And wherever you go:
         
         stages.forEach((item) => item.classList.toggle('is-active', item === stage));
         currentActiveStage = stage;
-        
-        loadStageCover(stage);
 
         const src = stage.dataset.audio;
         if (!audioUnlocked && !manual) return;
@@ -749,7 +638,6 @@ And wherever you go:
 
       stages.forEach((stage) => {
         observer.observe(stage);
-        loadStageCover(stage);
       });
     })();
   </script>
