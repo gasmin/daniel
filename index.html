@@ -8,6 +8,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- ID3 Tag Parser für MP3 Cover Art -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jsmediatags/3.9.5/jsmediatags.min.js"></script>
+  
   <style>
     :root, [data-theme="light"] {
       --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
@@ -65,14 +68,35 @@
     button, a { font: inherit; color: inherit; }
     
     .shell { width: min(calc(100% - 1.5rem), var(--content)); margin: 0 auto; }
-    .topbar { position: sticky; top: 0; z-index: 30; backdrop-filter: blur(14px); background: color-mix(in srgb, var(--color-bg) 78%, transparent); border-bottom: 1px solid var(--color-border); padding-top: env(safe-area-inset-top); }
+    
+    /* Fixed Topbar */
+    .topbar { 
+      position: fixed; 
+      top: 0; 
+      left: 0; 
+      right: 0; 
+      z-index: 100; 
+      backdrop-filter: blur(14px); 
+      background: color-mix(in srgb, var(--color-bg) 85%, transparent); 
+      border-bottom: 1px solid var(--color-border); 
+      padding-top: env(safe-area-inset-top); 
+    }
     .topbar-inner { display: flex; justify-content: space-between; align-items: center; gap: var(--space-2); padding: var(--space-3) 0; }
     .brand { text-decoration: none; display: flex; align-items: center; gap: var(--space-2); min-width: 0; flex: 1 1 auto; }
     .brand-mark { width: 2.4rem; height: 2.4rem; border-radius: 50%; border: 1px solid var(--color-border); display: grid; place-items: center; color: var(--color-primary); background: var(--color-surface-2); box-shadow: var(--shadow-sm); flex-shrink: 0; }
     .brand-mark svg { width: 1.2rem; height: 1.2rem; }
-    .brand-copy { min-width: 0; overflow: hidden; }
+    .brand-copy { min-width: 0; }
     .brand-copy strong { display: block; font-family: var(--font-display); font-size: clamp(1.1rem, 4vw, 1.4rem); line-height: 1; font-weight: 600; white-space: nowrap; }
-    .brand-copy span { display: block; font-size: clamp(0.6rem, 2.4vw, 0.72rem); text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .brand-copy span { 
+      display: block; 
+      font-size: clamp(0.62rem, 2.3vw, 0.72rem); 
+      text-transform: uppercase; 
+      letter-spacing: 0.05em; 
+      color: var(--color-text-muted); 
+      white-space: normal; 
+      line-height: 1.15;
+      margin-top: 2px;
+    }
     .toolbar { display: flex; align-items: center; gap: var(--space-2); flex-shrink: 0; }
     .btn, .icon-btn { border: 1px solid var(--color-border); background: var(--color-surface-2); border-radius: 999px; transition: transform var(--transition), background var(--transition), opacity var(--transition); }
     .btn:hover, .icon-btn:hover { transform: translateY(-1px); }
@@ -80,7 +104,7 @@
     .btn-primary { background: var(--color-primary); color: var(--color-inverse); border-color: transparent; font-weight: 700; }
     .icon-btn { width: 2.5rem; height: 2.5rem; display: grid; place-items: center; cursor: pointer; flex-shrink: 0; border-radius: 50%; }
     
-    .hero { min-height: calc(100vh - 5rem); display: grid; align-items: center; padding: clamp(var(--space-8), 8vw, 6rem) 0 var(--space-12); }
+    .hero { min-height: calc(100vh - 4rem); display: grid; align-items: center; padding: clamp(5rem, 12vw, 8rem) 0 var(--space-12); }
     .hero-layout { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: clamp(var(--space-6), 4vw, var(--space-12)); align-items: center; }
     .eyebrow { display: inline-flex; align-items: center; gap: var(--space-2); width: fit-content; padding: 0.4rem 0.85rem; background: var(--color-primary-soft); color: var(--color-primary); border-radius: 999px; font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.12em; }
     h1 { margin: var(--space-3) 0 var(--space-3); font-family: var(--font-display); font-weight: 600; line-height: 0.92; font-size: var(--text-3xl); }
@@ -102,8 +126,82 @@
     .stage { position: relative; display: grid; grid-template-columns: 1fr 4rem 1fr; gap: var(--space-4); align-items: center; min-height: 32rem; opacity: 0.45; transform: translateY(24px); transition: opacity 520ms ease, transform 520ms ease; }
     .stage.is-visible { opacity: 1; transform: translateY(0); }
     .stage:nth-child(even) .stage-card { grid-column: 1; } .stage:nth-child(even) .stage-gallery { grid-column: 3; } .stage:nth-child(odd) .stage-gallery { grid-column: 1; } .stage:nth-child(odd) .stage-card { grid-column: 3; }
-    .waypoint { grid-column: 2; position: relative; z-index: 2; width: 3.8rem; height: 3.8rem; border-radius: 50%; display: grid; place-items: center; margin: 0 auto; background: color-mix(in srgb, var(--color-surface-2) 92%, transparent); border: 1px solid var(--color-border); box-shadow: var(--shadow-sm); font-family: var(--font-display); font-size: 1.25rem; color: var(--color-primary); }
-    .stage.is-active .waypoint { box-shadow: 0 0 0 12px rgba(142,53,87,0.09), var(--shadow-sm); border-color: rgba(142,53,87,0.35); }
+    
+    /* Waypoint Transformation */
+    .waypoint { 
+      grid-column: 2; 
+      position: relative; 
+      z-index: 2; 
+      width: 4rem; 
+      height: 4rem; 
+      border-radius: 50%; 
+      display: grid; 
+      place-items: center; 
+      margin: 0 auto; 
+      background: color-mix(in srgb, var(--color-surface-2) 95%, transparent); 
+      border: 2px solid var(--color-border); 
+      box-shadow: var(--shadow-sm); 
+      font-family: var(--font-display); 
+      font-size: 1.25rem; 
+      color: var(--color-primary); 
+      cursor: pointer;
+      overflow: hidden;
+      transition: transform var(--transition), border-color var(--transition);
+    }
+
+    .waypoint-num {
+      position: relative;
+      z-index: 2;
+      transition: opacity 300ms ease;
+    }
+
+    .waypoint-cover {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      opacity: 0;
+      transition: opacity 400ms ease;
+    }
+
+    /* Pulsieren wenn der Abschnitt/Song aktiv wird */
+    .stage.is-active .waypoint {
+      border-color: var(--color-primary);
+      animation: waypointPulse 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+    }
+
+    /* Cover anzeigen wenn geladen */
+    .stage.has-cover .waypoint-num {
+      opacity: 0;
+    }
+    .stage.has-cover .waypoint-cover {
+      opacity: 1;
+    }
+
+    /* Rotiert wenn Song abgespielt wird */
+    .stage.is-playing .waypoint-cover {
+      animation: spinCover 10s linear infinite;
+    }
+    .stage.is-playing.is-paused .waypoint-cover {
+      animation-play-state: paused;
+    }
+
+    @keyframes waypointPulse {
+      0%, 100% {
+        box-shadow: 0 0 0 0 rgba(142,53,87,0.4);
+      }
+      50% {
+        box-shadow: 0 0 0 14px rgba(142,53,87,0);
+      }
+    }
+
+    @keyframes spinCover {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
     .stage-card, .stage-gallery { border: 1px solid var(--color-border); border-radius: var(--radius-xl); background: color-mix(in srgb, var(--color-surface) 88%, transparent); backdrop-filter: blur(10px); box-shadow: var(--shadow-sm); }
     .stage-card { padding: clamp(var(--space-4), 3.5vw, var(--space-8)); display: grid; gap: var(--space-3); }
     .stage-kicker { display: inline-flex; width: fit-content; padding: 0.35rem 0.75rem; border-radius: 999px; background: var(--color-primary-soft); color: var(--color-primary); font-size: var(--text-xs); letter-spacing: 0.12em; text-transform: uppercase; }
@@ -122,52 +220,6 @@
     .closing h2 { margin: 0 0 var(--space-5); text-align: center; font-family: var(--font-display); font-size: var(--text-2xl); font-weight: 600; }
     .full-poem { white-space: pre-line; margin: 0 auto; max-width: 34rem; text-align: center; font-size: clamp(1rem, 0.98rem + 0.2vw, 1.15rem); color: var(--color-text); }
     .song-credit { display: block; margin-top: 0.6rem; margin-bottom: 1.4rem; font-size: 0.85em; font-style: italic; color: var(--color-text-muted); }
-    
-    /* Quadratischer Floating Player - Größer auf Desktop, nach links über Zeitleiste */
-    .floating-player { 
-      position: fixed; 
-      left: 2rem; 
-      bottom: max(2rem, env(safe-area-inset-bottom)); 
-      z-index: 40; 
-      width: 7.5rem; 
-      height: 7.5rem; 
-      padding: 0.75rem; 
-      border-radius: var(--radius-lg); 
-      border: 1px solid var(--color-border); 
-      box-shadow: var(--shadow-md); 
-      background: color-mix(in srgb, var(--color-surface-2) 88%, transparent); 
-      backdrop-filter: blur(14px); 
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      overflow: hidden;
-      cursor: pointer;
-      transition: transform var(--transition);
-    }
-    .floating-player:hover {
-      transform: translateY(-2px);
-    }
-    .floating-player .now { 
-      font-size: 0.65rem; 
-      text-transform: uppercase; 
-      letter-spacing: 0.1em; 
-      color: var(--color-text-faint); 
-      line-height: 1.1;
-    }
-    .floating-player .track-name { 
-      margin-top: 0.35rem; 
-      font-size: 0.8rem; 
-      font-weight: 700; 
-      line-height: 1.25;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      word-break: break-word;
-    }
 
     @media (max-width: 980px) { 
       .hero-layout { grid-template-columns: 1fr; } 
@@ -177,40 +229,21 @@
       .stage-card, .stage-gallery { grid-column: 2 !important; } 
       .stage-gallery { order: 2; } 
       .stage-card { order: 1; } 
-      /* Mittig über der Zeitleiste (auf Mobile links) platziert */
-      .floating-player {
-        left: calc(0.75rem + 1.95rem);
-        transform: translateX(-50%);
-        width: 5.5rem;
-        height: 5.5rem;
-        padding: 0.5rem;
-        bottom: max(1rem, env(safe-area-inset-bottom));
-      }
-      .floating-player:hover {
-        transform: translateX(-50%) translateY(-2px);
-      }
-      .floating-player .now { font-size: 0.58rem; }
-      .floating-player .track-name { font-size: 0.68rem; }
     }
     
     @media (max-width: 640px) { 
       .shell { width: min(calc(100% - 1rem), var(--content)); } 
       .topbar-inner { gap: var(--space-2); }
-      .brand-copy span { max-width: 140px; }
       .preview-card { width: min(78%, 18rem); } 
       .gallery-grid img:first-child { height: 12rem; } 
       .gallery-grid img:nth-child(2), .gallery-grid img:nth-child(3) { height: 7rem; } 
-      .floating-player {
-        left: calc(0.5rem + 1.95rem);
-        transform: translateX(-50%);
-        bottom: max(0.85rem, env(safe-area-inset-bottom));
-      }
     }
 
     @media (max-width: 375px) {
-      .brand-copy span { max-width: 110px; font-size: 0.62rem; }
-      .brand-mark { width: 2.2rem; height: 2.2rem; }
-      .icon-btn { width: 2.3rem; height: 2.3rem; }
+      .brand-mark { width: 2.1rem; height: 2.1rem; }
+      .icon-btn { width: 2.2rem; height: 2.2rem; }
+      .brand-copy strong { font-size: 1.1rem; }
+      .brand-copy span { font-size: 0.6rem; }
     }
   </style>
 </head>
@@ -236,12 +269,20 @@
     <section class="hero shell" id="top"><div class="hero-layout"><div><span class="eyebrow">For your nineteenth birthday — September 8</span><h1>Daniel</h1><p>For your birthday, I tried to put our journey into words — the places, the music, the warmth, and all the little moments that became ours. I hope you like it.</p><div class="hero-actions"><button class="btn btn-primary" id="unlockAudioHero">Tap once for music</button><a class="btn" href="#verse-1">Start with June</a></div></div><div class="journey-preview" aria-hidden="true"><div class="preview-track"></div><span class="preview-stop one"></span><span class="preview-stop two"></span><span class="preview-stop three"></span><span class="preview-stop four"></span><span class="preview-stop five"></span><span class="preview-stop six"></span><div class="preview-card a"><small>First stop</small><strong>Our beginning</strong><p>Mountains, late trains, a chocolate croissant.</p></div><div class="preview-card b"><small>Middle</small><strong>Our risk</strong><p>Somewhere between songs and silence, love becomes a choice.</p></div><div class="preview-card c"><small>Arrival</small><strong>Our love</strong><p>The whole poem returns one last time at the end.</p></div></div></div></section>
     
     <section class="journey shell" aria-label="Poem journey"><div class="journey-grid"><div class="journey-line" aria-hidden="true"></div>
-      <article class="stage" id="verse-1" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-1.mp3" data-title="A World Alone – Lorde"><div class="stage-gallery"><div class="gallery-grid"><img src="https://picsum.photos/seed/daniel-v1-a/1200/900" alt="Placeholder image for our beginning, wide memory" width="1200" height="900" loading="lazy"><img src="https://picsum.photos/seed/daniel-v1-b/800/800" alt="Placeholder image for our beginning, memory two" width="800" height="800" loading="lazy"><img src="https://picsum.photos/seed/daniel-v1-c/800/800" alt="Placeholder image for our beginning, memory three" width="800" height="800" loading="lazy"></div></div><div class="waypoint">I</div><div class="stage-card"><span class="stage-kicker">June</span><h2>Our beginning</h2><div class="stage-sub">Mountains, late trains, a chocolate croissant.</div><div class="poem">It began in June—  
+      <article class="stage" id="verse-1" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-1.mp3" data-title="A World Alone – Lorde">
+        <div class="stage-gallery"><div class="gallery-grid"><img src="https://picsum.photos/seed/daniel-v1-a/1200/900" alt="Placeholder image for our beginning, wide memory" width="1200" height="900" loading="lazy"><img src="https://picsum.photos/seed/daniel-v1-b/800/800" alt="Placeholder image for our beginning, memory two" width="800" height="800" loading="lazy"><img src="https://picsum.photos/seed/daniel-v1-c/800/800" alt="Placeholder image for our beginning, memory three" width="800" height="800" loading="lazy"></div></div>
+        <div class="waypoint"><span class="waypoint-num">I</span><img class="waypoint-cover" src="" alt="Song cover" /></div>
+        <div class="stage-card"><span class="stage-kicker">June</span><h2>Our beginning</h2><div class="stage-sub">Mountains, late trains, a chocolate croissant.</div><div class="poem">It began in June—  
 with mountains, late trains,  
 a chocolate croissant,  
 and the feeling that  
-"with you it's better."</div><div class="track-card"><div class="track-row"><div class="track-meta"><strong>A World Alone – Lorde</strong></div><button class="audio-btn" type="button">Play this song</button></div></div></div></article>
-      <article class="stage" id="verse-2" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-2.mp3" data-title="Michelle Pfeiffer – Ethel Cain"><div class="stage-gallery"><div class="gallery-grid"><img src="https://picsum.photos/seed/daniel-v2-a/1200/900" alt="Placeholder image for home, wide memory" width="1200" height="900" loading="lazy"><img src="https://picsum.photos/seed/daniel-v2-b/800/800" alt="Placeholder image for home, memory two" width="800" height="800" loading="lazy"><img src="https://picsum.photos/seed/daniel-v2-c/800/800" alt="Placeholder image for home, memory three" width="800" height="800" loading="lazy"></div></div><div class="waypoint">II</div><div class="stage-card"><span class="stage-kicker">Home</span><h2>Our hot summer nights</h2><div class="stage-sub">The Danube, still summer evenings, and home appearing in ordinary places.</div><div class="poem">We found romance in wrong turns,  
+"with you it's better."</div><div class="track-card"><div class="track-row"><div class="track-meta"><strong>A World Alone – Lorde</strong></div><button class="audio-btn" type="button">Play this song</button></div></div></div>
+      </article>
+
+      <article class="stage" id="verse-2" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-2.mp3" data-title="Michelle Pfeiffer – Ethel Cain">
+        <div class="stage-gallery"><div class="gallery-grid"><img src="https://picsum.photos/seed/daniel-v2-a/1200/900" alt="Placeholder image for home, wide memory" width="1200" height="900" loading="lazy"><img src="https://picsum.photos/seed/daniel-v2-b/800/800" alt="Placeholder image for home, memory two" width="800" height="800" loading="lazy"><img src="https://picsum.photos/seed/daniel-v2-c/800/800" alt="Placeholder image for home, memory three" width="800" height="800" loading="lazy"></div></div>
+        <div class="waypoint"><span class="waypoint-num">II</span><img class="waypoint-cover" src="" alt="Song cover" /></div>
+        <div class="stage-card"><span class="stage-kicker">Home</span><h2>Our hot summer nights</h2><div class="stage-sub">The Danube, still summer evenings, and home appearing in ordinary places.</div><div class="poem">We found romance in wrong turns,  
 in Ulm beside the Danube,  
 in summer evenings  
 that made the whole world  
@@ -251,8 +292,13 @@ of warmth, laughter, desire—
 until ordinary places  
 began to feel like home,  
 because you were there.  
-"Home's not home unless you're there."</div><div class="track-card"><div class="track-row"><div class="track-meta"><strong>Michelle Pfeiffer – Ethel Cain</strong></div><button class="audio-btn" type="button">Play this song</button></div></div></div></article>
-      <article class="stage" id="verse-3" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-3.mp3" data-title="Risk – Gracie Abrams"><div class="stage-gallery"><div class="gallery-grid"><img src="https://picsum.photos/seed/daniel-v3-a/1200/900" alt="Placeholder image for belonging, wide memory" width="1200" height="900" loading="lazy"><img src="https://picsum.photos/seed/daniel-v3-b/800/800" alt="Placeholder image for belonging, memory two" width="800" height="800" loading="lazy"><img src="https://picsum.photos/seed/daniel-v3-c/800/800" alt="Placeholder image for belonging, memory three" width="800" height="800" loading="lazy"></div></div><div class="waypoint">III</div><div class="stage-card"><span class="stage-kicker">Belonging</span><h2>Our risk</h2><div class="stage-sub">Sunlight, language, belonging, and choosing love again.</div><div class="poem">You carry Spain with you:  
+"Home's not home unless you're there."</div><div class="track-card"><div class="track-row"><div class="track-meta"><strong>Michelle Pfeiffer – Ethel Cain</strong></div><button class="audio-btn" type="button">Play this song</button></div></div></div>
+      </article>
+
+      <article class="stage" id="verse-3" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-3.mp3" data-title="Risk – Gracie Abrams">
+        <div class="stage-gallery"><div class="gallery-grid"><img src="https://picsum.photos/seed/daniel-v3-a/1200/900" alt="Placeholder image for belonging, wide memory" width="1200" height="900" loading="lazy"><img src="https://picsum.photos/seed/daniel-v3-b/800/800" alt="Placeholder image for belonging, memory two" width="800" height="800" loading="lazy"><img src="https://picsum.photos/seed/daniel-v3-c/800/800" alt="Placeholder image for belonging, memory three" width="800" height="800" loading="lazy"></div></div>
+        <div class="waypoint"><span class="waypoint-num">III</span><img class="waypoint-cover" src="" alt="Song cover" /></div>
+        <div class="stage-card"><span class="stage-kicker">Belonging</span><h2>Our risk</h2><div class="stage-sub">Sunlight, language, belonging, and choosing love again.</div><div class="poem">You carry Spain with you:  
 its sunlight, its language,  
 the place that shaped you  
 and will always be part  
@@ -261,13 +307,23 @@ And somewhere between
 our songs and our silences,  
 love became a risk—  
 one I would take again.  
-"You're the risk, I'm gonna take it."</div><div class="track-card"><div class="track-row"><div class="track-meta"><strong>Risk – Gracie Abrams</strong></div><button class="audio-btn" type="button">Play this song</button></div></div></div></article>
-      <article class="stage" id="verse-4" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-4.mp3" data-title="teenage dream – Olivia Rodrigo"><div class="stage-gallery"><div class="gallery-grid"><img src="https://picsum.photos/seed/daniel-v4-a/1200/900" alt="Placeholder image for our life ahead, wide memory" width="1200" height="900" loading="lazy"><img src="https://picsum.photos/seed/daniel-v4-b/800/800" alt="Placeholder image for our life ahead, memory two" width="800" height="800" loading="lazy"><img src="https://picsum.photos/seed/daniel-v4-c/800/800" alt="Placeholder image for our life ahead, memory three" width="800" height="800" loading="lazy"></div></div><div class="waypoint">IV</div><div class="stage-card"><span class="stage-kicker">Nineteen</span><h2>Our life ahead</h2><div class="stage-sub">New roads, new cities, and a life still opening in front of you.</div><div class="poem">You are nineteen now,  
+"You're the risk, I'm gonna take it."</div><div class="track-card"><div class="track-row"><div class="track-meta"><strong>Risk – Gracie Abrams</strong></div><button class="audio-btn" type="button">Play this song</button></div></div></div>
+      </article>
+
+      <article class="stage" id="verse-4" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-4.mp3" data-title="teenage dream – Olivia Rodrigo">
+        <div class="stage-gallery"><div class="gallery-grid"><img src="https://picsum.photos/seed/daniel-v4-a/1200/900" alt="Placeholder image for our life ahead, wide memory" width="1200" height="900" loading="lazy"><img src="https://picsum.photos/seed/daniel-v4-b/800/800" alt="Placeholder image for our life ahead, memory two" width="800" height="800" loading="lazy"><img src="https://picsum.photos/seed/daniel-v4-c/800/800" alt="Placeholder image for our life ahead, memory three" width="800" height="800" loading="lazy"></div></div>
+        <div class="waypoint"><span class="waypoint-num">IV</span><img class="waypoint-cover" src="" alt="Song cover" /></div>
+        <div class="stage-card"><span class="stage-kicker">Nineteen</span><h2>Our life ahead</h2><div class="stage-sub">New roads, new cities, and a life still opening in front of you.</div><div class="poem">You are nineteen now,  
 with your whole life ahead of you,  
 new roads, new cities,  
 and so much still waiting.  
-"Got your whole life ahead of you, you're only 19."</div><div class="track-card"><div class="track-row"><div class="track-meta"><strong>teenage dream – Olivia Rodrigo</strong></div><button class="audio-btn" type="button">Play this song</button></div></div></div></article>
-      <article class="stage" id="verse-5" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-5.mp3" data-title="Coat of Many Colors – Dolly Parton"><div class="stage-gallery"><div class="gallery-grid"><img src="https://picsum.photos/seed/daniel-v5-a/1200/900" alt="Placeholder image for colors, wide memory" width="1200" height="900" loading="lazy"><img src="https://picsum.photos/seed/daniel-v5-b/800/800" alt="Placeholder image for colors, memory two" width="800" height="800" loading="lazy"><img src="https://picsum.photos/seed/daniel-v5-c/800/800" alt="Placeholder image for colors, memory three" width="800" height="800" loading="lazy"></div></div><div class="waypoint">V</div><div class="stage-card"><span class="stage-kicker">Colors</span><h2>Our beauty</h2><div class="stage-sub">Softness, humour, curiosity, and moments stitched together with love.</div><div class="poem">I hope you keep your softness,  
+"Got your whole life ahead of you, you're only 19."</div><div class="track-card"><div class="track-row"><div class="track-meta"><strong>teenage dream – Olivia Rodrigo</strong></div><button class="audio-btn" type="button">Play this song</button></div></div></div>
+      </article>
+
+      <article class="stage" id="verse-5" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-5.mp3" data-title="Coat of Many Colors – Dolly Parton">
+        <div class="stage-gallery"><div class="gallery-grid"><img src="https://picsum.photos/seed/daniel-v5-a/1200/900" alt="Placeholder image for colors, wide memory" width="1200" height="900" loading="lazy"><img src="https://picsum.photos/seed/daniel-v5-b/800/800" alt="Placeholder image for colors, memory two" width="800" height="800" loading="lazy"><img src="https://picsum.photos/seed/daniel-v5-c/800/800" alt="Placeholder image for colors, memory three" width="800" height="800" loading="lazy"></div></div>
+        <div class="waypoint"><span class="waypoint-num">V</span><img class="waypoint-cover" src="" alt="Song cover" /></div>
+        <div class="stage-card"><span class="stage-kicker">Colors</span><h2>Our beauty</h2><div class="stage-sub">Softness, humour, curiosity, and moments stitched together with love.</div><div class="poem">I hope you keep your softness,  
 your humour, your curiosity,  
 and the beautiful chaos  
 that makes you entirely yourself.  
@@ -279,8 +335,13 @@ became something I will carry.
 Not perfect,  
 but full of colour,  
 stitched together with love.  
-"Coat of many colors."</div><div class="track-card"><div class="track-row"><div class="track-meta"><strong>Coat of Many Colors – Dolly Parton</strong></div><button class="audio-btn" type="button">Play this song</button></div></div></div></article>
-      <article class="stage" id="verse-6" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-6.mp3" data-title="I Will Always Love You – Dolly Parton"><div class="stage-gallery"><div class="gallery-grid"><img src="https://picsum.photos/seed/daniel-v6-a/1200/900" alt="Placeholder image for our love, wide memory" width="1200" height="900" loading="lazy"><img src="https://picsum.photos/seed/daniel-v6-b/800/800" alt="Placeholder image for our love, memory two" width="800" height="800" loading="lazy"><img src="https://picsum.photos/seed/daniel-v6-c/800/800" alt="Placeholder image for our love, memory three" width="800" height="800" loading="lazy"></div></div><div class="waypoint">VI</div><div class="stage-card"><span class="stage-kicker">Daniel</span><h2>Our love</h2><div class="stage-sub">A last wish, and a love carried into what comes next.</div><div class="poem">So wherever life takes you,  
+"Coat of many colors."</div><div class="track-card"><div class="track-row"><div class="track-meta"><strong>Coat of Many Colors – Dolly Parton</strong></div><button class="audio-btn" type="button">Play this song</button></div></div></div>
+      </article>
+
+      <article class="stage" id="verse-6" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-6.mp3" data-title="I Will Always Love You – Dolly Parton">
+        <div class="stage-gallery"><div class="gallery-grid"><img src="https://picsum.photos/seed/daniel-v6-a/1200/900" alt="Placeholder image for our love, wide memory" width="1200" height="900" loading="lazy"><img src="https://picsum.photos/seed/daniel-v6-b/800/800" alt="Placeholder image for our love, memory two" width="800" height="800" loading="lazy"><img src="https://picsum.photos/seed/daniel-v6-c/800/800" alt="Placeholder image for our love, memory three" width="800" height="800" loading="lazy"></div></div>
+        <div class="waypoint"><span class="waypoint-num">VI</span><img class="waypoint-cover" src="" alt="Song cover" /></div>
+        <div class="stage-card"><span class="stage-kicker">Daniel</span><h2>Our love</h2><div class="stage-sub">A last wish, and a love carried into what comes next.</div><div class="poem">So wherever life takes you,  
 whether close or far away,  
 remember that you were loved  
 in the beginning,  
@@ -288,7 +349,8 @@ in the uncertainty,
 and in everything still to come.  
 Happy birthday, Daniel.  
 And wherever you go:  
-"I will always love you."</div><div class="track-card"><div class="track-row"><div class="track-meta"><strong>I Will Always Love You – Dolly Parton</strong></div><button class="audio-btn" type="button">Play this song</button></div></div></div></article>
+"I will always love you."</div><div class="track-card"><div class="track-row"><div class="track-meta"><strong>I Will Always Love You – Dolly Parton</strong></div><button class="audio-btn" type="button">Play this song</button></div></div></div>
+      </article>
     </div></section>
     
     <section class="closing shell" aria-labelledby="closing-title"><h2 id="closing-title">For your nineteenth birthday — September 8</h2><div class="full-poem">It began in June—  
@@ -356,12 +418,8 @@ And wherever you go:
 "I will always love you."  
 <span class="song-credit">I Will Always Love You – Dolly Parton</span></div></section>
   </main>
-  
-  <aside class="floating-player" id="floatingPlayer" aria-live="polite" title="Toggle audio">
-    <div class="now">Now playing</div>
-    <div class="track-name" id="nowPlaying">No track</div>
-    <audio id="globalAudio" preload="metadata"></audio>
-  </aside>
+
+  <audio id="globalAudio" preload="metadata"></audio>
 
   <script>
     (() => {
@@ -384,41 +442,90 @@ And wherever you go:
 
       const stages = [...document.querySelectorAll('.stage')];
       const audio = document.getElementById('globalAudio');
-      const nowPlaying = document.getElementById('nowPlaying');
       const unlockAudioBtn = document.getElementById('unlockAudio');
       const unlockHeroBtn = document.getElementById('unlockAudioHero');
-      const floatingPlayer = document.getElementById('floatingPlayer');
 
       let audioUnlocked = false;
       let currentActiveStage = null;
+      const coverCache = new Map();
 
       const musicNoteIcon = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>';
       const musicMuteIcon = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle><line x1="2" y1="2" x2="22" y2="22"></line></svg>';
+
+      // Auslesen des MP3 Covers via jsmediatags (mit Galeriebild-Fallback)
+      const loadStageCover = (stage) => {
+        const audioUrl = stage.dataset.audio;
+        if (!audioUrl) return;
+
+        if (coverCache.has(audioUrl)) {
+          setStageCover(stage, coverCache.get(audioUrl));
+          return;
+        }
+
+        if (window.jsmediatags) {
+          window.jsmediatags.read(audioUrl, {
+            onSuccess: (tag) => {
+              const tags = tag.tags;
+              if (tags.picture) {
+                const { data, format } = tags.picture;
+                let base64String = "";
+                for (let i = 0; i < data.length; i++) {
+                  base64String += String.fromCharCode(data[i]);
+                }
+                const imgUrl = `data:${format};base64,${window.btoa(base64String)}`;
+                coverCache.set(audioUrl, imgUrl);
+                setStageCover(stage, imgUrl);
+              } else {
+                fallbackCover(stage);
+              }
+            },
+            onError: () => fallbackCover(stage)
+          });
+        } else {
+          fallbackCover(stage);
+        }
+      };
+
+      const fallbackCover = (stage) => {
+        const galleryImg = stage.querySelector('.gallery-grid img');
+        if (galleryImg) {
+          coverCache.set(stage.dataset.audio, galleryImg.src);
+          setStageCover(stage, galleryImg.src);
+        }
+      };
+
+      const setStageCover = (stage, imgUrl) => {
+        const coverEl = stage.querySelector('.waypoint-cover');
+        if (coverEl && imgUrl) {
+          coverEl.src = imgUrl;
+          stage.classList.add('has-cover');
+        }
+      };
 
       const updateAudioUI = () => {
         const isPlaying = audioUnlocked && !audio.paused;
         
         if (unlockAudioBtn) {
-          if (isPlaying) {
-            unlockAudioBtn.innerHTML = musicMuteIcon;
-            unlockAudioBtn.setAttribute('aria-label', 'Disable music');
-            unlockAudioBtn.setAttribute('title', 'Disable music');
-          } else {
-            unlockAudioBtn.innerHTML = musicNoteIcon;
-            unlockAudioBtn.setAttribute('aria-label', 'Enable music');
-            unlockAudioBtn.setAttribute('title', 'Enable music');
-          }
+          unlockAudioBtn.innerHTML = isPlaying ? musicMuteIcon : musicNoteIcon;
+          unlockAudioBtn.setAttribute('aria-label', isPlaying ? 'Disable music' : 'Enable music');
+          unlockAudioBtn.setAttribute('title', isPlaying ? 'Disable music' : 'Enable music');
         }
 
         if (unlockHeroBtn) {
-          if (isPlaying) {
-            unlockHeroBtn.textContent = 'Disable music';
-            unlockHeroBtn.style.opacity = '0.85';
-          } else {
-            unlockHeroBtn.textContent = audioUnlocked ? 'Enable music' : 'Tap once for music';
-            unlockHeroBtn.style.opacity = '1';
-          }
+          unlockHeroBtn.textContent = isPlaying ? 'Disable music' : (audioUnlocked ? 'Enable music' : 'Tap once for music');
         }
+
+        // Steuerung der Rotations-Animation auf dem Waypoint Button
+        stages.forEach((st) => {
+          if (st === currentActiveStage && isPlaying) {
+            st.classList.add('is-playing');
+            st.classList.remove('is-paused');
+          } else if (st === currentActiveStage && !isPlaying) {
+            st.classList.add('is-paused');
+          } else {
+            st.classList.remove('is-playing', 'is-paused');
+          }
+        });
       };
 
       audio.addEventListener('play', updateAudioUI);
@@ -426,11 +533,7 @@ And wherever you go:
       audio.addEventListener('ended', updateAudioUI);
 
       const getAbsoluteUrl = (path) => {
-        try {
-          return new URL(path, window.location.href).href;
-        } catch(e) {
-          return path;
-        }
+        try { return new URL(path, window.location.href).href; } catch(e) { return path; }
       };
 
       const playStage = async (stage, manual = false) => {
@@ -438,14 +541,11 @@ And wherever you go:
         
         stages.forEach((item) => item.classList.toggle('is-active', item === stage));
         currentActiveStage = stage;
+        
+        loadStageCover(stage);
 
         const src = stage.dataset.audio;
-        const title = stage.dataset.title;
-
-        if (!audioUnlocked && !manual) {
-          nowPlaying.textContent = title;
-          return;
-        }
+        if (!audioUnlocked && !manual) return;
 
         const absSrc = getAbsoluteUrl(src);
 
@@ -456,10 +556,10 @@ And wherever you go:
           }
           await audio.play();
           audioUnlocked = true;
-          nowPlaying.textContent = title;
         } catch (e) {
-          nowPlaying.textContent = title;
+          console.warn('Playback error:', e);
         }
+        updateAudioUI();
       };
 
       const getMostVisibleStage = () => {
@@ -517,23 +617,23 @@ And wherever you go:
         });
       }
 
-      if (floatingPlayer) {
-        floatingPlayer.addEventListener('click', (e) => {
-          e.stopPropagation();
-          toggleAudioState();
-        });
-      }
-
       stages.forEach((stage) => {
         const btn = stage.querySelector('.audio-btn');
-        if (btn) {
-          btn.addEventListener('click', async (e) => {
-            e.stopPropagation();
-            if (!audioUnlocked) audioUnlocked = true;
+        const waypoint = stage.querySelector('.waypoint');
+
+        // Klick auf Song-Button oder Waypoint-Kreis spielt die Musik
+        const handlePlayClick = async (e) => {
+          e.stopPropagation();
+          if (!audioUnlocked) audioUnlocked = true;
+          if (currentActiveStage === stage && !audio.paused) {
+            audio.pause();
+          } else {
             await playStage(stage, true);
-            stage.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          });
-        }
+          }
+        };
+
+        if (btn) btn.addEventListener('click', handlePlayClick);
+        if (waypoint) waypoint.addEventListener('click', handlePlayClick);
       });
 
       const observer = new IntersectionObserver((entries) => {
@@ -551,7 +651,11 @@ And wherever you go:
         threshold: [0.1, 0.3, 0.5, 0.7]
       });
 
-      stages.forEach((stage) => observer.observe(stage));
+      stages.forEach((stage) => {
+        observer.observe(stage);
+        // Preload-Covers frühzeitig im Hintergrund
+        loadStageCover(stage);
+      });
     })();
   </script>
 </body>
