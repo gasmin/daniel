@@ -148,6 +148,7 @@
       height: 100%;
       display: flex;
       justify-content: center;
+      align-items: flex-start;
       position: relative;
     }
 
@@ -157,6 +158,8 @@
       z-index: 10; 
       width: 4.5rem; 
       height: 4.5rem; 
+      aspect-ratio: 1 / 1;
+      flex-shrink: 0;
       border-radius: 50%; 
       display: grid; 
       place-items: center; 
@@ -184,6 +187,7 @@
       inset: 0;
       width: 100%;
       height: 100%;
+      aspect-ratio: 1 / 1;
       object-fit: cover;
       border-radius: 50%;
       opacity: 0;
@@ -255,8 +259,8 @@
 
     @media (max-width: 980px) { 
       .hero-layout { grid-template-columns: 1fr; } 
-      .journey-line { left: 1.95rem; } 
-      .stage { grid-template-columns: 4rem 1fr; min-height: auto; padding-bottom: var(--space-8); } 
+      .journey-line { left: 2.25rem; } 
+      .stage { grid-template-columns: 4.5rem 1fr; min-height: auto; padding-bottom: var(--space-8); } 
       .waypoint-col { grid-column: 1 !important; grid-row: 1 / span 2 !important; }
       .stage-card, .stage-gallery { grid-column: 2 !important; grid-row: auto !important; } 
       .stage-gallery { order: 2; } 
@@ -360,7 +364,7 @@ and so much still waiting.
       <article class="stage" id="verse-5" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-5.mp3">
         <div class="stage-gallery"><div class="gallery-grid"><img src="https://picsum.photos/seed/daniel-v5-a/1200/900" alt="Memory picture" width="1200" height="900" loading="lazy"><img src="https://picsum.photos/seed/daniel-v5-b/800/800" alt="Memory picture" width="800" height="800" loading="lazy"><img src="https://picsum.photos/seed/daniel-v5-c/800/800" alt="Memory picture" width="800" height="800" loading="lazy"></div></div>
         <div class="waypoint-col"><div class="waypoint"><span class="waypoint-num">V</span><img class="waypoint-cover" src="assets/images/output-5.jpg" alt="Song cover - Verse 5" /></div></div>
-        <div class="stage-card"><span class="stage-kicker">Colors</span><h2>Our beauty</h2><div class="stage-sub">Softness, humour, curiosity, and moments stitched together with love.</div><div class="poem">I hope you keep your softness,  
+        <div class="stage-card"><span class="stage-kicker">Colors</span> climate<h2>Our beauty</h2><div class="stage-sub">Softness, humour, curiosity, and moments stitched together with love.</div><div class="poem">I hope you keep your softness,  
 your humour, your curiosity,  
 and the beautiful chaos  
 that makes you entirely yourself.  
@@ -483,15 +487,15 @@ And wherever you go:
       const unlockAudioBtn = document.getElementById('unlockAudio');
       const unlockHeroBtn = document.getElementById('unlockAudioHero');
 
-      let isAudioEnabled = false;
-      let userMuted = false; // Tracks if the user explicitly turned off audio
+      let isAudioEnabled = true; // Auto-play enabled by default on scroll
+      let userMuted = false;      // Explicitly set to true when user pauses/mutes
       let currentActiveStage = null;
 
       const musicNoteIcon = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>';
       const musicMuteIcon = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle><line x1="2" y1="2" x2="22" y2="22"></line></svg>';
 
       const updateAudioUI = () => {
-        const isPlaying = isAudioEnabled && !audio.paused;
+        const isPlaying = isAudioEnabled && !userMuted && !audio.paused;
         
         if (unlockAudioBtn) {
           unlockAudioBtn.innerHTML = isPlaying ? musicMuteIcon : musicNoteIcon;
@@ -530,11 +534,10 @@ And wherever you go:
         currentActiveStage = stage;
 
         if (manual) {
-          isAudioEnabled = true;
           userMuted = false;
+          isAudioEnabled = true;
         }
 
-        // If the user manually muted or audio is not active, don't play
         if (userMuted || !isAudioEnabled) {
           updateAudioUI();
           return;
@@ -550,7 +553,8 @@ And wherever you go:
           }
           await audio.play();
         } catch (e) {
-          console.warn('Playback error:', e);
+          // Playback blocked by browser policy until user gesture
+          console.warn('Waiting for user interaction to unblock audio:', e);
         }
         updateAudioUI();
       };
@@ -572,20 +576,27 @@ And wherever you go:
       };
 
       const toggleAudioState = async () => {
-        if (isAudioEnabled && !audio.paused) {
-          // User manually deactivates music
-          isAudioEnabled = false;
+        if (isAudioEnabled && !userMuted && !audio.paused) {
           userMuted = true;
           audio.pause();
           updateAudioUI();
         } else {
-          // User manually activates music
           userMuted = false;
           isAudioEnabled = true;
           const activeStage = stages.find((s) => s.classList.contains('is-active')) || getMostVisibleStage() || stages[0];
           await playStage(activeStage, true);
         }
       };
+
+      // Listener to unlock browser audio restrictions on the very first touch or scroll gesture
+      const unlockOnFirstTouch = () => {
+        if (!userMuted && currentActiveStage && audio.paused) {
+          playStage(currentActiveStage);
+        }
+      };
+      ['touchstart', 'pointerdown', 'scroll', 'click'].forEach((evt) => {
+        window.addEventListener(evt, unlockOnFirstTouch, { passive: true });
+      });
 
       if (unlockAudioBtn) {
         unlockAudioBtn.addEventListener('click', (e) => {
@@ -609,8 +620,7 @@ And wherever you go:
 
         const handlePlayClick = async (e) => {
           e.stopPropagation();
-          if (currentActiveStage === stage && isAudioEnabled && !audio.paused) {
-            isAudioEnabled = false;
+          if (currentActiveStage === stage && !userMuted && !audio.paused) {
             userMuted = true;
             audio.pause();
             updateAudioUI();
@@ -622,26 +632,6 @@ And wherever you go:
         if (btn) btn.addEventListener('click', handlePlayClick);
         if (waypoint) waypoint.addEventListener('click', handlePlayClick);
       });
-
-      // Automatically activate music on first scroll/touch interaction if not userMuted
-      const enableAutoplayOnFirstScroll = () => {
-        const handleInteraction = async () => {
-          if (!userMuted && !isAudioEnabled) {
-            isAudioEnabled = true;
-            const targetStage = getMostVisibleStage() || stages[0];
-            await playStage(targetStage, false);
-          }
-          window.removeEventListener('scroll', handleInteraction);
-          window.removeEventListener('touchstart', handleInteraction);
-          window.removeEventListener('wheel', handleInteraction);
-        };
-
-        window.addEventListener('scroll', handleInteraction, { passive: true });
-        window.addEventListener('touchstart', handleInteraction, { passive: true });
-        window.addEventListener('wheel', handleInteraction, { passive: true });
-      };
-
-      enableAutoplayOnFirstScroll();
 
       const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
