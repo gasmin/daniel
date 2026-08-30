@@ -65,7 +65,7 @@
     html { scroll-behavior: smooth; }
     body { margin: 0; min-height: 100vh; font-family: var(--font-body); font-size: var(--text-base); line-height: 1.7; color: var(--color-text); background: linear-gradient(180deg, #f9f5f0 0%, #f4eee7 35%, #efe8e0 100%); background-attachment: fixed; }
     [data-theme="dark"] body { background: linear-gradient(180deg, #161211 0%, #130f0e 35%, #0f0c0b 100%); background-attachment: fixed; }
-    img, video { display: block; width: 100%; height: auto; }
+    img { display: block; width: 100%; height: auto; }
     button, a { font: inherit; color: inherit; }
     
     .shell { width: min(calc(100% - 1.5rem), var(--content)); margin: 0 auto; }
@@ -165,24 +165,8 @@
       border-radius: 4px;
       transition: transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
     }
-    
-    /* Vergrößerte Polaroids für Videos */
-    .polaroid.polaroid-video {
-      width: clamp(215px, 31vw, 340px);
-      z-index: 5;
-    }
-
     [data-theme="dark"] .polaroid { background: #251d1a; }
-    
-    .polaroid img,
-    .polaroid video { 
-      width: 100%; 
-      aspect-ratio: 1 / 1; 
-      object-fit: cover; 
-      border-radius: 2px; 
-      filter: contrast(1.03) brightness(0.98); 
-    }
-    
+    .polaroid img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 2px; filter: contrast(1.03) brightness(0.98); }
     .polaroid-caption { position: absolute; bottom: 6px; left: 10px; right: 10px; font-family: var(--font-hand); font-size: 1.2rem; color: #4a3e38; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     [data-theme="dark"] .polaroid-caption { color: #d8cbbf; }
 
@@ -198,7 +182,7 @@
     .stage.is-active .polaroid.p2 { transform: rotate(5deg) scale(1.04); }
     .stage.is-active .polaroid.p3 { transform: rotate(-2deg) scale(1.04); }
 
-    /* EBENE 4: Waypoint & Albumcover (Fixiert in der Mitte hinter der Karte) */
+    /* EBENE 4: Waypoint & Albumcover */
     .waypoint-anchor {
       position: absolute;
       inset: 0;
@@ -262,7 +246,6 @@
       transform: scale(1) rotate(0deg);
     }
 
-    /* Animationen bei aktiver Wiedergabe */
     .stage.is-active.is-playing .waypoint {
       animation: pulseGlow 1.8s infinite ease-in-out;
     }
@@ -351,8 +334,6 @@
       .stage-card { width: min(92%, 520px); margin: 0 auto; }
 
       .polaroid { width: clamp(170px, 46vw, 250px); opacity: 0.95; }
-      .polaroid.polaroid-video { width: clamp(200px, 50vw, 290px); }
-      
       .polaroid.p1 { top: -20px; left: -10px; transform: rotate(-7deg); }
       .polaroid.p2 { bottom: -20px; right: -10px; transform: rotate(7deg); }
       .polaroid.p3 { top: 30%; right: -10px; transform: rotate(-4deg); }
@@ -366,7 +347,6 @@
       .shell { width: min(calc(100% - 1.2rem), var(--content)); } 
       .stage-card { width: 94%; }
       .polaroid { width: clamp(160px, 48vw, 230px); }
-      .polaroid.polaroid-video { width: clamp(185px, 52vw, 260px); }
     }
   </style>
 </head>
@@ -417,15 +397,15 @@
         <article class="stage" id="verse-1" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-1.mp3">
           <div class="photo-scatter" aria-hidden="true">
             <div class="polaroid p1">
-              <img src="assets/images/1.jpg" alt="Erinnerung 1">
+              <img src="assets/images/2026-07-08 15-41-56.HEIC" alt="Erinnerung 1">
               <span class="polaroid-caption">Juni Momente</span>
             </div>
             <div class="polaroid p2">
-              <img src="assets/images/2.jpg" alt="Erinnerung 2">
+              <img src="assets/images/2026-07-12 12-37-05.JPEG" alt="Erinnerung 2">
               <span class="polaroid-caption">Späte Züge</span>
             </div>
             <div class="polaroid p3">
-              <img src="assets/images/3.jpg" alt="Erinnerung 3">
+              <img src="assets/images/2026-07-12 13-04-45.JPEG" alt="Erinnerung 3">
               <span class="polaroid-caption">Schokocroissant</span>
             </div>
           </div>
@@ -459,20 +439,12 @@ und dem Gefühl, dass
         <article class="stage" id="verse-2" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-2.mp3">
           <div class="photo-scatter" aria-hidden="true">
             <div class="polaroid p1">
-              <img src="assets/images/4.jpg" alt="Erinnerung 4">
+              <img src="assets/images/2026-07-12 13-12-42.JPEG" alt="Erinnerung 4">
               <span class="polaroid-caption">Donauufer</span>
             </div>
             <div class="polaroid p2">
-              <img src="assets/images/5.jpg" alt="Erinnerung 5">
+              <img src="assets/images/2026-07-12 13-16-39.JPEG" alt="Erinnerung 5">
               <span class="polaroid-caption">Sommernächte</span>
-            </div>
-            <!-- Video Polaroid 1 (vergrößert) -->
-            <div class="polaroid p3 polaroid-video">
-              <video autoplay muted loop playsinline preload="auto">
-                <source src="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/2026-07-18%2022-17-51.mov" type="video/quicktime">
-                <source src="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/2026-07-18%2022-17-51.mov" type="video/mp4">
-              </video>
-              <span class="polaroid-caption">Sommerabend Video</span>
             </div>
           </div>
 
@@ -511,11 +483,11 @@ weil du da warst.
         <article class="stage" id="verse-3" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-3.mp3">
           <div class="photo-scatter" aria-hidden="true">
             <div class="polaroid p1">
-              <img src="assets/images/6.jpg" alt="Erinnerung 6">
+              <img src="assets/images/2026-07-12 13-18-06.JPEG" alt="Erinnerung 6">
               <span class="polaroid-caption">Sonnenlicht</span>
             </div>
             <div class="polaroid p2">
-              <img src="assets/images/7.jpg" alt="Erinnerung 7">
+              <img src="assets/images/2026-07-12 14-07-19.JPEG" alt="Erinnerung 7">
               <span class="polaroid-caption">Spanien</span>
             </div>
           </div>
@@ -554,15 +526,15 @@ einem, das ich wieder eingehen würde.
         <article class="stage" id="verse-4" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-4.mp3">
           <div class="photo-scatter" aria-hidden="true">
             <div class="polaroid p1">
-              <img src="assets/images/8.jpg" alt="Erinnerung 8">
+              <img src="assets/images/2026-07-12 14-10-42.JPEG" alt="Erinnerung 8">
               <span class="polaroid-caption">Neue Wege</span>
             </div>
             <div class="polaroid p2">
-              <img src="assets/images/9.jpg" alt="Erinnerung 9">
+              <img src="assets/images/2026-07-12 16-48-31.JPEG" alt="Erinnerung 9">
               <span class="polaroid-caption">Neunzehn</span>
             </div>
             <div class="polaroid p3">
-              <img src="assets/images/10.jpg" alt="Erinnerung 10">
+              <img src="assets/images/2026-07-18 22-19-27.HEIC" alt="Erinnerung 10">
               <span class="polaroid-caption">Zukunft</span>
             </div>
           </div>
@@ -596,19 +568,12 @@ und so vieles, das noch wartet.
         <article class="stage" id="verse-5" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-5.mp3">
           <div class="photo-scatter" aria-hidden="true">
             <div class="polaroid p1">
-              <img src="assets/images/11.jpg" alt="Erinnerung 11">
+              <img src="assets/images/2026-08-12 20-01-14.JPEG" alt="Erinnerung 11">
               <span class="polaroid-caption">Farben</span>
             </div>
             <div class="polaroid p2">
-              <img src="assets/images/12.jpg" alt="Erinnerung 12">
+              <img src="assets/images/IMG_0152.JPG" alt="Erinnerung 12">
               <span class="polaroid-caption">Sanftheit</span>
-            </div>
-            <!-- Video Polaroid 2 (vergrößert) -->
-            <div class="polaroid p3 polaroid-video">
-              <video autoplay muted loop playsinline preload="auto">
-                <source src="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/VIDEO-2026-07-13-15-09-31.MP4" type="video/mp4">
-              </video>
-              <span class="polaroid-caption">Gemeinsam unterwegs</span>
             </div>
           </div>
 
@@ -649,11 +614,11 @@ mit Liebe zusammengewoben.
         <article class="stage" id="verse-6" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-6.mp3">
           <div class="photo-scatter" aria-hidden="true">
             <div class="polaroid p1">
-              <img src="assets/images/13.jpg" alt="Erinnerung 13">
+              <img src="assets/images/IMG_0160.JPG" alt="Erinnerung 13">
               <span class="polaroid-caption">Für immer</span>
             </div>
             <div class="polaroid p2">
-              <img src="assets/images/14.jpg" alt="Erinnerung 14">
+              <img src="assets/images/IMG_0160.JPG" alt="Erinnerung 14">
               <span class="polaroid-caption">Daniel</span>
             </div>
           </div>
@@ -907,7 +872,6 @@ Und wo auch immer du bist:
         if (waypoint) waypoint.addEventListener('click', handlePlayClick);
       });
 
-      /* Scroll-Erkennung & Weiche Animation zur nächsten Verskarte */
       const handleScrollJump = () => {
         if (isSnapping) return;
 
@@ -919,8 +883,6 @@ Und wo auch immer du bist:
 
           const cardRect = card.getBoundingClientRect();
           
-          /* Wenn die Karte nach oben gescrollt wurde und das untere Ende der Karte 
-             den oberen Bereich verlässt (Cover taucht unten wieder auf): Animated Jump */
           if (cardRect.bottom < vh * 0.35 && cardRect.bottom > 0 && index < stages.length - 1) {
             const nextStage = stages[index + 1];
             isSnapping = true;
