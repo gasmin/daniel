@@ -22,7 +22,6 @@
       --space-5: 1.25rem; --space-6: 1.5rem; --space-8: 2rem; --space-10: 2.5rem;
       --space-12: 3rem; --space-16: 4rem; --space-20: 5rem; --space-24: 6rem;
       --color-bg: #f5f0ea;
-      /* Transparenz der Kästchen leicht erhöht (0.70 statt 0.88), damit Bilder hindurchschimmern */
       --color-surface: rgba(255, 255, 255, 0.70);
       --color-surface-2: #ffffff;
       --color-border: rgba(44, 34, 26, 0.16);
@@ -133,6 +132,7 @@
     .hero p { max-width: 38rem; color: var(--color-text-muted); margin-top: 0; font-weight: 500; }
     .hero-actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-6); }
     
+    /* Hero Video (1 Video) */
     .hero-video {
       position: relative;
       width: 100%;
@@ -156,7 +156,8 @@
     /* Central Timeline Line */
     .journey-line { 
       position: absolute; 
-      left: calc(50% - 1px); 
+      left: 50%; 
+      transform: translateX(-50%);
       top: 0; 
       bottom: 0; 
       width: 2px; 
@@ -165,13 +166,12 @@
       z-index: 5; 
     }
     
-    /* Stage Layout (Scattered Fotoalbum + Central Verse Box over Timeline) */
     .stage { 
       position: relative; 
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 42rem; 
+      min-height: 48rem; 
       padding: var(--space-8) 0;
       opacity: 0.65; 
       transform: translateY(24px); 
@@ -194,7 +194,7 @@
 
     .polaroid {
       position: absolute;
-      width: clamp(160px, 24vw, 270px);
+      width: clamp(170px, 24vw, 270px);
       background: #ffffff;
       padding: 10px 10px 32px 10px;
       box-shadow: var(--shadow-polaroid);
@@ -230,33 +230,38 @@
       color: #d8cbbf;
     }
 
-    /* Dynamic Positions & Rotations for Background Album Look */
+    /* Positions & Rotations */
     .polaroid.p1 { top: 2%; left: 2%; transform: rotate(-8deg); }
     .polaroid.p2 { bottom: 2%; right: 2%; transform: rotate(7deg); }
-    .polaroid.p3 { top: 18%; right: 22%; transform: rotate(-3deg); }
+    .polaroid.p3 { top: 22%; right: 18%; transform: rotate(-4deg); }
 
     .stage:nth-child(even) .polaroid.p1 { top: 4%; right: 2%; left: auto; transform: rotate(7deg); }
     .stage:nth-child(even) .polaroid.p2 { bottom: 2%; left: 2%; right: auto; transform: rotate(-8deg); }
-    .stage:nth-child(even) .polaroid.p3 { top: 20%; left: 20%; right: auto; transform: rotate(4deg); }
+    .stage:nth-child(even) .polaroid.p3 { top: 20%; left: 18%; right: auto; transform: rotate(4deg); }
 
     .stage.is-active .polaroid.p1 { transform: rotate(-6deg) scale(1.03); }
     .stage.is-active .polaroid.p2 { transform: rotate(5deg) scale(1.03); }
     .stage.is-active .polaroid.p3 { transform: rotate(-2deg) scale(1.03); }
 
-    /* Timeline Waypoint & Rotating Album Covers */
+    /* Sticky Waypoint Container moving along timeline with scroll */
     .waypoint-col {
-      position: absolute;
+      position: sticky;
+      top: 50vh;
       left: 50%;
-      top: 50%;
       transform: translate(-50%, -50%);
       z-index: 10;
+      height: 0;
+      width: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       pointer-events: auto;
     }
 
     .waypoint { 
+      position: relative;
       width: 4.5rem; 
       height: 4.5rem; 
-      aspect-ratio: 1 / 1;
       border-radius: 50%; 
       display: grid; 
       place-items: center; 
@@ -269,13 +274,15 @@
       color: var(--color-primary); 
       cursor: pointer;
       overflow: hidden;
+      flex-shrink: 0;
       transition: border-color 400ms ease, box-shadow 400ms ease, transform 300ms ease;
     }
 
+    /* Roman numeral transforming into album cover */
     .waypoint-num {
       position: absolute;
       z-index: 2;
-      transition: opacity 400ms ease, transform 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: opacity 450ms ease, transform 450ms cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
     .waypoint-cover {
@@ -283,7 +290,6 @@
       inset: 0;
       width: 100%;
       height: 100%;
-      aspect-ratio: 1 / 1;
       object-fit: cover;
       border-radius: 50%;
       opacity: 0;
@@ -298,7 +304,7 @@
 
     .stage.is-active .waypoint-num {
       opacity: 0;
-      transform: scale(0.2);
+      transform: scale(0.1) rotate(90deg);
     }
 
     .stage.is-active .waypoint-cover {
@@ -306,7 +312,7 @@
       transform: scale(1) rotate(0deg);
     }
 
-    /* Rotating Album Cover Animation */
+    /* Spinning Album Cover Animation during playback */
     .stage.is-active.is-playing .waypoint-cover {
       animation: spinCover 10s linear infinite;
     }
@@ -326,7 +332,7 @@
       to { transform: rotate(360deg); }
     }
 
-    /* Semi-transparent Central Verse Box (Highlights background images) */
+    /* Semi-transparent Central Verse Box */
     .stage-card { 
       position: relative;
       z-index: 6;
@@ -337,7 +343,6 @@
       border: 1px solid var(--color-border); 
       border-radius: var(--radius-xl); 
       background: var(--color-surface); 
-      /* Leicht reduzierter Blur (10px statt 16px), damit die Fotos gut erahnbar durchscheinen */
       backdrop-filter: blur(10px); 
       -webkit-backdrop-filter: blur(10px);
       box-shadow: var(--shadow-md); 
@@ -348,7 +353,6 @@
       gap: var(--space-3); 
     }
 
-    /* Asymmetric Layout on Desktop: Cards sit slightly offset left/right */
     .stage:nth-child(odd) .stage-card { transform: translateX(-35px); }
     .stage:nth-child(even) .stage-card { transform: translateX(35px); }
     
@@ -445,21 +449,50 @@
       font-style: italic; 
     }
 
+    /* Mobile Responsive Layout Fixes */
     @media (max-width: 980px) { 
       .hero-layout { grid-template-columns: 1fr; } 
-      .journey-line { left: 1.5rem; } 
-      .waypoint-col { left: 1.5rem; transform: translateY(-50%); }
-      .stage { min-height: auto; padding: var(--space-6) 0; }
+      
+      /* Timeline on left side */
+      .journey-line { 
+        left: 1.8rem; 
+        transform: translateX(-50%); 
+      } 
+      .waypoint-col { 
+        left: 1.8rem; 
+        transform: translate(-50%, -50%); 
+      }
+      
+      .stage { min-height: auto; padding: var(--space-8) 0; }
       .stage:nth-child(odd) .stage-card, 
-      .stage:nth-child(even) .stage-card { transform: none; margin-left: 3.8rem; width: calc(100% - 3.8rem); }
-      .polaroid { width: clamp(120px, 28vw, 170px); }
-      .polaroid.p3 { display: none; }
+      .stage:nth-child(even) .stage-card { 
+        transform: none; 
+        margin-left: 3.8rem; 
+        width: calc(100% - 3.8rem); 
+      }
+
+      /* Mobile Polaroids: Significantly Larger & clearly visible */
+      .polaroid { 
+        width: clamp(170px, 44vw, 250px); 
+        opacity: 0.92;
+      }
+      .polaroid.p1 { top: -15px; left: -10px; transform: rotate(-6deg); }
+      .polaroid.p2 { bottom: -15px; right: -5px; transform: rotate(6deg); }
+      .polaroid.p3 { top: 25%; right: -5px; transform: rotate(-3deg); }
     }
     
     @media (max-width: 640px) { 
       .shell { width: min(calc(100% - 1.2rem), var(--content)); } 
-      .polaroid.p1 { top: -10px; left: -10px; }
-      .polaroid.p2 { bottom: -10px; right: -5px; }
+      .journey-line { left: 1.4rem; }
+      .waypoint-col { left: 1.4rem; }
+      .stage:nth-child(odd) .stage-card, 
+      .stage:nth-child(even) .stage-card { 
+        margin-left: 3.2rem; 
+        width: calc(100% - 3.2rem); 
+      }
+      .polaroid { 
+        width: clamp(160px, 48vw, 220px); 
+      }
     }
 
     @media (max-width: 375px) {
@@ -500,6 +533,7 @@
             <a class="btn" href="#verse-1">Start with June</a>
           </div>
         </div>
+        <!-- 1 Video -->
         <div class="hero-video">
           <video autoplay muted loop playsinline preload="auto">
             <source src="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/00004495-VIDEO-2026-08-13-15-44-42.mp4" type="video/mp4">
@@ -513,7 +547,7 @@
       <div class="journey-grid">
         <div class="journey-line" aria-hidden="true"></div>
       
-        <!-- Verse 1 -->
+        <!-- Verse 1 (3 Polaroids) -->
         <article class="stage" id="verse-1" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-1.mp3">
           <div class="photo-scatter" aria-hidden="true">
             <div class="polaroid p1">
@@ -526,6 +560,7 @@
             </div>
             <div class="polaroid p3">
               <img src="https://picsum.photos/seed/daniel-v1-c/600/600" alt="Memory 3">
+              <span class="polaroid-caption">Croissant</span>
             </div>
           </div>
 
@@ -554,19 +589,16 @@ and the feeling that
           </div>
         </article>
 
-        <!-- Verse 2 -->
+        <!-- Verse 2 (2 Polaroids) -->
         <article class="stage" id="verse-2" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-2.mp3">
           <div class="photo-scatter" aria-hidden="true">
             <div class="polaroid p1">
-              <img src="https://picsum.photos/seed/daniel-v2-a/600/600" alt="Memory 1">
+              <img src="https://picsum.photos/seed/daniel-v2-a/600/600" alt="Memory 4">
               <span class="polaroid-caption">Danube River</span>
             </div>
             <div class="polaroid p2">
-              <img src="https://picsum.photos/seed/daniel-v2-b/600/600" alt="Memory 2">
+              <img src="https://picsum.photos/seed/daniel-v2-b/600/600" alt="Memory 5">
               <span class="polaroid-caption">Summer nights</span>
-            </div>
-            <div class="polaroid p3">
-              <img src="https://picsum.photos/seed/daniel-v2-c/600/600" alt="Memory 3">
             </div>
           </div>
 
@@ -601,19 +633,16 @@ because you were there.
           </div>
         </article>
 
-        <!-- Verse 3 -->
+        <!-- Verse 3 (2 Polaroids) -->
         <article class="stage" id="verse-3" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-3.mp3">
           <div class="photo-scatter" aria-hidden="true">
             <div class="polaroid p1">
-              <img src="https://picsum.photos/seed/daniel-v3-a/600/600" alt="Memory 1">
+              <img src="https://picsum.photos/seed/daniel-v3-a/600/600" alt="Memory 6">
               <span class="polaroid-caption">Sunlight</span>
             </div>
             <div class="polaroid p2">
-              <img src="https://picsum.photos/seed/daniel-v3-b/600/600" alt="Memory 2">
+              <img src="https://picsum.photos/seed/daniel-v3-b/600/600" alt="Memory 7">
               <span class="polaroid-caption">Spain</span>
-            </div>
-            <div class="polaroid p3">
-              <img src="https://picsum.photos/seed/daniel-v3-c/600/600" alt="Memory 3">
             </div>
           </div>
 
@@ -647,19 +676,20 @@ one I would take again.
           </div>
         </article>
 
-        <!-- Verse 4 -->
+        <!-- Verse 4 (3 Polaroids) -->
         <article class="stage" id="verse-4" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-4.mp3">
           <div class="photo-scatter" aria-hidden="true">
             <div class="polaroid p1">
-              <img src="https://picsum.photos/seed/daniel-v4-a/600/600" alt="Memory 1">
+              <img src="https://picsum.photos/seed/daniel-v4-a/600/600" alt="Memory 8">
               <span class="polaroid-caption">New roads</span>
             </div>
             <div class="polaroid p2">
-              <img src="https://picsum.photos/seed/daniel-v4-b/600/600" alt="Memory 2">
+              <img src="https://picsum.photos/seed/daniel-v4-b/600/600" alt="Memory 9">
               <span class="polaroid-caption">Nineteen</span>
             </div>
             <div class="polaroid p3">
-              <img src="https://picsum.photos/seed/daniel-v4-c/600/600" alt="Memory 3">
+              <img src="https://picsum.photos/seed/daniel-v4-c/600/600" alt="Memory 10">
+              <span class="polaroid-caption">Future</span>
             </div>
           </div>
 
@@ -688,19 +718,16 @@ and so much still waiting.
           </div>
         </article>
 
-        <!-- Verse 5 -->
+        <!-- Verse 5 (2 Polaroids) -->
         <article class="stage" id="verse-5" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-5.mp3">
           <div class="photo-scatter" aria-hidden="true">
             <div class="polaroid p1">
-              <img src="https://picsum.photos/seed/daniel-v5-a/600/600" alt="Memory 1">
+              <img src="https://picsum.photos/seed/daniel-v5-a/600/600" alt="Memory 11">
               <span class="polaroid-caption">Colors</span>
             </div>
             <div class="polaroid p2">
-              <img src="https://picsum.photos/seed/daniel-v5-b/600/600" alt="Memory 2">
+              <img src="https://picsum.photos/seed/daniel-v5-b/600/600" alt="Memory 12">
               <span class="polaroid-caption">Softness</span>
-            </div>
-            <div class="polaroid p3">
-              <img src="https://picsum.photos/seed/daniel-v5-c/600/600" alt="Memory 3">
             </div>
           </div>
 
@@ -737,19 +764,16 @@ stitched together with love.
           </div>
         </article>
 
-        <!-- Verse 6 -->
+        <!-- Verse 6 (2 Polaroids) -->
         <article class="stage" id="verse-6" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-6.mp3">
           <div class="photo-scatter" aria-hidden="true">
             <div class="polaroid p1">
-              <img src="https://picsum.photos/seed/daniel-v6-a/600/600" alt="Memory 1">
+              <img src="https://picsum.photos/seed/daniel-v6-a/600/600" alt="Memory 13">
               <span class="polaroid-caption">Always</span>
             </div>
             <div class="polaroid p2">
-              <img src="https://picsum.photos/seed/daniel-v6-b/600/600" alt="Memory 2">
+              <img src="https://picsum.photos/seed/daniel-v6-b/600/600" alt="Memory 14">
               <span class="polaroid-caption">Daniel</span>
-            </div>
-            <div class="polaroid p3">
-              <img src="https://picsum.photos/seed/daniel-v6-c/600/600" alt="Memory 3">
             </div>
           </div>
 
@@ -851,7 +875,6 @@ And wherever you go:
 "I will always love you."  
 <span class="song-credit">I Will Always Love You – Dolly Parton</span></div>
 
-      <!-- Footer Signature -->
       <div class="signature">
         <span class="signature-heart" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-6.5-4.35-8.6-8.05C1.9 9.27 3.3 5.9 6.67 5.2c2.07-.43 3.76.5 5.33 2.43 1.57-1.93 3.27-2.86 5.33-2.43 3.37.7 4.77 4.07 3.27 6.75C18.5 15.65 12 20 12 20Z"/></svg>
