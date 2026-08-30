@@ -110,15 +110,24 @@
     h1 { margin: var(--space-3) 0 var(--space-3); font-family: var(--font-display); font-weight: 600; line-height: 0.92; font-size: var(--text-3xl); }
     .hero p { max-width: 38rem; color: var(--color-text-muted); margin-top: 0; font-weight: 500; }
     .hero-actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-6); }
-    .journey-preview { position: relative; min-height: 28rem; border-radius: var(--radius-xl); overflow: hidden; border: 1px solid var(--color-border); background: var(--color-surface); box-shadow: var(--shadow-md); }
-    .preview-track { position: absolute; inset: 7% 50% 7% 14%; width: 2px; background: linear-gradient(180deg, rgba(203,154,109,0.35), rgba(142,53,87,0.6), rgba(203,154,109,0.35)); }
-    .preview-stop { position: absolute; width: 1rem; height: 1rem; border-radius: 50%; left: calc(14% - 0.45rem); background: var(--color-surface-2); border: 2px solid var(--color-primary); box-shadow: 0 0 0 4px rgba(142,53,87,0.15); }
-    .preview-stop.one { top: 12%; } .preview-stop.two { top: 29%; } .preview-stop.three { top: 45%; } .preview-stop.four { top: 61%; } .preview-stop.five { top: 77%; } .preview-stop.six { top: 90%; }
-    .preview-card { position: absolute; width: min(62%, 22rem); padding: var(--space-4); border-radius: var(--radius-lg); border: 1px solid var(--color-border); background: var(--color-surface-2); backdrop-filter: blur(12px); box-shadow: var(--shadow-sm); }
-    .preview-card small { text-transform: uppercase; letter-spacing: 0.12em; color: var(--color-text-faint); font-size: 0.7rem; font-weight: 700; }
-    .preview-card strong { display: block; margin-top: 0.35rem; font-family: var(--font-display); font-size: 1.5rem; font-weight: 600; }
-    .preview-card p { margin: 0.4rem 0 0; font-size: var(--text-sm); color: var(--color-text-muted); }
-    .preview-card.a { top: 6%; right: 7%; } .preview-card.b { top: 38%; right: 15%; } .preview-card.c { bottom: 6%; right: 7%; }
+    
+    /* Hero Video Container */
+    .hero-video {
+      position: relative;
+      width: 100%;
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      border: 1px solid var(--color-border);
+      box-shadow: var(--shadow-md);
+      background: var(--color-surface);
+      aspect-ratio: 4 / 3;
+    }
+    .hero-video video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
     
     .journey { position: relative; padding: var(--space-8) 0 var(--space-24); }
     .journey-grid { position: relative; display: grid; gap: var(--space-16); }
@@ -315,7 +324,6 @@
     
     @media (max-width: 640px) { 
       .shell { width: min(calc(100% - 1.2rem), var(--content)); } 
-      .preview-card { width: min(78%, 18rem); } 
       .gallery-grid img:first-child { height: 12rem; } 
       .gallery-grid img:nth-child(2), .gallery-grid img:nth-child(3) { height: 7rem; } 
     }
@@ -347,7 +355,25 @@
   </header>
   
   <main id="content">
-    <section class="hero shell" id="top"><div class="hero-layout"><div><span class="eyebrow">For your nineteenth birthday — September 8</span><h1>Daniel</h1><p>For your birthday, I tried to put our journey into words — the places, the music, the warmth, and all the little moments that became ours. I hope you like it.</p><div class="hero-actions"><button class="btn btn-primary" id="unlockAudioHero">Enable music</button><a class="btn" href="#verse-1">Start with June</a></div></div><div class="journey-preview" aria-hidden="true"><div class="preview-track"></div><span class="preview-stop one"></span><span class="preview-stop two"></span><span class="preview-stop three"></span><span class="preview-stop four"></span><span class="preview-stop five"></span><span class="preview-stop six"></span><div class="preview-card a"><small>First stop</small><strong>Our beginning</strong><p>Mountains, late trains, a chocolate croissant.</p></div><div class="preview-card b"><small>Middle</small><strong>Our risk</strong><p>Somewhere between songs and silence, love becomes a choice.</p></div><div class="preview-card c"><small>Arrival</small><strong>Our love</strong><p>The whole poem returns one last time at the end.</p></div></div></div></section>
+    <section class="hero shell" id="top">
+      <div class="hero-layout">
+        <div>
+          <span class="eyebrow">For your nineteenth birthday — September 8</span>
+          <h1>Daniel</h1>
+          <p>For your birthday, I tried to put our journey into words — the places, the music, the warmth, and all the little moments that became ours. I hope you like it.</p>
+          <div class="hero-actions">
+            <button class="btn btn-primary" id="unlockAudioHero">Enable music</button>
+            <a class="btn" href="#verse-1">Start with June</a>
+          </div>
+        </div>
+        <div class="hero-video">
+          <video autoplay muted loop playsinline preload="auto">
+            <source src="https://e.pcloud.link/publink/show?code=XZfVV77ZDv6FNxiI8j4RErUB4NiLHylaTCwV" type="video/mp4">
+            Dein Browser unterstützt dieses Video nicht.
+          </video>
+        </div>
+      </div>
+    </section>
     
     <section class="journey shell" aria-label="Poem journey"><div class="journey-grid"><div class="journey-line" aria-hidden="true"></div>
       
