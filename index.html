@@ -22,9 +22,10 @@
       --space-5: 1.25rem; --space-6: 1.5rem; --space-8: 2rem; --space-10: 2.5rem;
       --space-12: 3rem; --space-16: 4rem; --space-20: 5rem; --space-24: 6rem;
       --color-bg: #f5f0ea;
-      --color-surface: rgba(255, 255, 255, 0.88);
+      /* Transparenz der Kästchen leicht erhöht (0.70 statt 0.88), damit Bilder hindurchschimmern */
+      --color-surface: rgba(255, 255, 255, 0.70);
       --color-surface-2: #ffffff;
-      --color-border: rgba(44, 34, 26, 0.14);
+      --color-border: rgba(44, 34, 26, 0.16);
       --color-text: #1a1410;
       --color-text-muted: #524840;
       --color-text-faint: #7a7066;
@@ -46,9 +47,9 @@
     }
     [data-theme="dark"] {
       --color-bg: #130f0e;
-      --color-surface: rgba(28, 22, 20, 0.88);
+      --color-surface: rgba(28, 22, 20, 0.72);
       --color-surface-2: rgba(38, 30, 28, 0.98);
-      --color-border: rgba(247, 238, 229, 0.18);
+      --color-border: rgba(247, 238, 229, 0.2);
       --color-text: #f7f1ea;
       --color-text-muted: #d8cbbf;
       --color-text-faint: #a89a8e;
@@ -151,9 +152,20 @@
     
     .journey { position: relative; padding: var(--space-8) 0 var(--space-24); }
     .journey-grid { position: relative; display: grid; gap: var(--space-24); }
-    .journey-line { position: absolute; left: calc(50% - 1px); top: 0; bottom: 0; width: 2px; background: linear-gradient(180deg, transparent 0%, rgba(203,154,109,0.4) 7%, rgba(142,53,87,0.6) 50%, rgba(203,154,109,0.4) 93%, transparent 100%); pointer-events: none; z-index: 5; }
     
-    /* Stage Layout (Fotoalbum im Hintergrund) */
+    /* Central Timeline Line */
+    .journey-line { 
+      position: absolute; 
+      left: calc(50% - 1px); 
+      top: 0; 
+      bottom: 0; 
+      width: 2px; 
+      background: linear-gradient(180deg, transparent 0%, rgba(203,154,109,0.4) 7%, rgba(142,53,87,0.6) 50%, rgba(203,154,109,0.4) 93%, transparent 100%); 
+      pointer-events: none; 
+      z-index: 5; 
+    }
+    
+    /* Stage Layout (Scattered Fotoalbum + Central Verse Box over Timeline) */
     .stage { 
       position: relative; 
       display: flex;
@@ -171,7 +183,7 @@
       transform: translateY(0);
     }
 
-    /* Scattered Polaroid Photos in Background */
+    /* Scattered Polaroid Background Photos */
     .photo-scatter {
       position: absolute;
       inset: -2rem -1rem;
@@ -182,9 +194,9 @@
 
     .polaroid {
       position: absolute;
-      width: clamp(150px, 22vw, 250px);
+      width: clamp(160px, 24vw, 270px);
       background: #ffffff;
-      padding: 10px 10px 30px 10px;
+      padding: 10px 10px 32px 10px;
       box-shadow: var(--shadow-polaroid);
       border-radius: 4px;
       transition: transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
@@ -218,20 +230,20 @@
       color: #d8cbbf;
     }
 
-    /* Dynamic Positions & Rotations for Scattered Album Look */
-    .polaroid.p1 { top: 2%; left: 3%; transform: rotate(-7deg); }
-    .polaroid.p2 { bottom: 4%; right: 4%; transform: rotate(8deg); }
-    .polaroid.p3 { top: 12%; right: 6%; transform: rotate(-4deg); }
+    /* Dynamic Positions & Rotations for Background Album Look */
+    .polaroid.p1 { top: 2%; left: 2%; transform: rotate(-8deg); }
+    .polaroid.p2 { bottom: 2%; right: 2%; transform: rotate(7deg); }
+    .polaroid.p3 { top: 18%; right: 22%; transform: rotate(-3deg); }
 
-    .stage:nth-child(even) .polaroid.p1 { top: 6%; right: 5%; left: auto; transform: rotate(6deg); }
-    .stage:nth-child(even) .polaroid.p2 { bottom: 2%; left: 4%; right: auto; transform: rotate(-9deg); }
-    .stage:nth-child(even) .polaroid.p3 { top: 18%; left: 8%; right: auto; transform: rotate(4deg); }
+    .stage:nth-child(even) .polaroid.p1 { top: 4%; right: 2%; left: auto; transform: rotate(7deg); }
+    .stage:nth-child(even) .polaroid.p2 { bottom: 2%; left: 2%; right: auto; transform: rotate(-8deg); }
+    .stage:nth-child(even) .polaroid.p3 { top: 20%; left: 20%; right: auto; transform: rotate(4deg); }
 
-    .stage.is-active .polaroid.p1 { transform: rotate(-5deg) scale(1.03); }
-    .stage.is-active .polaroid.p2 { transform: rotate(6deg) scale(1.03); }
-    .stage.is-active .polaroid.p3 { transform: rotate(-3deg) scale(1.03); }
+    .stage.is-active .polaroid.p1 { transform: rotate(-6deg) scale(1.03); }
+    .stage.is-active .polaroid.p2 { transform: rotate(5deg) scale(1.03); }
+    .stage.is-active .polaroid.p3 { transform: rotate(-2deg) scale(1.03); }
 
-    /* Timeline Waypoint in Center */
+    /* Timeline Waypoint & Rotating Album Covers */
     .waypoint-col {
       position: absolute;
       left: 50%;
@@ -294,6 +306,7 @@
       transform: scale(1) rotate(0deg);
     }
 
+    /* Rotating Album Cover Animation */
     .stage.is-active.is-playing .waypoint-cover {
       animation: spinCover 10s linear infinite;
     }
@@ -313,7 +326,7 @@
       to { transform: rotate(360deg); }
     }
 
-    /* Foreground Central Verse Card */
+    /* Semi-transparent Central Verse Box (Highlights background images) */
     .stage-card { 
       position: relative;
       z-index: 6;
@@ -324,8 +337,9 @@
       border: 1px solid var(--color-border); 
       border-radius: var(--radius-xl); 
       background: var(--color-surface); 
-      backdrop-filter: blur(16px); 
-      -webkit-backdrop-filter: blur(16px);
+      /* Leicht reduzierter Blur (10px statt 16px), damit die Fotos gut erahnbar durchscheinen */
+      backdrop-filter: blur(10px); 
+      -webkit-backdrop-filter: blur(10px);
       box-shadow: var(--shadow-md); 
       display: flex;
       flex-direction: column;
@@ -334,7 +348,7 @@
       gap: var(--space-3); 
     }
 
-    /* Asymmetric offset: Cards alternate slightly left and right on desktop for visual interest */
+    /* Asymmetric Layout on Desktop: Cards sit slightly offset left/right */
     .stage:nth-child(odd) .stage-card { transform: translateX(-35px); }
     .stage:nth-child(even) .stage-card { transform: translateX(35px); }
     
@@ -346,10 +360,10 @@
       font-weight: 600; 
     }
 
-    .stage-sub { color: var(--color-text-muted); font-size: var(--text-sm); font-weight: 500; }
-    .poem { white-space: pre-line; max-width: 28rem; font-size: clamp(1rem, 0.98rem + 0.2vw, 1.15rem); color: var(--color-text); margin-bottom: 0; }
+    .stage-sub { color: var(--color-text-muted); font-size: var(--text-sm); font-weight: 600; }
+    .poem { white-space: pre-line; max-width: 28rem; font-size: clamp(1rem, 0.98rem + 0.2vw, 1.15rem); color: var(--color-text); margin-bottom: 0; font-weight: 500; }
     
-    /* Compact Oval Track Chip */
+    /* Track Chip Button */
     .track-card { 
       position: absolute;
       bottom: var(--space-4);
@@ -438,8 +452,8 @@
       .stage { min-height: auto; padding: var(--space-6) 0; }
       .stage:nth-child(odd) .stage-card, 
       .stage:nth-child(even) .stage-card { transform: none; margin-left: 3.8rem; width: calc(100% - 3.8rem); }
-      .polaroid { width: clamp(110px, 28vw, 160px); }
-      .polaroid.p3 { display: none; } /* Hide 3rd photo on smaller screens to avoid clutter */
+      .polaroid { width: clamp(120px, 28vw, 170px); }
+      .polaroid.p3 { display: none; }
     }
     
     @media (max-width: 640px) { 
@@ -495,68 +509,79 @@
       </div>
     </section>
     
-    <section class="journey shell" aria-label="Poem journey"><div class="journey-grid"><div class="journey-line" aria-hidden="true"></div>
+    <section class="journey shell" aria-label="Poem journey">
+      <div class="journey-grid">
+        <div class="journey-line" aria-hidden="true"></div>
       
-      <!-- Verse 1 -->
-      <article class="stage" id="verse-1" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-1.mp3">
-        <!-- Background Photo Album (Scattered) -->
-        <div class="photo-scatter" aria-hidden="true">
-          <div class="polaroid p1">
-            <img src="https://picsum.photos/seed/daniel-v1-a/600/600" alt="Memory 1">
-            <span class="polaroid-caption">June moments</span>
+        <!-- Verse 1 -->
+        <article class="stage" id="verse-1" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-1.mp3">
+          <div class="photo-scatter" aria-hidden="true">
+            <div class="polaroid p1">
+              <img src="https://picsum.photos/seed/daniel-v1-a/600/600" alt="Memory 1">
+              <span class="polaroid-caption">June moments</span>
+            </div>
+            <div class="polaroid p2">
+              <img src="https://picsum.photos/seed/daniel-v1-b/600/600" alt="Memory 2">
+              <span class="polaroid-caption">Late trains</span>
+            </div>
+            <div class="polaroid p3">
+              <img src="https://picsum.photos/seed/daniel-v1-c/600/600" alt="Memory 3">
+            </div>
           </div>
-          <div class="polaroid p2">
-            <img src="https://picsum.photos/seed/daniel-v1-b/600/600" alt="Memory 2">
-            <span class="polaroid-caption">Late trains</span>
-          </div>
-          <div class="polaroid p3">
-            <img src="https://picsum.photos/seed/daniel-v1-c/600/600" alt="Memory 3">
-          </div>
-        </div>
 
-        <div class="waypoint-col"><div class="waypoint"><span class="waypoint-num">I</span><img class="waypoint-cover" src="assets/images/output-1.jpg" alt="Song cover - Verse 1" /></div></div>
-        
-        <div class="stage-card">
-          <span class="stage-kicker">June</span>
-          <h2>Our beginning</h2>
-          <div class="stage-sub">Mountains, late trains, a chocolate croissant.</div>
-          <div class="poem">It began in June—  
+          <div class="waypoint-col">
+            <div class="waypoint">
+              <span class="waypoint-num">I</span>
+              <img class="waypoint-cover" src="assets/images/output-1.jpg" alt="Song cover - Verse 1" />
+            </div>
+          </div>
+          
+          <div class="stage-card">
+            <span class="stage-kicker">June</span>
+            <h2>Our beginning</h2>
+            <div class="stage-sub">Mountains, late trains, a chocolate croissant.</div>
+            <div class="poem">It began in June—  
 with mountains, late trains,  
 a chocolate croissant,  
 and the feeling that  
 "with you it's better."</div>
-          <div class="track-card">
-            <span class="track-meta">A World Alone – Lorde</span>
-            <button class="audio-btn" type="button" aria-label="Play A World Alone">
-              <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12"><polygon points="6,4 20,12 6,20"></polygon></svg>
-            </button>
+            <div class="track-card">
+              <span class="track-meta">A World Alone – Lorde</span>
+              <button class="audio-btn" type="button" aria-label="Play A World Alone">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12"><polygon points="6,4 20,12 6,20"></polygon></svg>
+              </button>
+            </div>
           </div>
-        </div>
-      </article>
+        </article>
 
-      <!-- Verse 2 -->
-      <article class="stage" id="verse-2" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-2.mp3">
-        <div class="photo-scatter" aria-hidden="true">
-          <div class="polaroid p1">
-            <img src="https://picsum.photos/seed/daniel-v2-a/600/600" alt="Memory 1">
-            <span class="polaroid-caption">Danube River</span>
+        <!-- Verse 2 -->
+        <article class="stage" id="verse-2" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-2.mp3">
+          <div class="photo-scatter" aria-hidden="true">
+            <div class="polaroid p1">
+              <img src="https://picsum.photos/seed/daniel-v2-a/600/600" alt="Memory 1">
+              <span class="polaroid-caption">Danube River</span>
+            </div>
+            <div class="polaroid p2">
+              <img src="https://picsum.photos/seed/daniel-v2-b/600/600" alt="Memory 2">
+              <span class="polaroid-caption">Summer nights</span>
+            </div>
+            <div class="polaroid p3">
+              <img src="https://picsum.photos/seed/daniel-v2-c/600/600" alt="Memory 3">
+            </div>
           </div>
-          <div class="polaroid p2">
-            <img src="https://picsum.photos/seed/daniel-v2-b/600/600" alt="Memory 2">
-            <span class="polaroid-caption">Summer nights</span>
-          </div>
-          <div class="polaroid p3">
-            <img src="https://picsum.photos/seed/daniel-v2-c/600/600" alt="Memory 3">
-          </div>
-        </div>
 
-        <div class="waypoint-col"><div class="waypoint"><span class="waypoint-num">II</span><img class="waypoint-cover" src="assets/images/output-2.jpg" alt="Song cover - Verse 2" /></div></div>
-        
-        <div class="stage-card">
-          <span class="stage-kicker">Home</span>
-          <h2>Our hot summer nights</h2>
-          <div class="stage-sub">The Danube, still summer evenings, and home appearing in ordinary places.</div>
-          <div class="poem">We found romance in wrong turns,  
+          <div class="waypoint-col">
+            <div class="waypoint">
+              <span class="waypoint-num">II</span>
+              <img class="waypoint-cover" src="assets/images/output-2.jpg" alt="Song cover - Verse 2" />
+            </div>
+          </div>
+          
+          <div class="stage-card">
+            <span class="stage-kicker">Home</span>
+            <h2>Our hot summer nights</h2>
+            <div class="stage-sub">The Danube, still summer evenings, and home appearing in ordinary places.</div>
+            <div class="poem">We found romance in wrong turns,  
 in Ulm beside the Danube,  
 in summer evenings  
 that made the whole world  
@@ -567,38 +592,43 @@ until ordinary places
 began to feel like home,  
 because you were there.  
 "Home's not home unless you're there."</div>
-          <div class="track-card">
-            <span class="track-meta">Michelle Pfeiffer – Ethel Cain</span>
-            <button class="audio-btn" type="button" aria-label="Play Michelle Pfeiffer">
-              <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12"><polygon points="6,4 20,12 6,20"></polygon></svg>
-            </button>
+            <div class="track-card">
+              <span class="track-meta">Michelle Pfeiffer – Ethel Cain</span>
+              <button class="audio-btn" type="button" aria-label="Play Michelle Pfeiffer">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12"><polygon points="6,4 20,12 6,20"></polygon></svg>
+              </button>
+            </div>
           </div>
-        </div>
-      </article>
+        </article>
 
-      <!-- Verse 3 -->
-      <article class="stage" id="verse-3" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-3.mp3">
-        <div class="photo-scatter" aria-hidden="true">
-          <div class="polaroid p1">
-            <img src="https://picsum.photos/seed/daniel-v3-a/600/600" alt="Memory 1">
-            <span class="polaroid-caption">Sunlight</span>
+        <!-- Verse 3 -->
+        <article class="stage" id="verse-3" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-3.mp3">
+          <div class="photo-scatter" aria-hidden="true">
+            <div class="polaroid p1">
+              <img src="https://picsum.photos/seed/daniel-v3-a/600/600" alt="Memory 1">
+              <span class="polaroid-caption">Sunlight</span>
+            </div>
+            <div class="polaroid p2">
+              <img src="https://picsum.photos/seed/daniel-v3-b/600/600" alt="Memory 2">
+              <span class="polaroid-caption">Spain</span>
+            </div>
+            <div class="polaroid p3">
+              <img src="https://picsum.photos/seed/daniel-v3-c/600/600" alt="Memory 3">
+            </div>
           </div>
-          <div class="polaroid p2">
-            <img src="https://picsum.photos/seed/daniel-v3-b/600/600" alt="Memory 2">
-            <span class="polaroid-caption">Spain</span>
-          </div>
-          <div class="polaroid p3">
-            <img src="https://picsum.photos/seed/daniel-v3-c/600/600" alt="Memory 3">
-          </div>
-        </div>
 
-        <div class="waypoint-col"><div class="waypoint"><span class="waypoint-num">III</span><img class="waypoint-cover" src="assets/images/output-3.jpg" alt="Song cover - Verse 3" /></div></div>
-        
-        <div class="stage-card">
-          <span class="stage-kicker">Belonging</span>
-          <h2>Our risk</h2>
-          <div class="stage-sub">Sunlight, language, belonging, and choosing love again.</div>
-          <div class="poem">You carry Spain with you:  
+          <div class="waypoint-col">
+            <div class="waypoint">
+              <span class="waypoint-num">III</span>
+              <img class="waypoint-cover" src="assets/images/output-3.jpg" alt="Song cover - Verse 3" />
+            </div>
+          </div>
+          
+          <div class="stage-card">
+            <span class="stage-kicker">Belonging</span>
+            <h2>Our risk</h2>
+            <div class="stage-sub">Sunlight, language, belonging, and choosing love again.</div>
+            <div class="poem">You carry Spain with you:  
 its sunlight, its language,  
 the place that shaped you  
 and will always be part  
@@ -608,74 +638,84 @@ our songs and our silences,
 love became a risk—  
 one I would take again.  
 "You're the risk, I'm gonna take it."</div>
-          <div class="track-card">
-            <span class="track-meta">Risk – Gracie Abrams</span>
-            <button class="audio-btn" type="button" aria-label="Play Risk">
-              <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12"><polygon points="6,4 20,12 6,20"></polygon></svg>
-            </button>
+            <div class="track-card">
+              <span class="track-meta">Risk – Gracie Abrams</span>
+              <button class="audio-btn" type="button" aria-label="Play Risk">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12"><polygon points="6,4 20,12 6,20"></polygon></svg>
+              </button>
+            </div>
           </div>
-        </div>
-      </article>
+        </article>
 
-      <!-- Verse 4 -->
-      <article class="stage" id="verse-4" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-4.mp3">
-        <div class="photo-scatter" aria-hidden="true">
-          <div class="polaroid p1">
-            <img src="https://picsum.photos/seed/daniel-v4-a/600/600" alt="Memory 1">
-            <span class="polaroid-caption">New roads</span>
+        <!-- Verse 4 -->
+        <article class="stage" id="verse-4" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-4.mp3">
+          <div class="photo-scatter" aria-hidden="true">
+            <div class="polaroid p1">
+              <img src="https://picsum.photos/seed/daniel-v4-a/600/600" alt="Memory 1">
+              <span class="polaroid-caption">New roads</span>
+            </div>
+            <div class="polaroid p2">
+              <img src="https://picsum.photos/seed/daniel-v4-b/600/600" alt="Memory 2">
+              <span class="polaroid-caption">Nineteen</span>
+            </div>
+            <div class="polaroid p3">
+              <img src="https://picsum.photos/seed/daniel-v4-c/600/600" alt="Memory 3">
+            </div>
           </div>
-          <div class="polaroid p2">
-            <img src="https://picsum.photos/seed/daniel-v4-b/600/600" alt="Memory 2">
-            <span class="polaroid-caption">Nineteen</span>
-          </div>
-          <div class="polaroid p3">
-            <img src="https://picsum.photos/seed/daniel-v4-c/600/600" alt="Memory 3">
-          </div>
-        </div>
 
-        <div class="waypoint-col"><div class="waypoint"><span class="waypoint-num">IV</span><img class="waypoint-cover" src="assets/images/output-4.jpg" alt="Song cover - Verse 4" /></div></div>
-        
-        <div class="stage-card">
-          <span class="stage-kicker">Nineteen</span>
-          <h2>Our life ahead</h2>
-          <div class="stage-sub">New roads, new cities, and a life still opening in front of you.</div>
-          <div class="poem">You are nineteen now,  
+          <div class="waypoint-col">
+            <div class="waypoint">
+              <span class="waypoint-num">IV</span>
+              <img class="waypoint-cover" src="assets/images/output-4.jpg" alt="Song cover - Verse 4" />
+            </div>
+          </div>
+          
+          <div class="stage-card">
+            <span class="stage-kicker">Nineteen</span>
+            <h2>Our life ahead</h2>
+            <div class="stage-sub">New roads, new cities, and a life still opening in front of you.</div>
+            <div class="poem">You are nineteen now,  
 with your whole life ahead of you,  
 new roads, new cities,  
 and so much still waiting.  
 "Got your whole life ahead of you, you're only 19."</div>
-          <div class="track-card">
-            <span class="track-meta">teenage dream – Olivia Rodrigo</span>
-            <button class="audio-btn" type="button" aria-label="Play teenage dream">
-              <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12"><polygon points="6,4 20,12 6,20"></polygon></svg>
-            </button>
+            <div class="track-card">
+              <span class="track-meta">teenage dream – Olivia Rodrigo</span>
+              <button class="audio-btn" type="button" aria-label="Play teenage dream">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12"><polygon points="6,4 20,12 6,20"></polygon></svg>
+              </button>
+            </div>
           </div>
-        </div>
-      </article>
+        </article>
 
-      <!-- Verse 5 -->
-      <article class="stage" id="verse-5" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-5.mp3">
-        <div class="photo-scatter" aria-hidden="true">
-          <div class="polaroid p1">
-            <img src="https://picsum.photos/seed/daniel-v5-a/600/600" alt="Memory 1">
-            <span class="polaroid-caption">Colors</span>
+        <!-- Verse 5 -->
+        <article class="stage" id="verse-5" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-5.mp3">
+          <div class="photo-scatter" aria-hidden="true">
+            <div class="polaroid p1">
+              <img src="https://picsum.photos/seed/daniel-v5-a/600/600" alt="Memory 1">
+              <span class="polaroid-caption">Colors</span>
+            </div>
+            <div class="polaroid p2">
+              <img src="https://picsum.photos/seed/daniel-v5-b/600/600" alt="Memory 2">
+              <span class="polaroid-caption">Softness</span>
+            </div>
+            <div class="polaroid p3">
+              <img src="https://picsum.photos/seed/daniel-v5-c/600/600" alt="Memory 3">
+            </div>
           </div>
-          <div class="polaroid p2">
-            <img src="https://picsum.photos/seed/daniel-v5-b/600/600" alt="Memory 2">
-            <span class="polaroid-caption">Softness</span>
-          </div>
-          <div class="polaroid p3">
-            <img src="https://picsum.photos/seed/daniel-v5-c/600/600" alt="Memory 3">
-          </div>
-        </div>
 
-        <div class="waypoint-col"><div class="waypoint"><span class="waypoint-num">V</span><img class="waypoint-cover" src="assets/images/output-5.jpg" alt="Song cover - Verse 5" /></div></div>
-        
-        <div class="stage-card">
-          <span class="stage-kicker">Colors</span>
-          <h2>Our beauty</h2>
-          <div class="stage-sub">Softness, humour, curiosity, and moments stitched together with love.</div>
-          <div class="poem">I hope you keep your softness,  
+          <div class="waypoint-col">
+            <div class="waypoint">
+              <span class="waypoint-num">V</span>
+              <img class="waypoint-cover" src="assets/images/output-5.jpg" alt="Song cover - Verse 5" />
+            </div>
+          </div>
+          
+          <div class="stage-card">
+            <span class="stage-kicker">Colors</span>
+            <h2>Our beauty</h2>
+            <div class="stage-sub">Softness, humour, curiosity, and moments stitched together with love.</div>
+            <div class="poem">I hope you keep your softness,  
 your humour, your curiosity,  
 and the beautiful chaos  
 that makes you entirely yourself.  
@@ -688,38 +728,43 @@ Not perfect,
 but full of colour,  
 stitched together with love.  
 "Coat of many colors."</div>
-          <div class="track-card">
-            <span class="track-meta">Coat of Many Colors – Dolly Parton</span>
-            <button class="audio-btn" type="button" aria-label="Play Coat of Many Colors">
-              <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12"><polygon points="6,4 20,12 6,20"></polygon></svg>
-            </button>
+            <div class="track-card">
+              <span class="track-meta">Coat of Many Colors – Dolly Parton</span>
+              <button class="audio-btn" type="button" aria-label="Play Coat of Many Colors">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12"><polygon points="6,4 20,12 6,20"></polygon></svg>
+              </button>
+            </div>
           </div>
-        </div>
-      </article>
+        </article>
 
-      <!-- Verse 6 -->
-      <article class="stage" id="verse-6" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-6.mp3">
-        <div class="photo-scatter" aria-hidden="true">
-          <div class="polaroid p1">
-            <img src="https://picsum.photos/seed/daniel-v6-a/600/600" alt="Memory 1">
-            <span class="polaroid-caption">Always</span>
+        <!-- Verse 6 -->
+        <article class="stage" id="verse-6" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-6.mp3">
+          <div class="photo-scatter" aria-hidden="true">
+            <div class="polaroid p1">
+              <img src="https://picsum.photos/seed/daniel-v6-a/600/600" alt="Memory 1">
+              <span class="polaroid-caption">Always</span>
+            </div>
+            <div class="polaroid p2">
+              <img src="https://picsum.photos/seed/daniel-v6-b/600/600" alt="Memory 2">
+              <span class="polaroid-caption">Daniel</span>
+            </div>
+            <div class="polaroid p3">
+              <img src="https://picsum.photos/seed/daniel-v6-c/600/600" alt="Memory 3">
+            </div>
           </div>
-          <div class="polaroid p2">
-            <img src="https://picsum.photos/seed/daniel-v6-b/600/600" alt="Memory 2">
-            <span class="polaroid-caption">Daniel</span>
-          </div>
-          <div class="polaroid p3">
-            <img src="https://picsum.photos/seed/daniel-v6-c/600/600" alt="Memory 3">
-          </div>
-        </div>
 
-        <div class="waypoint-col"><div class="waypoint"><span class="waypoint-num">VI</span><img class="waypoint-cover" src="assets/images/output-6.jpg" alt="Song cover - Verse 6" /></div></div>
-        
-        <div class="stage-card">
-          <span class="stage-kicker">Daniel</span>
-          <h2>Our love</h2>
-          <div class="stage-sub">A last wish, and a love carried into what comes next.</div>
-          <div class="poem">So wherever life takes you,  
+          <div class="waypoint-col">
+            <div class="waypoint">
+              <span class="waypoint-num">VI</span>
+              <img class="waypoint-cover" src="assets/images/output-6.jpg" alt="Song cover - Verse 6" />
+            </div>
+          </div>
+          
+          <div class="stage-card">
+            <span class="stage-kicker">Daniel</span>
+            <h2>Our love</h2>
+            <div class="stage-sub">A last wish, and a love carried into what comes next.</div>
+            <div class="poem">So wherever life takes you,  
 whether close or far away,  
 remember that you were loved  
 in the beginning,  
@@ -728,15 +773,16 @@ and in everything still to come.
 Happy birthday, Daniel.  
 And wherever you go:  
 "I will always love you."</div>
-          <div class="track-card">
-            <span class="track-meta">I Will Always Love You – Dolly Parton</span>
-            <button class="audio-btn" type="button" aria-label="Play I Will Always Love You">
-              <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12"><polygon points="6,4 20,12 6,20"></polygon></svg>
-            </button>
+            <div class="track-card">
+              <span class="track-meta">I Will Always Love You – Dolly Parton</span>
+              <button class="audio-btn" type="button" aria-label="Play I Will Always Love You">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12"><polygon points="6,4 20,12 6,20"></polygon></svg>
+              </button>
+            </div>
           </div>
-        </div>
-      </article>
-    </div></section>
+        </article>
+      </div>
+    </section>
     
     <section class="closing shell" aria-labelledby="closing-title">
       <h2 id="closing-title">For your nineteenth birthday — September 8</h2>
