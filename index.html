@@ -58,7 +58,7 @@
       --shadow-md: 0 24px 60px rgba(0,0,0,0.36);
     }
     * { box-sizing: border-box; }
-    html, body { overflow-x: hidden; }
+    html, body { overflow-x: clip; } /* Prevent horizontal scroll without breaking sticky */
     html { scroll-behavior: smooth; }
     body { margin: 0; min-height: 100vh; font-family: var(--font-body); font-size: var(--text-base); line-height: 1.7; color: var(--color-text); background: linear-gradient(180deg, #fbf7f2 0%, #f7f3ee 35%, #f3eee8 100%); background-attachment: fixed; }
     [data-theme="dark"] body { background: linear-gradient(180deg, #161211 0%, #151110 35%, #120f0e 100%); background-attachment: fixed; }
@@ -129,7 +129,7 @@
       display: grid; 
       grid-template-columns: 1fr 4.5rem 1fr; 
       gap: var(--space-4); 
-      align-items: start; 
+      align-items: stretch; /* Stretch children so waypoint-col spans full stage height */
       min-height: 38rem; 
       opacity: 0.5; 
       transform: translateY(24px); 
@@ -144,16 +144,17 @@
     /* Spalte für die Zeitleiste über die volle Höhe des Verses */
     .waypoint-col {
       grid-column: 2;
+      align-self: stretch;
       height: 100%;
       display: flex;
       justify-content: center;
       position: relative;
     }
 
-    /* Das Icon bewegt sich beim Scrollen entlang des Versabschnitts */
+    /* Das Icon startet oben im Vers und bewegt sich beim Scrollen sticky mit */
     .waypoint { 
       position: sticky; 
-      top: calc(50vh - 2.25rem); 
+      top: calc(50vh - 2.25rem); /* Clamps center in viewport while within stage bounds */
       z-index: 10; 
       width: 4.5rem; 
       height: 4.5rem; 
@@ -168,6 +169,8 @@
       color: var(--color-primary); 
       cursor: pointer;
       overflow: hidden;
+      margin-top: 1rem; /* Initial margin inside verse section */
+      margin-bottom: 1rem;
       transition: border-color 400ms ease, box-shadow 400ms ease, transform 300ms ease;
     }
 
@@ -185,11 +188,11 @@
       object-fit: cover;
       border-radius: 50%;
       opacity: 0;
-      transform: scale(0.4) rotate(-90deg);
+      transform: scale(0.3) rotate(-90deg);
       transition: opacity 500ms ease, transform 600ms cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
-    /* Pulsieren & Transformation sobald der Vers aktiv ist */
+    /* Pulsieren & Transformation sobald der Vers in der Bildschirmmitte aktiv ist */
     .stage.is-active .waypoint {
       border-color: var(--color-primary);
       animation: pulseGlow 1.8s infinite ease-in-out;
@@ -198,7 +201,7 @@
     /* Ziffer schrumpft und macht Platz für das Cover */
     .stage.is-active .waypoint-num {
       opacity: 0;
-      transform: scale(0.3);
+      transform: scale(0.2);
     }
 
     .stage.is-active .waypoint-cover {
@@ -259,7 +262,7 @@
       .journey-line { left: 1.95rem; } 
       .stage { grid-template-columns: 4rem 1fr; min-height: auto; padding-bottom: var(--space-8); } 
       .waypoint-col { grid-column: 1; grid-row: 1 / span 2; }
-      .waypoint { top: 50vh; width: 3.8rem; height: 3.8rem; font-size: 1.1rem; } 
+      .waypoint { width: 3.8rem; height: 3.8rem; font-size: 1.1rem; top: calc(50vh - 1.9rem); } 
       .stage-card, .stage-gallery { grid-column: 2 !important; } 
       .stage-gallery { order: 2; } 
       .stage-card { order: 1; } 
