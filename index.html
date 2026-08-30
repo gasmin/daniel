@@ -7,7 +7,7 @@
   <meta name="description" content="A birthday poem for Daniel, unfolding like a small journey through six verses, songs, and memories." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Caveat:wght@600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
   
   <style>
     :root, [data-theme="light"] {
@@ -22,9 +22,9 @@
       --space-5: 1.25rem; --space-6: 1.5rem; --space-8: 2rem; --space-10: 2.5rem;
       --space-12: 3rem; --space-16: 4rem; --space-20: 5rem; --space-24: 6rem;
       --color-bg: #f5f0ea;
-      --color-surface: rgba(255, 255, 255, 0.95);
+      --color-surface: rgba(255, 255, 255, 0.88);
       --color-surface-2: #ffffff;
-      --color-border: rgba(44, 34, 26, 0.16);
+      --color-border: rgba(44, 34, 26, 0.14);
       --color-text: #1a1410;
       --color-text-muted: #524840;
       --color-text-faint: #7a7066;
@@ -34,17 +34,19 @@
       --color-inverse: #ffffff;
       --shadow-sm: 0 8px 28px rgba(44, 34, 26, 0.09);
       --shadow-md: 0 22px 56px rgba(44, 34, 26, 0.16);
+      --shadow-polaroid: 0 16px 38px rgba(30, 20, 15, 0.18);
       --radius-md: 0.875rem;
       --radius-lg: 1.4rem;
       --radius-xl: 2rem;
       --font-display: 'Cormorant Garamond', Georgia, serif;
       --font-body: 'Manrope', Arial, sans-serif;
+      --font-hand: 'Caveat', cursive;
       --content: 1180px;
       --transition: 280ms cubic-bezier(0.16, 1, 0.3, 1);
     }
     [data-theme="dark"] {
       --color-bg: #130f0e;
-      --color-surface: rgba(28, 22, 20, 0.94);
+      --color-surface: rgba(28, 22, 20, 0.88);
       --color-surface-2: rgba(38, 30, 28, 0.98);
       --color-border: rgba(247, 238, 229, 0.18);
       --color-text: #f7f1ea;
@@ -56,13 +58,14 @@
       --color-inverse: #1c1513;
       --shadow-sm: 0 8px 28px rgba(0,0,0,0.4);
       --shadow-md: 0 24px 60px rgba(0,0,0,0.6);
+      --shadow-polaroid: 0 18px 45px rgba(0, 0, 0, 0.5);
     }
     * { box-sizing: border-box; }
     html, body { overflow-x: clip; }
     html { scroll-behavior: smooth; }
     body { margin: 0; min-height: 100vh; font-family: var(--font-body); font-size: var(--text-base); line-height: 1.7; color: var(--color-text); background: linear-gradient(180deg, #f9f5f0 0%, #f4eee7 35%, #efe8e0 100%); background-attachment: fixed; }
     [data-theme="dark"] body { background: linear-gradient(180deg, #161211 0%, #130f0e 35%, #0f0c0b 100%); background-attachment: fixed; }
-    img { display: block; width: 100%; height: auto; border-radius: calc(var(--radius-lg) - var(--space-2)); }
+    img { display: block; width: 100%; height: auto; }
     button, a { font: inherit; color: inherit; }
     
     .shell { width: min(calc(100% - 1.5rem), var(--content)); margin: 0 auto; }
@@ -107,7 +110,6 @@
     .hero { min-height: calc(100vh - 4rem); display: grid; align-items: center; padding: clamp(5rem, 12vw, 8rem) 0 var(--space-12); }
     .hero-layout { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: clamp(var(--space-6), 4vw, var(--space-12)); align-items: center; }
     
-    /* Pink Bubbles */
     .eyebrow, .stage-kicker { 
       display: inline-flex; 
       align-items: center; 
@@ -130,7 +132,6 @@
     .hero p { max-width: 38rem; color: var(--color-text-muted); margin-top: 0; font-weight: 500; }
     .hero-actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-6); }
     
-    /* Hero Video Container */
     .hero-video {
       position: relative;
       width: 100%;
@@ -149,17 +150,17 @@
     }
     
     .journey { position: relative; padding: var(--space-8) 0 var(--space-24); }
-    .journey-grid { position: relative; display: grid; gap: var(--space-16); }
-    .journey-line { position: absolute; left: calc(50% - 1px); top: 0; bottom: 0; width: 2px; background: linear-gradient(180deg, transparent 0%, rgba(203,154,109,0.4) 7%, rgba(142,53,87,0.6) 50%, rgba(203,154,109,0.4) 93%, transparent 100%); pointer-events: none; }
+    .journey-grid { position: relative; display: grid; gap: var(--space-24); }
+    .journey-line { position: absolute; left: calc(50% - 1px); top: 0; bottom: 0; width: 2px; background: linear-gradient(180deg, transparent 0%, rgba(203,154,109,0.4) 7%, rgba(142,53,87,0.6) 50%, rgba(203,154,109,0.4) 93%, transparent 100%); pointer-events: none; z-index: 5; }
     
-    /* Stage Layout */
+    /* Stage Layout (Fotoalbum im Hintergrund) */
     .stage { 
       position: relative; 
-      display: grid; 
-      grid-template-columns: 1fr 4.5rem 1fr; 
-      gap: var(--space-4); 
-      align-items: stretch;
-      min-height: 38rem; 
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 42rem; 
+      padding: var(--space-8) 0;
       opacity: 0.65; 
       transform: translateY(24px); 
       transition: opacity 520ms ease, transform 520ms ease; 
@@ -169,31 +170,81 @@
       opacity: 1;
       transform: translateY(0);
     }
-    .stage > * { grid-row: 1; }
 
-    .stage:nth-child(even) .stage-card { grid-column: 1; } 
-    .stage:nth-child(even) .stage-gallery { grid-column: 3; } 
-    .stage:nth-child(odd) .stage-gallery { grid-column: 1; } 
-    .stage:nth-child(odd) .stage-card { grid-column: 3; }
-    
+    /* Scattered Polaroid Photos in Background */
+    .photo-scatter {
+      position: absolute;
+      inset: -2rem -1rem;
+      pointer-events: none;
+      z-index: 1;
+      overflow: visible;
+    }
+
+    .polaroid {
+      position: absolute;
+      width: clamp(150px, 22vw, 250px);
+      background: #ffffff;
+      padding: 10px 10px 30px 10px;
+      box-shadow: var(--shadow-polaroid);
+      border-radius: 4px;
+      transition: transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    [data-theme="dark"] .polaroid {
+      background: #251d1a;
+    }
+
+    .polaroid img {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      border-radius: 2px;
+      filter: contrast(1.03) brightness(0.98);
+    }
+
+    .polaroid-caption {
+      position: absolute;
+      bottom: 6px;
+      left: 10px;
+      right: 10px;
+      font-family: var(--font-hand);
+      font-size: 1.15rem;
+      color: #4a3e38;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    [data-theme="dark"] .polaroid-caption {
+      color: #d8cbbf;
+    }
+
+    /* Dynamic Positions & Rotations for Scattered Album Look */
+    .polaroid.p1 { top: 2%; left: 3%; transform: rotate(-7deg); }
+    .polaroid.p2 { bottom: 4%; right: 4%; transform: rotate(8deg); }
+    .polaroid.p3 { top: 12%; right: 6%; transform: rotate(-4deg); }
+
+    .stage:nth-child(even) .polaroid.p1 { top: 6%; right: 5%; left: auto; transform: rotate(6deg); }
+    .stage:nth-child(even) .polaroid.p2 { bottom: 2%; left: 4%; right: auto; transform: rotate(-9deg); }
+    .stage:nth-child(even) .polaroid.p3 { top: 18%; left: 8%; right: auto; transform: rotate(4deg); }
+
+    .stage.is-active .polaroid.p1 { transform: rotate(-5deg) scale(1.03); }
+    .stage.is-active .polaroid.p2 { transform: rotate(6deg) scale(1.03); }
+    .stage.is-active .polaroid.p3 { transform: rotate(-3deg) scale(1.03); }
+
+    /* Timeline Waypoint in Center */
     .waypoint-col {
-      grid-column: 2;
-      align-self: stretch;
-      height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      position: relative;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+      pointer-events: auto;
     }
 
     .waypoint { 
-      position: sticky; 
-      top: calc(50vh - 2.25rem); 
-      z-index: 10; 
       width: 4.5rem; 
       height: 4.5rem; 
       aspect-ratio: 1 / 1;
-      flex-shrink: 0;
       border-radius: 50%; 
       display: grid; 
       place-items: center; 
@@ -206,8 +257,6 @@
       color: var(--color-primary); 
       cursor: pointer;
       overflow: hidden;
-      margin-top: 1rem;
-      margin-bottom: 1rem;
       transition: border-color 400ms ease, box-shadow 400ms ease, transform 300ms ease;
     }
 
@@ -254,18 +303,9 @@
     }
 
     @keyframes pulseGlow {
-      0% {
-        box-shadow: 0 0 0 0 rgba(142,53,87,0.45);
-        transform: scale(1);
-      }
-      50% {
-        box-shadow: 0 0 0 16px rgba(142,53,87,0);
-        transform: scale(1.08);
-      }
-      100% {
-        box-shadow: 0 0 0 0 rgba(142,53,87,0);
-        transform: scale(1);
-      }
+      0% { box-shadow: 0 0 0 0 rgba(142,53,87,0.45); transform: scale(1); }
+      50% { box-shadow: 0 0 0 16px rgba(142,53,87,0); transform: scale(1.08); }
+      100% { box-shadow: 0 0 0 0 rgba(142,53,87,0); transform: scale(1); }
     }
 
     @keyframes spinCover {
@@ -273,39 +313,43 @@
       to { transform: rotate(360deg); }
     }
 
-    /* Cards with High Opacity & Crisp Shadows */
-    .stage-card, .stage-gallery { 
+    /* Foreground Central Verse Card */
+    .stage-card { 
+      position: relative;
+      z-index: 6;
+      width: min(100%, 580px);
+      margin: 0 auto;
+      padding: clamp(var(--space-6), 4vw, var(--space-10)); 
+      padding-bottom: clamp(4.2rem, 5vw, 4.8rem);
       border: 1px solid var(--color-border); 
       border-radius: var(--radius-xl); 
       background: var(--color-surface); 
-      backdrop-filter: blur(12px); 
-      box-shadow: var(--shadow-sm); 
-    }
-    
-    .stage-card { 
-      padding: clamp(var(--space-6), 3.5vw, var(--space-8)); 
-      padding-bottom: clamp(4rem, 5vw, 4.5rem); /* Ausreichend Abstand unten für den Chip */
+      backdrop-filter: blur(16px); 
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: var(--shadow-md); 
       display: flex;
       flex-direction: column;
-      justify-content: center; /* Vertikale Zentrierung des Inhalts im Kasten */
-      align-items: flex-start;
+      align-items: center;
+      text-align: center;
       gap: var(--space-3); 
-      position: relative;
     }
+
+    /* Asymmetric offset: Cards alternate slightly left and right on desktop for visual interest */
+    .stage:nth-child(odd) .stage-card { transform: translateX(-35px); }
+    .stage:nth-child(even) .stage-card { transform: translateX(35px); }
     
-    /* Harmonische Überschriften-Größe für Desktop */
     .stage-card h2 { 
       margin: 0; 
       font-family: var(--font-display); 
-      font-size: clamp(1.4rem, 1.1rem + 1vw, 2.2rem); 
+      font-size: clamp(1.5rem, 1.2rem + 1.1vw, 2.3rem); 
       line-height: 1.1; 
       font-weight: 600; 
     }
 
     .stage-sub { color: var(--color-text-muted); font-size: var(--text-sm); font-weight: 500; }
-    .poem { white-space: pre-line; max-width: 30rem; font-size: clamp(1rem, 0.98rem + 0.2vw, 1.15rem); color: var(--color-text); margin-bottom: 0; }
+    .poem { white-space: pre-line; max-width: 28rem; font-size: clamp(1rem, 0.98rem + 0.2vw, 1.15rem); color: var(--color-text); margin-bottom: 0; }
     
-    /* Compact Oval Track Chip (Absolut unten rechts fixiert) */
+    /* Compact Oval Track Chip */
     .track-card { 
       position: absolute;
       bottom: var(--space-4);
@@ -351,11 +395,6 @@
       background: color-mix(in srgb, var(--color-primary) 90%, black);
     }
     
-    .stage-gallery { padding: var(--space-3); overflow: hidden; display: flex; align-items: center; }
-    .gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-3); width: 100%; }
-    .gallery-grid img:first-child { grid-column: span 2; height: 16rem; object-fit: cover; }
-    .gallery-grid img:nth-child(2), .gallery-grid img:nth-child(3) { height: 10rem; object-fit: cover; }
-    
     .closing { padding: var(--space-16) 0 var(--space-24); }
     .closing h2 { margin: 0 0 var(--space-5); text-align: center; font-family: var(--font-display); font-size: var(--text-2xl); font-weight: 600; }
     .full-poem { white-space: pre-line; margin: 0 auto; max-width: 34rem; text-align: center; font-size: clamp(1rem, 0.98rem + 0.2vw, 1.15rem); color: var(--color-text); }
@@ -394,18 +433,19 @@
 
     @media (max-width: 980px) { 
       .hero-layout { grid-template-columns: 1fr; } 
-      .journey-line { left: 2.25rem; } 
-      .stage { grid-template-columns: 4.5rem 1fr; min-height: auto; padding-bottom: var(--space-8); } 
-      .waypoint-col { grid-column: 1 !important; grid-row: 1 / span 2 !important; }
-      .stage-card, .stage-gallery { grid-column: 2 !important; grid-row: auto !important; } 
-      .stage-gallery { order: 2; } 
-      .stage-card { order: 1; } 
+      .journey-line { left: 1.5rem; } 
+      .waypoint-col { left: 1.5rem; transform: translateY(-50%); }
+      .stage { min-height: auto; padding: var(--space-6) 0; }
+      .stage:nth-child(odd) .stage-card, 
+      .stage:nth-child(even) .stage-card { transform: none; margin-left: 3.8rem; width: calc(100% - 3.8rem); }
+      .polaroid { width: clamp(110px, 28vw, 160px); }
+      .polaroid.p3 { display: none; } /* Hide 3rd photo on smaller screens to avoid clutter */
     }
     
     @media (max-width: 640px) { 
       .shell { width: min(calc(100% - 1.2rem), var(--content)); } 
-      .gallery-grid img:first-child { height: 12rem; } 
-      .gallery-grid img:nth-child(2), .gallery-grid img:nth-child(3) { height: 7rem; } 
+      .polaroid.p1 { top: -10px; left: -10px; }
+      .polaroid.p2 { bottom: -10px; right: -5px; }
     }
 
     @media (max-width: 375px) {
@@ -459,8 +499,23 @@
       
       <!-- Verse 1 -->
       <article class="stage" id="verse-1" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-1.mp3">
-        <div class="stage-gallery"><div class="gallery-grid"><img src="https://picsum.photos/seed/daniel-v1-a/1200/900" alt="Memory picture" width="1200" height="900" loading="lazy"><img src="https://picsum.photos/seed/daniel-v1-b/800/800" alt="Memory picture" width="800" height="800" loading="lazy"><img src="https://picsum.photos/seed/daniel-v1-c/800/800" alt="Memory picture" width="800" height="800" loading="lazy"></div></div>
+        <!-- Background Photo Album (Scattered) -->
+        <div class="photo-scatter" aria-hidden="true">
+          <div class="polaroid p1">
+            <img src="https://picsum.photos/seed/daniel-v1-a/600/600" alt="Memory 1">
+            <span class="polaroid-caption">June moments</span>
+          </div>
+          <div class="polaroid p2">
+            <img src="https://picsum.photos/seed/daniel-v1-b/600/600" alt="Memory 2">
+            <span class="polaroid-caption">Late trains</span>
+          </div>
+          <div class="polaroid p3">
+            <img src="https://picsum.photos/seed/daniel-v1-c/600/600" alt="Memory 3">
+          </div>
+        </div>
+
         <div class="waypoint-col"><div class="waypoint"><span class="waypoint-num">I</span><img class="waypoint-cover" src="assets/images/output-1.jpg" alt="Song cover - Verse 1" /></div></div>
+        
         <div class="stage-card">
           <span class="stage-kicker">June</span>
           <h2>Our beginning</h2>
@@ -481,8 +536,22 @@ and the feeling that
 
       <!-- Verse 2 -->
       <article class="stage" id="verse-2" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-2.mp3">
-        <div class="stage-gallery"><div class="gallery-grid"><img src="https://picsum.photos/seed/daniel-v2-a/1200/900" alt="Memory picture" width="1200" height="900" loading="lazy"><img src="https://picsum.photos/seed/daniel-v2-b/800/800" alt="Memory picture" width="800" height="800" loading="lazy"><img src="https://picsum.photos/seed/daniel-v2-c/800/800" alt="Memory picture" width="800" height="800" loading="lazy"></div></div>
+        <div class="photo-scatter" aria-hidden="true">
+          <div class="polaroid p1">
+            <img src="https://picsum.photos/seed/daniel-v2-a/600/600" alt="Memory 1">
+            <span class="polaroid-caption">Danube River</span>
+          </div>
+          <div class="polaroid p2">
+            <img src="https://picsum.photos/seed/daniel-v2-b/600/600" alt="Memory 2">
+            <span class="polaroid-caption">Summer nights</span>
+          </div>
+          <div class="polaroid p3">
+            <img src="https://picsum.photos/seed/daniel-v2-c/600/600" alt="Memory 3">
+          </div>
+        </div>
+
         <div class="waypoint-col"><div class="waypoint"><span class="waypoint-num">II</span><img class="waypoint-cover" src="assets/images/output-2.jpg" alt="Song cover - Verse 2" /></div></div>
+        
         <div class="stage-card">
           <span class="stage-kicker">Home</span>
           <h2>Our hot summer nights</h2>
@@ -509,8 +578,22 @@ because you were there.
 
       <!-- Verse 3 -->
       <article class="stage" id="verse-3" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-3.mp3">
-        <div class="stage-gallery"><div class="gallery-grid"><img src="https://picsum.photos/seed/daniel-v3-a/1200/900" alt="Memory picture" width="1200" height="900" loading="lazy"><img src="https://picsum.photos/seed/daniel-v3-b/800/800" alt="Memory picture" width="800" height="800" loading="lazy"><img src="https://picsum.photos/seed/daniel-v3-c/800/800" alt="Memory picture" width="800" height="800" loading="lazy"></div></div>
+        <div class="photo-scatter" aria-hidden="true">
+          <div class="polaroid p1">
+            <img src="https://picsum.photos/seed/daniel-v3-a/600/600" alt="Memory 1">
+            <span class="polaroid-caption">Sunlight</span>
+          </div>
+          <div class="polaroid p2">
+            <img src="https://picsum.photos/seed/daniel-v3-b/600/600" alt="Memory 2">
+            <span class="polaroid-caption">Spain</span>
+          </div>
+          <div class="polaroid p3">
+            <img src="https://picsum.photos/seed/daniel-v3-c/600/600" alt="Memory 3">
+          </div>
+        </div>
+
         <div class="waypoint-col"><div class="waypoint"><span class="waypoint-num">III</span><img class="waypoint-cover" src="assets/images/output-3.jpg" alt="Song cover - Verse 3" /></div></div>
+        
         <div class="stage-card">
           <span class="stage-kicker">Belonging</span>
           <h2>Our risk</h2>
@@ -536,8 +619,22 @@ one I would take again.
 
       <!-- Verse 4 -->
       <article class="stage" id="verse-4" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-4.mp3">
-        <div class="stage-gallery"><div class="gallery-grid"><img src="https://picsum.photos/seed/daniel-v4-a/1200/900" alt="Memory picture" width="1200" height="900" loading="lazy"><img src="https://picsum.photos/seed/daniel-v4-b/800/800" alt="Memory picture" width="800" height="800" loading="lazy"><img src="https://picsum.photos/seed/daniel-v4-c/800/800" alt="Memory picture" width="800" height="800" loading="lazy"></div></div>
+        <div class="photo-scatter" aria-hidden="true">
+          <div class="polaroid p1">
+            <img src="https://picsum.photos/seed/daniel-v4-a/600/600" alt="Memory 1">
+            <span class="polaroid-caption">New roads</span>
+          </div>
+          <div class="polaroid p2">
+            <img src="https://picsum.photos/seed/daniel-v4-b/600/600" alt="Memory 2">
+            <span class="polaroid-caption">Nineteen</span>
+          </div>
+          <div class="polaroid p3">
+            <img src="https://picsum.photos/seed/daniel-v4-c/600/600" alt="Memory 3">
+          </div>
+        </div>
+
         <div class="waypoint-col"><div class="waypoint"><span class="waypoint-num">IV</span><img class="waypoint-cover" src="assets/images/output-4.jpg" alt="Song cover - Verse 4" /></div></div>
+        
         <div class="stage-card">
           <span class="stage-kicker">Nineteen</span>
           <h2>Our life ahead</h2>
@@ -558,8 +655,22 @@ and so much still waiting.
 
       <!-- Verse 5 -->
       <article class="stage" id="verse-5" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-5.mp3">
-        <div class="stage-gallery"><div class="gallery-grid"><img src="https://picsum.photos/seed/daniel-v5-a/1200/900" alt="Memory picture" width="1200" height="900" loading="lazy"><img src="https://picsum.photos/seed/daniel-v5-b/800/800" alt="Memory picture" width="800" height="800" loading="lazy"><img src="https://picsum.photos/seed/daniel-v5-c/800/800" alt="Memory picture" width="800" height="800" loading="lazy"></div></div>
+        <div class="photo-scatter" aria-hidden="true">
+          <div class="polaroid p1">
+            <img src="https://picsum.photos/seed/daniel-v5-a/600/600" alt="Memory 1">
+            <span class="polaroid-caption">Colors</span>
+          </div>
+          <div class="polaroid p2">
+            <img src="https://picsum.photos/seed/daniel-v5-b/600/600" alt="Memory 2">
+            <span class="polaroid-caption">Softness</span>
+          </div>
+          <div class="polaroid p3">
+            <img src="https://picsum.photos/seed/daniel-v5-c/600/600" alt="Memory 3">
+          </div>
+        </div>
+
         <div class="waypoint-col"><div class="waypoint"><span class="waypoint-num">V</span><img class="waypoint-cover" src="assets/images/output-5.jpg" alt="Song cover - Verse 5" /></div></div>
+        
         <div class="stage-card">
           <span class="stage-kicker">Colors</span>
           <h2>Our beauty</h2>
@@ -588,8 +699,22 @@ stitched together with love.
 
       <!-- Verse 6 -->
       <article class="stage" id="verse-6" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-6.mp3">
-        <div class="stage-gallery"><div class="gallery-grid"><img src="https://picsum.photos/seed/daniel-v6-a/1200/900" alt="Memory picture" width="1200" height="900" loading="lazy"><img src="https://picsum.photos/seed/daniel-v6-b/800/800" alt="Memory picture" width="800" height="800" loading="lazy"><img src="https://picsum.photos/seed/daniel-v6-c/800/800" alt="Memory picture" width="800" height="800" loading="lazy"></div></div>
+        <div class="photo-scatter" aria-hidden="true">
+          <div class="polaroid p1">
+            <img src="https://picsum.photos/seed/daniel-v6-a/600/600" alt="Memory 1">
+            <span class="polaroid-caption">Always</span>
+          </div>
+          <div class="polaroid p2">
+            <img src="https://picsum.photos/seed/daniel-v6-b/600/600" alt="Memory 2">
+            <span class="polaroid-caption">Daniel</span>
+          </div>
+          <div class="polaroid p3">
+            <img src="https://picsum.photos/seed/daniel-v6-c/600/600" alt="Memory 3">
+          </div>
+        </div>
+
         <div class="waypoint-col"><div class="waypoint"><span class="waypoint-num">VI</span><img class="waypoint-cover" src="assets/images/output-6.jpg" alt="Song cover - Verse 6" /></div></div>
+        
         <div class="stage-card">
           <span class="stage-kicker">Daniel</span>
           <h2>Our love</h2>
