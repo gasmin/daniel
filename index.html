@@ -15,8 +15,8 @@
       --text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
       --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
       --text-lg: clamp(1.125rem, 1rem + 0.75vw, 1.5rem);
-      --text-xl: clamp(1.5rem, 1.2rem + 1.25vw, 2.2rem);
-      --text-2xl: clamp(2rem, 1.2rem + 2.5vw, 3.8rem);
+      --text-xl: clamp(1.4rem, 1.1rem + 1vw, 2.2rem);
+      --text-2xl: clamp(1.8rem, 1.2rem + 1.8vw, 3rem);
       --text-3xl: clamp(2.5rem, 1rem + 5vw, 5.5rem);
       --space-1: 0.25rem; --space-2: 0.5rem; --space-3: 0.75rem; --space-4: 1rem;
       --space-5: 1.25rem; --space-6: 1.5rem; --space-8: 2rem; --space-10: 2.5rem;
@@ -107,7 +107,7 @@
     .hero { min-height: calc(100vh - 4rem); display: grid; align-items: center; padding: clamp(5rem, 12vw, 8rem) 0 var(--space-12); }
     .hero-layout { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: clamp(var(--space-6), 4vw, var(--space-12)); align-items: center; }
     
-    /* Pink Bubbles / Eyebrows Formatted Crisp & Clean */
+    /* Pink Bubbles */
     .eyebrow, .stage-kicker { 
       display: inline-flex; 
       align-items: center; 
@@ -283,22 +283,33 @@
     }
     
     .stage-card { 
-      padding: clamp(var(--space-4), 3.5vw, var(--space-8)); 
+      padding: clamp(var(--space-6), 3.5vw, var(--space-8)); 
+      padding-bottom: clamp(4rem, 5vw, 4.5rem); /* Ausreichend Abstand unten für den Chip */
       display: flex;
       flex-direction: column;
+      justify-content: center; /* Vertikale Zentrierung des Inhalts im Kasten */
       align-items: flex-start;
       gap: var(--space-3); 
       position: relative;
     }
     
-    .stage-card h2 { margin: 0; font-family: var(--font-display); font-size: var(--text-2xl); line-height: 0.98; font-weight: 600; }
+    /* Harmonische Überschriften-Größe für Desktop */
+    .stage-card h2 { 
+      margin: 0; 
+      font-family: var(--font-display); 
+      font-size: clamp(1.4rem, 1.1rem + 1vw, 2.2rem); 
+      line-height: 1.1; 
+      font-weight: 600; 
+    }
+
     .stage-sub { color: var(--color-text-muted); font-size: var(--text-sm); font-weight: 500; }
-    .poem { white-space: pre-line; max-width: 30rem; font-size: clamp(1rem, 0.98rem + 0.2vw, 1.15rem); color: var(--color-text); margin-bottom: var(--space-2); }
+    .poem { white-space: pre-line; max-width: 30rem; font-size: clamp(1rem, 0.98rem + 0.2vw, 1.15rem); color: var(--color-text); margin-bottom: 0; }
     
-    /* Compact Oval Track Chip (Bottom Right) */
+    /* Compact Oval Track Chip (Absolut unten rechts fixiert) */
     .track-card { 
-      margin-top: auto;
-      align-self: flex-end;
+      position: absolute;
+      bottom: var(--space-4);
+      right: var(--space-4);
       display: inline-flex;
       align-items: center;
       gap: var(--space-2);
@@ -306,8 +317,10 @@
       border-radius: 999px;
       background: var(--color-surface-2);
       border: 1px solid var(--color-border);
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
-      max-width: 100%;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+      max-width: calc(100% - var(--space-8));
+      cursor: pointer;
+      z-index: 2;
     }
     
     .track-meta { 
@@ -338,8 +351,8 @@
       background: color-mix(in srgb, var(--color-primary) 90%, black);
     }
     
-    .stage-gallery { padding: var(--space-3); overflow: hidden; }
-    .gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-3); }
+    .stage-gallery { padding: var(--space-3); overflow: hidden; display: flex; align-items: center; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-3); width: 100%; }
     .gallery-grid img:first-child { grid-column: span 2; height: 16rem; object-fit: cover; }
     .gallery-grid img:nth-child(2), .gallery-grid img:nth-child(3) { height: 10rem; object-fit: cover; }
     
