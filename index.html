@@ -118,7 +118,7 @@
     .moving-cover {
       position: absolute;
       top: 0; left: 0;
-      width: 4.5rem; height: 4.5rem;
+      width: 4rem; height: 4rem;
       border-radius: 50%;
       border: 3px solid var(--color-primary);
       background: var(--color-surface-2);
@@ -165,14 +165,157 @@
       z-index: 5;
     }
 
-    /* Alternierende Kartenpositionierung auf Desktop */
-    .stage:nth-child(odd) .stage-card { margin-right: auto; margin-left: 5%; }
-    .stage:nth-child(even) .stage-card { margin-left: auto; margin-right: 5%; }
+    /* Römische Zahl / Node Marker auf der Achse VOR dem Kasten */
+    .stage-node {
+      position: absolute;
+      left: 50%;
+      top: -7rem; /* Exakt im Zwischenraum VOR dem Kasten */
+      transform: translate(-50%, -50%);
+      width: 3.5rem;
+      height: 3.5rem;
+      border-radius: 50%;
+      background: var(--color-surface-2);
+      border: 2px solid var(--color-primary);
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      overflow: hidden;
+      transition: transform 500ms var(--transition), border-color 400ms ease, background 400ms ease;
+    }
 
+    .node-roman {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--color-primary);
+      transition: opacity 400ms ease, transform 400ms ease;
+    }
+
+    .node-cover {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      opacity: 0;
+      transform: scale(0.3) rotate(-90deg);
+      transition: opacity 500ms ease, transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Sobald das mitlaufende Cover den Knoten erreicht/passiert hat */
+    .stage-node.is-transformed {
+      border-color: var(--color-accent);
+    }
+    .stage-node.is-transformed .node-roman {
+      opacity: 0;
+      transform: scale(0.5);
+    }
+    .stage-node.is-transformed .node-cover {
+      opacity: 1;
+      transform: scale(1) rotate(0deg);
+    }
+
+    /* DESKTOP LAYOUT (Gerade Achse in der Mitte) */
+    @media (min-width: 901px) {
+      .stage:nth-child(odd) { justify-content: flex-start; }
+      .stage:nth-child(even) { justify-content: flex-end; }
+
+      .stage-card {
+        width: 44%;
+        z-index: 10;
+      }
+
+      /* Polaroids auf der gegenüberliegenden freien Seite */
+      .photo-scatter {
+        position: absolute;
+        width: 44%;
+        height: 100%;
+        top: 0;
+        pointer-events: none;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .stage:nth-child(odd) .photo-scatter { right: 0; }
+      .stage:nth-child(even) .photo-scatter { left: 0; }
+
+      .polaroid {
+        position: absolute;
+        width: clamp(180px, 22vw, 260px);
+        background: #ffffff;
+        padding: 10px 10px 28px 10px;
+        box-shadow: var(--shadow-polaroid);
+        border-radius: 4px;
+        transition: transform 700ms ease;
+      }
+      [data-theme="dark"] .polaroid { background: #251d1a; }
+
+      .polaroid img, .polaroid video {
+        width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 2px;
+      }
+
+      .photo-scatter .polaroid.p-top { top: 5%; transform: rotate(-6deg); }
+      .photo-scatter .polaroid.p-bottom { bottom: 5%; transform: rotate(7deg); }
+      .stage:nth-child(even) .photo-scatter .polaroid.p-top { transform: rotate(8deg); }
+      .stage:nth-child(even) .photo-scatter .polaroid.p-bottom { transform: rotate(-5deg); }
+    }
+
+    /* MOBILE LAYOUT (S-Kurve um Kästen & leicht überlappende Polaroids) */
+    @media (max-width: 900px) {
+      .journey-grid { gap: 11rem; }
+      
+      .stage {
+        justify-content: flex-end;
+      }
+
+      .stage-card { 
+        width: calc(100% - 3.2rem); 
+        margin-left: auto;
+      }
+
+      .stage-node {
+        left: 1.6rem; /* Knoten sitzt links auf der mobilen Kurve */
+      }
+
+      .photo-scatter {
+        position: absolute;
+        inset: -4rem -1rem;
+        pointer-events: none;
+        z-index: 2;
+      }
+
+      .polaroid {
+        position: absolute;
+        width: clamp(140px, 35vw, 200px);
+        background: #ffffff;
+        padding: 8px 8px 22px 8px;
+        box-shadow: var(--shadow-polaroid);
+        border-radius: 4px;
+      }
+      [data-theme="dark"] .polaroid { background: #251d1a; }
+
+      .polaroid img, .polaroid video {
+        width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 2px;
+      }
+
+      .polaroid.p-top { top: -3rem; left: -0.5rem; transform: rotate(-8deg); }
+      .polaroid.p-bottom { bottom: -3.5rem; right: 0.5rem; transform: rotate(7deg); }
+    }
+
+    @media (max-width: 600px) {
+      .stage-card { width: calc(100% - 2.6rem); padding: var(--space-5); padding-bottom: 4.2rem; }
+      .stage-node { left: 1.3rem; width: 3rem; height: 3rem; }
+      .moving-cover { width: 3.5rem; height: 3.5rem; }
+    }
+
+    /* Allgemeine Card Styles */
     .stage-card { 
       position: relative; 
-      z-index: 10; 
-      width: min(100%, 420px); 
       padding: clamp(var(--space-6), 4vw, var(--space-8)); 
       padding-bottom: 4.5rem;
       border: 1px solid var(--color-border); 
@@ -186,45 +329,13 @@
       transition: opacity 700ms cubic-bezier(0.16, 1, 0.3, 1), transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
     }
     
-    .stage:nth-child(odd) .stage-card { transform: translateX(-40px); }
-    .stage:nth-child(even) .stage-card { transform: translateX(40px); }
+    .stage:nth-child(odd) .stage-card { transform: translateX(-30px); }
+    .stage:nth-child(even) .stage-card { transform: translateX(30px); }
 
     .stage.is-visible .stage-card {
       opacity: 1;
       transform: translateX(0) !important;
     }
-
-    /* Elegant platzierte Polaroids in den Kurvenbereichen (überlappend hinter Kästen) */
-    .photo-scatter {
-      position: absolute;
-      inset: -5rem -2rem;
-      pointer-events: none;
-      z-index: 2; /* Unter der Karte (z-index: 10), über dem Hintergrund */
-    }
-
-    .polaroid {
-      position: absolute;
-      width: clamp(160px, 20vw, 240px);
-      background: #ffffff;
-      padding: 10px 10px 28px 10px;
-      box-shadow: var(--shadow-polaroid);
-      border-radius: 4px;
-      transition: transform 700ms ease;
-    }
-    [data-theme="dark"] .polaroid { background: #251d1a; }
-
-    .polaroid img, .polaroid video {
-      width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 2px;
-    }
-
-    /* Positionierung in den Zwischenräumen & über Kanten laufend */
-    .stage:nth-child(odd) .polaroid.p-top { top: -4rem; right: -1rem; transform: rotate(9deg); }
-    .stage:nth-child(odd) .polaroid.p-bottom { bottom: -5rem; left: 10%; transform: rotate(-7deg); }
-    .stage:nth-child(even) .polaroid.p-top { top: -4rem; left: -1rem; transform: rotate(-8deg); }
-    .stage:nth-child(even) .polaroid.p-bottom { bottom: -5rem; right: 10%; transform: rotate(7deg); }
-
-    .stage.is-active .polaroid.p-top { transform: rotate(4deg) scale(1.04); }
-    .stage.is-active .polaroid.p-bottom { transform: rotate(-3deg) scale(1.04); }
 
     .stage-card h2 { margin: 0; font-family: var(--font-display); font-size: clamp(1.4rem, 1.1rem + 1vw, 2.2rem); line-height: 1.15; }
     .stage-kicker { display: inline-flex; padding: 0.3rem 0.8rem; background: var(--color-primary-soft); color: var(--color-primary); border-radius: 999px; font-size: 0.72rem; text-transform: uppercase; font-weight: 700; }
@@ -249,23 +360,6 @@
     .signature { margin-top: var(--space-12); display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--space-3); }
     .signature-heart { width: 2.8rem; height: 2.8rem; border-radius: 50%; border: 1px solid var(--color-border); display: grid; place-items: center; color: var(--color-primary); background: var(--color-surface-2); }
     .signature-text { margin: 0; font-family: var(--font-display); font-size: 1.4rem; color: var(--color-text-muted); font-style: italic; }
-
-    /* Responsive Anpassungen */
-    @media (max-width: 900px) {
-      .hero-layout { grid-template-columns: 1fr; }
-      .journey-grid { gap: 10rem; }
-      .stage:nth-child(odd) .stage-card, 
-      .stage:nth-child(even) .stage-card { 
-        margin-left: auto; margin-right: 0; width: calc(100% - 3.5rem); max-width: 440px; 
-      }
-      .stage:nth-child(odd) .polaroid.p-top, .stage:nth-child(even) .polaroid.p-top { top: -3rem; left: -1.5rem; right: auto; }
-      .stage:nth-child(odd) .polaroid.p-bottom, .stage:nth-child(even) .polaroid.p-bottom { bottom: -3.5rem; right: 0; left: auto; }
-    }
-    @media (max-width: 600px) {
-      .stage:nth-child(odd) .stage-card, 
-      .stage:nth-child(even) .stage-card { width: calc(100% - 2.8rem); padding: var(--space-5); padding-bottom: 4.2rem; }
-      .moving-cover { width: 3.8rem; height: 3.8rem; }
-    }
   </style>
 </head>
 <body>
@@ -307,7 +401,7 @@
     </section>
     
     <section class="journey shell" id="journey-section">
-      <!-- Geschwungene SVG Zeitleiste -->
+      <!-- Geschwungene/Gerade SVG Zeitleiste -->
       <svg class="timeline-svg" id="timeline-svg">
         <defs>
           <linearGradient id="lineGrad" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -327,7 +421,12 @@
 
       <div class="journey-grid">
         <!-- Verse 1 -->
-        <article class="stage" id="verse-1" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-1.mp3" data-cover="assets/images/output-1.jpg" data-title="A World Alone – Lorde">
+        <article class="stage" id="verse-1" data-roman="I" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-1.mp3" data-cover="assets/images/output-1.jpg" data-title="A World Alone – Lorde">
+          <div class="stage-node" id="node-0">
+            <span class="node-roman">I</span>
+            <img class="node-cover" src="assets/images/output-1.jpg" alt="Cover 1">
+          </div>
+
           <div class="photo-scatter">
             <div class="polaroid p-top">
               <video autoplay muted loop playsinline preload="auto"><source src="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/2026-07-18%2022-17-51.mov"></video>
@@ -356,7 +455,12 @@ and the feeling that
         </article>
 
         <!-- Verse 2 -->
-        <article class="stage" id="verse-2" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-2.mp3" data-cover="assets/images/output-2.jpg" data-title="Michelle Pfeiffer – Ethel Cain">
+        <article class="stage" id="verse-2" data-roman="II" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-2.mp3" data-cover="assets/images/output-2.jpg" data-title="Michelle Pfeiffer – Ethel Cain">
+          <div class="stage-node" id="node-1">
+            <span class="node-roman">II</span>
+            <img class="node-cover" src="assets/images/output-2.jpg" alt="Cover 2">
+          </div>
+
           <div class="photo-scatter">
             <div class="polaroid p-top">
               <img src="assets/images/2026-07-12 13-12-42.jpeg" alt="Memory">
@@ -391,7 +495,12 @@ because you were there.
         </article>
 
         <!-- Verse 3 -->
-        <article class="stage" id="verse-3" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-3.mp3" data-cover="assets/images/output-3.jpg" data-title="Risk – Gracie Abrams">
+        <article class="stage" id="verse-3" data-roman="III" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-3.mp3" data-cover="assets/images/output-3.jpg" data-title="Risk – Gracie Abrams">
+          <div class="stage-node" id="node-2">
+            <span class="node-roman">III</span>
+            <img class="node-cover" src="assets/images/output-3.jpg" alt="Cover 3">
+          </div>
+
           <div class="photo-scatter">
             <div class="polaroid p-top">
               <img src="assets/images/2026-07-12 13-16-39.jpeg" alt="Memory">
@@ -425,7 +534,12 @@ one I would take again.
         </article>
 
         <!-- Verse 4 -->
-        <article class="stage" id="verse-4" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-4.mp3" data-cover="assets/images/output-4.jpg" data-title="teenage dream – Olivia Rodrigo">
+        <article class="stage" id="verse-4" data-roman="IV" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-4.mp3" data-cover="assets/images/output-4.jpg" data-title="teenage dream – Olivia Rodrigo">
+          <div class="stage-node" id="node-3">
+            <span class="node-roman">IV</span>
+            <img class="node-cover" src="assets/images/output-4.jpg" alt="Cover 4">
+          </div>
+
           <div class="photo-scatter">
             <div class="polaroid p-top">
               <img src="assets/images/2026-07-12 14-10-42.jpeg" alt="Memory">
@@ -454,7 +568,12 @@ and so much still waiting.
         </article>
 
         <!-- Verse 5 -->
-        <article class="stage" id="verse-5" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-5.mp3" data-cover="assets/images/output-5.jpg" data-title="Coat of Many Colors – Dolly Parton">
+        <article class="stage" id="verse-5" data-roman="V" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-5.mp3" data-cover="assets/images/output-5.jpg" data-title="Coat of Many Colors – Dolly Parton">
+          <div class="stage-node" id="node-4">
+            <span class="node-roman">V</span>
+            <img class="node-cover" src="assets/images/output-5.jpg" alt="Cover 5">
+          </div>
+
           <div class="photo-scatter">
             <div class="polaroid p-top">
               <img src="assets/images/2026-08-12 20-01-14.jpeg" alt="Memory">
@@ -491,7 +610,12 @@ stitched together with love.
         </article>
 
         <!-- Verse 6 -->
-        <article class="stage" id="verse-6" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-6.mp3" data-cover="assets/images/output-6.jpg" data-title="I Will Always Love You – Dolly Parton">
+        <article class="stage" id="verse-6" data-roman="VI" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-6.mp3" data-cover="assets/images/output-6.jpg" data-title="I Will Always Love You – Dolly Parton">
+          <div class="stage-node" id="node-5">
+            <span class="node-roman">VI</span>
+            <img class="node-cover" src="assets/images/output-6.jpg" alt="Cover 6">
+          </div>
+
           <div class="photo-scatter">
             <div class="polaroid p-top">
               <img src="assets/images/IMG_0160.jpeg" alt="Memory">
@@ -624,6 +748,7 @@ And wherever you go:
 
       // Elements & Audio Setup
       const stages = [...document.querySelectorAll('.stage')];
+      const stageNodes = [...document.querySelectorAll('.stage-node')];
       const audio = document.getElementById('globalAudio');
       const unlockAudioBtn = document.getElementById('unlockAudio');
       const unlockHeroBtn = document.getElementById('unlockAudioHero');
@@ -645,7 +770,6 @@ And wherever you go:
       const playSvg = '<svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12"><polygon points="6,4 20,12 6,20"></polygon></svg>';
       const pauseSvg = '<svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12"><rect x="5" y="4" width="4" height="16" rx="1"></rect><rect x="15" y="4" width="4" height="16" rx="1"></rect></svg>';
 
-      // Update Audio Control UI
       const updateAudioUI = () => {
         const isPlaying = isAudioEnabled && !userMuted && !audio.paused;
         
@@ -672,10 +796,8 @@ And wherever you go:
         try { return new URL(path, window.location.href).href; } catch(e) { return path; }
       };
 
-      // Smooth Audio Crossfade
       const smoothPlayTrack = async (absSrc) => {
         if (fadeTimer) clearInterval(fadeTimer);
-
         if (!audio.paused && audio.src === absSrc) return;
 
         if (!audio.paused && audio.src !== absSrc) {
@@ -725,7 +847,6 @@ And wherever you go:
         stages.forEach((st, idx) => st.classList.toggle('is-active', idx === index));
 
         if (isIndexChanged) {
-          // Cover Transformations-Animation
           movingCover.classList.add('is-transforming');
           setTimeout(() => {
             movingCoverImg.src = targetStage.dataset.cover;
@@ -750,62 +871,60 @@ And wherever you go:
         updateAudioUI();
       };
 
-      // Berechne dynamische geschwungene S-Kurven Zeitleiste
+      // Berechne Zeitleiste (Mobil = geschwungene S-Kurve, Desktop = Schnurgerade)
       const buildTimelinePath = () => {
         const jRect = journeySection.getBoundingClientRect();
         const width = jRect.width;
         const height = jRect.height;
-        const screenMidX = width / 2;
+        const isMobile = window.innerWidth <= 900;
+        const centerX = width / 2;
 
         svgElement.setAttribute('viewBox', `0 0 ${width} ${height}`);
 
-        const points = [];
-        points.push({ x: screenMidX, y: 0 }); // Start oben in der Mitte
+        let d = '';
 
-        stages.forEach((stage, idx) => {
-          const card = stage.querySelector('.stage-card');
-          const cRect = card.getBoundingClientRect();
-          const cardCenterY = cRect.top - jRect.top + cRect.height / 2;
+        if (!isMobile) {
+          // DESKTOP: Schnurgerade Achse genau in der Mitte
+          d = `M ${centerX} 0 L ${centerX} ${height}`;
+        } else {
+          // MOBILE: Geschwungene S-Kurve um die Verskästen herum
+          const points = [];
+          const mobileAxisX = 1.6 * 16; // Positiv ausgerichtete linke Achse auf Mobile (~25.6px)
 
-          let curveX;
-          if (window.innerWidth <= 900) {
-            // Mobile: Schwingt links am Kasten vorbei
-            curveX = cRect.left - jRect.left - 24;
-          } else {
-            // Desktop: Schwingt abwechselnd außen links & rechts am Kasten vorbei
-            curveX = (idx % 2 === 0) 
-              ? cRect.left - jRect.left - 36  // Links von Karte 1, 3, 5
-              : cRect.right - jRect.left + 36; // Rechts von Karte 2, 4, 6
+          points.push({ x: mobileAxisX, y: 0 });
+
+          stages.forEach((stage, idx) => {
+            const node = stage.querySelector('.stage-node');
+            const card = stage.querySelector('.stage-card');
+            const nRect = node.getBoundingClientRect();
+            const cRect = card.getBoundingClientRect();
+
+            const nodeY = nRect.top - jRect.top + nRect.height / 2;
+            const cardMidY = cRect.top - jRect.top + cRect.height / 2;
+            const curveX = cRect.right - jRect.left + 15; // Schwingt rechts außen am Verskasten vorbei
+
+            // 1. Römischer Knotenpunkt VOR dem Kasten
+            points.push({ x: mobileAxisX, y: nodeY });
+            // 2. Schwung nach außen um den Verskasten herum
+            points.push({ x: curveX, y: cardMidY });
+          });
+
+          points.push({ x: mobileAxisX, y: height });
+
+          // S-Kurve verbinden
+          d = `M ${points[0].x} ${points[0].y}`;
+          for (let i = 1; i < points.length; i++) {
+            const prev = points[i - 1];
+            const curr = points[i];
+            const cpY = (prev.y + curr.y) / 2;
+            d += ` C ${prev.x} ${cpY}, ${curr.x} ${cpY}, ${curr.x} ${curr.y}`;
           }
-
-          points.push({ x: curveX, y: cardCenterY, type: 'card', index: idx });
-
-          // Wendepunkt (Transformation stattfinden) exakt in der Mitte zwischen 2 Kästen!
-          if (idx < stages.length - 1) {
-            const nextCard = stages[idx + 1].querySelector('.stage-card');
-            const nextCRect = nextCard.getBoundingClientRect();
-            const nextCenterY = nextCRect.top - jRect.top + nextCRect.height / 2;
-
-            const midY = (cardCenterY + nextCenterY) / 2;
-            points.push({ x: screenMidX, y: midY, type: 'midpoint', nextIndex: idx + 1 });
-          }
-        });
-
-        points.push({ x: screenMidX, y: height }); // Ende unten in der Mitte
-
-        // Baue geschmeidige Cubic Bezier S-Kurve
-        let d = `M ${points[0].x} ${points[0].y}`;
-        for (let i = 1; i < points.length; i++) {
-          const prev = points[i - 1];
-          const curr = points[i];
-          const cpY = (prev.y + curr.y) / 2;
-          d += ` C ${prev.x} ${cpY}, ${curr.x} ${cpY}, ${curr.x} ${curr.y}`;
         }
 
         pathElement.setAttribute('d', d);
         pathLength = pathElement.getTotalLength();
 
-        // Sample Pfadpunkte für performantes Scroll-Tracking
+        // Pfadpunkte für Scroll-Tracking samplen
         pathSamplePoints = [];
         const samples = 400;
         for (let i = 0; i <= samples; i++) {
@@ -815,13 +934,12 @@ And wherever you go:
         }
       };
 
-      // Finde Position des Album Covers entlang der Kurve beim Scrollen
+      // Finde Position des Cover-Markers & Aktualisiere Römische Zahl Transformationen
       const updateCoverPositionOnScroll = () => {
         const jRect = journeySection.getBoundingClientRect();
-        const viewportTargetY = window.innerHeight * 0.42; // Fokus-Höhe im Viewport
+        const viewportTargetY = window.innerHeight * 0.42;
         const currentTargetY = viewportTargetY - jRect.top;
 
-        // Finde passenden Punkt auf dem SVG Pfad
         let closestPoint = pathSamplePoints[0];
         let minDiff = Infinity;
 
@@ -837,12 +955,26 @@ And wherever you go:
           movingCover.style.transform = `translate3d(${closestPoint.x}px, ${closestPoint.y}px, 0) translate(-50%, -50%)`;
         }
 
-        // Finde aktiven Versabschnitt & spüre Mitten-Transformation auf
+        // Transformation der Römischen Zahlen -> Albumcover VOR jedem Verskasten
+        stages.forEach((stage, idx) => {
+          const node = stageNodes[idx];
+          const nodeRect = node.getBoundingClientRect();
+          const nodeY = nodeRect.top + nodeRect.height / 2;
+
+          // Sobald das mitlaufende Cover den Knotenpunkt (vor dem Verskasten) erreicht:
+          if (viewportTargetY >= nodeY - 10) {
+            node.classList.add('is-transformed');
+          } else {
+            node.classList.remove('is-transformed');
+          }
+        });
+
+        // Aktiven Vers wechseln
         let newVersIndex = 0;
         stages.forEach((stage, idx) => {
-          const sRect = stage.getBoundingClientRect();
-          const stageMid = sRect.top + sRect.height / 2;
-          if (stageMid < window.innerHeight * 0.75) {
+          const node = stageNodes[idx];
+          const nRect = node.getBoundingClientRect();
+          if (nRect.top < window.innerHeight * 0.55) {
             newVersIndex = idx;
           }
         });
@@ -852,7 +984,7 @@ And wherever you go:
         }
       };
 
-      // Resize & Scroll Handlers
+      // Event Listeners
       window.addEventListener('resize', () => {
         buildTimelinePath();
         updateCoverPositionOnScroll();
@@ -862,13 +994,11 @@ And wherever you go:
         requestAnimationFrame(updateCoverPositionOnScroll);
       }, { passive: true });
 
-      // Initialsierung
       setTimeout(() => {
         buildTimelinePath();
         updateCoverPositionOnScroll();
       }, 100);
 
-      // Audio Toggle Button Handlers
       const toggleAudioState = async () => {
         if (isAudioEnabled && !userMuted && !audio.paused) {
           userMuted = true;
@@ -904,7 +1034,7 @@ And wherever you go:
         if (chip) chip.addEventListener('click', handleClick);
       });
 
-      // Intersection Observer für Vers-Karten Animation
+      // Observer für Karten-Einblenden
       const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
