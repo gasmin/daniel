@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="de" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Daniel</title>
-  <meta name="description" content="A birthday poem for Daniel, unfolding like a small journey through six verses, songs, and memories." />
+  <meta name="description" content="Ein Geburtstagsgedicht für Daniel in 6 Versen." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Caveat:wght@600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -22,7 +22,7 @@
       --space-5: 1.25rem; --space-6: 1.5rem; --space-8: 2rem; --space-10: 2.5rem;
       --space-12: 3rem; --space-16: 4rem; --space-20: 5rem; --space-24: 6rem;
       --color-bg: #f5f0ea;
-      --color-surface: rgba(255, 255, 255, 0.70);
+      --color-surface: rgba(255, 255, 255, 0.82);
       --color-surface-2: #ffffff;
       --color-border: rgba(44, 34, 26, 0.16);
       --color-text: #1a1410;
@@ -42,11 +42,11 @@
       --font-body: 'Manrope', Arial, sans-serif;
       --font-hand: 'Caveat', cursive;
       --content: 1180px;
-      --transition: 280ms cubic-bezier(0.16, 1, 0.3, 1);
+      --transition: 350ms cubic-bezier(0.16, 1, 0.3, 1);
     }
     [data-theme="dark"] {
       --color-bg: #130f0e;
-      --color-surface: rgba(28, 22, 20, 0.72);
+      --color-surface: rgba(28, 22, 20, 0.85);
       --color-surface-2: rgba(38, 30, 28, 0.98);
       --color-border: rgba(247, 238, 229, 0.2);
       --color-text: #f7f1ea;
@@ -70,11 +70,871 @@
     
     .shell { width: min(calc(100% - 1.5rem), var(--content)); margin: 0 auto; }
     
-    /* Fixed Topbar */
+    /* Topbar Navigation */
     .topbar { 
       position: fixed; 
       top: 0; 
       left: 0; 
+      right: 0; 
+      z-index: 100; 
+      backdrop-filter: blur(16px); 
+      -webkit-backdrop-filter: blur(16px);
+      background: color-mix(in srgb, var(--color-bg) 92%, transparent); 
+      border-bottom: 1px solid var(--color-border); 
+      padding-top: env(safe-area-inset-top); 
+    }
+    .topbar-inner { display: flex; justify-content: space-between; align-items: center; gap: var(--space-2); padding: var(--space-3) 0; }
+    .brand { text-decoration: none; display: flex; align-items: center; gap: var(--space-2); min-width: 0; flex: 1 1 auto; }
+    .brand-mark { width: 2.4rem; height: 2.4rem; border-radius: 50%; border: 1px solid var(--color-border); display: grid; place-items: center; color: var(--color-primary); background: var(--color-surface-2); box-shadow: var(--shadow-sm); flex-shrink: 0; }
+    .brand-mark svg { width: 1.2rem; height: 1.2rem; }
+    .brand-copy { min-width: 0; }
+    .brand-copy strong { display: block; font-family: var(--font-display); font-size: clamp(1.1rem, 4vw, 1.4rem); line-height: 1; font-weight: 600; white-space: nowrap; }
+    .brand-copy span { display: block; font-size: clamp(0.62rem, 2.3vw, 0.72rem); text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-text-muted); white-space: normal; line-height: 1.15; margin-top: 2px; font-weight: 600; }
+    .toolbar { display: flex; align-items: center; gap: var(--space-2); flex-shrink: 0; }
+    .btn, .icon-btn { border: 1px solid var(--color-border); background: var(--color-surface-2); border-radius: 999px; transition: transform var(--transition), background var(--transition); }
+    .btn:hover, .icon-btn:hover { transform: translateY(-1px); }
+    .btn { padding: 0.85rem 1.15rem; text-decoration: none; cursor: pointer; }
+    .btn-primary { background: var(--color-primary); color: var(--color-inverse); border-color: transparent; font-weight: 700; }
+    .icon-btn { width: 2.5rem; height: 2.5rem; display: grid; place-items: center; cursor: pointer; flex-shrink: 0; border-radius: 50%; }
+    
+    /* Hero Area (1 Video) */
+    .hero { min-height: calc(100vh - 4rem); display: grid; align-items: center; padding: clamp(5rem, 12vw, 8rem) 0 var(--space-12); }
+    .hero-layout { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: clamp(var(--space-6), 4vw, var(--space-12)); align-items: center; }
+    .eyebrow, .stage-kicker { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2); width: fit-content; padding: 0.4rem 0.9rem; background: var(--color-primary-soft); color: var(--color-primary); border-radius: 999px; font-size: clamp(0.7rem, 0.65rem + 0.2vw, 0.78rem); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; line-height: 1.2; }
+    h1 { margin: var(--space-3) 0 var(--space-3); font-family: var(--font-display); font-weight: 600; line-height: 0.92; font-size: var(--text-3xl); }
+    .hero p { max-width: 38rem; color: var(--color-text-muted); margin-top: 0; font-weight: 500; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-6); }
+    
+    .hero-video {
+      position: relative;
+      width: 100%;
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      border: 1px solid var(--color-border);
+      box-shadow: var(--shadow-md);
+      background: var(--color-surface);
+      aspect-ratio: 4 / 3;
+    }
+    .hero-video video { width: 100%; height: 100%; object-fit: cover; display: block; }
+    
+    /* Journey Section & Timeline */
+    .journey { position: relative; padding: var(--space-8) 0 var(--space-24); }
+    .journey-grid { position: relative; display: grid; gap: var(--space-24); }
+    
+    /* Zentrierte Zeitleiste (auf Desktop & Mobile exakt in der Mitte) */
+    .journey-line { 
+      position: absolute; 
+      left: 50%; 
+      transform: translateX(-50%); 
+      top: 0; 
+      bottom: 0; 
+      width: 3px; 
+      background: linear-gradient(180deg, transparent 0%, rgba(203,154,109,0.4) 5%, rgba(142,53,87,0.65) 50%, rgba(203,154,109,0.4) 95%, transparent 100%); 
+      pointer-events: none; 
+      z-index: 1; 
+    }
+    
+    .stage { 
+      position: relative; 
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 48rem; 
+      padding: var(--space-8) 0;
+      opacity: 0.65; 
+      transform: translateY(24px); 
+      transition: opacity 600ms ease, transform 600ms ease; 
+    }
+    .stage.is-visible, .stage.is-active { opacity: 1; transform: translateY(0); }
+
+    /* Scattered Polaroids (Z-Ebene 2: Hinter Verskarte & Zeitleiste) */
+    .photo-scatter {
+      position: absolute;
+      inset: -2rem -1rem;
+      pointer-events: none;
+      z-index: 2;
+      overflow: visible;
+    }
+
+    .polaroid {
+      position: absolute;
+      width: clamp(180px, 26vw, 290px);
+      background: #ffffff;
+      padding: 10px 10px 32px 10px;
+      box-shadow: var(--shadow-polaroid);
+      border-radius: 4px;
+      transition: transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    [data-theme="dark"] .polaroid { background: #251d1a; }
+    .polaroid img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 2px; filter: contrast(1.03) brightness(0.98); }
+    .polaroid-caption { position: absolute; bottom: 6px; left: 10px; right: 10px; font-family: var(--font-hand); font-size: 1.2rem; color: #4a3e38; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    [data-theme="dark"] .polaroid-caption { color: #d8cbbf; }
+
+    /* Polaroids Scatter Anordnung */
+    .polaroid.p1 { top: 2%; left: 3%; transform: rotate(-8deg); }
+    .polaroid.p2 { bottom: 2%; right: 3%; transform: rotate(7deg); }
+    .polaroid.p3 { top: 22%; right: 16%; transform: rotate(-4deg); }
+
+    .stage:nth-child(even) .polaroid.p1 { top: 4%; right: 3%; left: auto; transform: rotate(7deg); }
+    .stage:nth-child(even) .polaroid.p2 { bottom: 2%; left: 3%; right: auto; transform: rotate(-8deg); }
+    .stage:nth-child(even) .polaroid.p3 { top: 20%; left: 16%; right: auto; transform: rotate(4deg); }
+
+    .stage.is-active .polaroid.p1 { transform: rotate(-6deg) scale(1.04); }
+    .stage.is-active .polaroid.p2 { transform: rotate(5deg) scale(1.04); }
+    .stage.is-active .polaroid.p3 { transform: rotate(-2deg) scale(1.04); }
+
+    /* Circle / Waypoint Container (Z-Ebene 3: Auf der Zeitleiste) */
+    .waypoint-anchor {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .waypoint { 
+      position: absolute;
+      left: 50%;
+      /* Inaktiv: Sitz leicht Oberhalb der Verskarte herausragend */
+      top: 2rem; 
+      transform: translate(-50%, -50%) scale(0.95);
+      width: 4.8rem; 
+      height: 4.8rem; 
+      border-radius: 50%; 
+      display: grid; 
+      place-items: center; 
+      background: var(--color-surface-2); 
+      border: 2.5px solid var(--color-primary); 
+      box-shadow: var(--shadow-md); 
+      font-family: var(--font-display); 
+      font-size: 1.55rem; 
+      font-weight: 700;
+      color: var(--color-primary); 
+      cursor: pointer;
+      overflow: hidden;
+      pointer-events: auto;
+      transition: top 700ms cubic-bezier(0.34, 1.56, 0.64, 1), transform 600ms cubic-bezier(0.34, 1.56, 0.64, 1), border-color 400ms ease, box-shadow 400ms ease;
+    }
+
+    /* Aktivierte Verskarte: Rückt genau hinter die Verskarte ins Zentrum */
+    .stage.is-active .waypoint {
+      top: 50%;
+      transform: translate(-50%, -50%) scale(1.15);
+      box-shadow: 0 0 30px rgba(142,53,87,0.35);
+    }
+
+    /* Römische Zahl Transformation zum Albumcover */
+    .waypoint-num {
+      position: absolute;
+      z-index: 2;
+      transition: opacity 400ms ease, transform 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .waypoint-cover {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      opacity: 0;
+      transform: scale(0.2) rotate(-120deg);
+      transition: opacity 500ms ease, transform 650ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .stage.is-active .waypoint-num {
+      opacity: 0;
+      transform: scale(0.1) rotate(90deg);
+    }
+
+    .stage.is-active .waypoint-cover {
+      opacity: 1;
+      transform: scale(1) rotate(0deg);
+    }
+
+    /* Rotation & Pulsieren bei aktiver Musik */
+    .stage.is-active.is-playing .waypoint {
+      animation: pulseGlow 1.8s infinite ease-in-out;
+    }
+
+    .stage.is-active.is-playing .waypoint-cover {
+      animation: spinCover 12s linear infinite;
+    }
+
+    .stage.is-active.is-playing.is-paused .waypoint-cover {
+      animation-play-state: paused;
+    }
+
+    @keyframes pulseGlow {
+      0% { box-shadow: 0 0 0 0 rgba(142,53,87,0.5); }
+      50% { box-shadow: 0 0 0 18px rgba(142,53,87,0); }
+      100% { box-shadow: 0 0 0 0 rgba(142,53,87,0); }
+    }
+
+    @keyframes spinCover {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* Verskarten (Z-Ebene 10: Scrollt VOLLSTÄNDIG über Polaroids, Zeitleiste & Cover hinweg) */
+    .stage-card { 
+      position: relative;
+      z-index: 10;
+      width: min(92%, 580px);
+      margin: 0 auto;
+      padding: clamp(var(--space-6), 4vw, var(--space-10)); 
+      padding-bottom: clamp(4.2rem, 5vw, 4.8rem);
+      border: 1px solid var(--color-border); 
+      border-radius: var(--radius-xl); 
+      background: color-mix(in srgb, var(--color-surface) 88%, transparent); 
+      backdrop-filter: blur(14px); 
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: var(--shadow-md); 
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: var(--space-3); 
+    }
+
+    .stage-card h2 { margin: 0; font-family: var(--font-display); font-size: clamp(1.5rem, 1.2rem + 1.1vw, 2.3rem); line-height: 1.1; font-weight: 600; }
+    .stage-sub { color: var(--color-text-muted); font-size: var(--text-sm); font-weight: 600; }
+    .poem { white-space: pre-line; max-width: 28rem; font-size: clamp(1rem, 0.98rem + 0.2vw, 1.15rem); color: var(--color-text); margin-bottom: 0; font-weight: 500; }
+    
+    /* Song Badge/Button unten an der Karte */
+    .track-card { 
+      position: absolute;
+      bottom: var(--space-4);
+      right: var(--space-4);
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: 0.35rem 0.35rem 0.35rem 0.85rem;
+      border-radius: 999px;
+      background: var(--color-surface-2);
+      border: 1px solid var(--color-border);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+      max-width: calc(100% - var(--space-8));
+      cursor: pointer;
+      z-index: 11;
+    }
+    
+    .track-meta { font-size: clamp(0.72rem, 2.2vw, 0.82rem); font-weight: 600; color: var(--color-text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .audio-btn { width: 1.85rem; height: 1.85rem; border-radius: 50%; border: none; background: var(--color-primary); color: #ffffff; display: grid; place-items: center; cursor: pointer; flex-shrink: 0; transition: transform var(--transition); padding: 0; }
+    .audio-btn:hover { transform: scale(1.08); }
+    
+    /* Closing Section */
+    .closing { padding: var(--space-16) 0 var(--space-24); }
+    .closing h2 { margin: 0 0 var(--space-5); text-align: center; font-family: var(--font-display); font-size: var(--text-2xl); font-weight: 600; }
+    .full-poem { white-space: pre-line; margin: 0 auto; max-width: 34rem; text-align: center; font-size: clamp(1rem, 0.98rem + 0.2vw, 1.15rem); color: var(--color-text); }
+    .song-credit { display: block; margin-top: 0.6rem; margin-bottom: 1.4rem; font-size: 0.85em; font-style: italic; color: var(--color-text-muted); font-weight: 500; }
+
+    .signature { margin-top: var(--space-12); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: var(--space-3); }
+    .signature-heart { width: 2.8rem; height: 2.8rem; border-radius: 50%; border: 1px solid var(--color-border); display: grid; place-items: center; color: var(--color-primary); background: var(--color-surface-2); box-shadow: var(--shadow-sm); }
+    .signature-heart svg { width: 1.35rem; height: 1.35rem; }
+    .signature-text { margin: 0; font-family: var(--font-display); font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.65rem); color: var(--color-text-muted); line-height: 1.35; font-style: italic; }
+
+    /* Mobile Anpassung: Deutlich größere Polaroids & Perfekt zentrierte Karten */
+    @media (max-width: 980px) { 
+      .hero-layout { grid-template-columns: 1fr; } 
+      
+      .journey-line { left: 50%; transform: translateX(-50%); } 
+      .waypoint { left: 50%; }
+      
+      .stage { min-height: 42rem; padding: var(--space-8) 0; }
+      .stage-card { width: min(92%, 520px); margin: 0 auto; }
+
+      /* Mobile Polaroids deutlich vergrößert */
+      .polaroid { 
+        width: clamp(170px, 46vw, 250px); 
+        opacity: 0.95;
+      }
+      .polaroid.p1 { top: -20px; left: -10px; transform: rotate(-7deg); }
+      .polaroid.p2 { bottom: -20px; right: -10px; transform: rotate(7deg); }
+      .polaroid.p3 { top: 30%; right: -10px; transform: rotate(-4deg); }
+
+      .stage:nth-child(even) .polaroid.p1 { top: -20px; right: -10px; left: auto; transform: rotate(7deg); }
+      .stage:nth-child(even) .polaroid.p2 { bottom: -20px; left: -10px; right: auto; transform: rotate(-7deg); }
+      .stage:nth-child(even) .polaroid.p3 { top: 30%; left: -10px; right: auto; transform: rotate(4deg); }
+    }
+    
+    @media (max-width: 640px) { 
+      .shell { width: min(calc(100% - 1.2rem), var(--content)); } 
+      .stage-card { width: 94%; }
+      .polaroid { width: clamp(160px, 48vw, 230px); }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell topbar-inner">
+      <a class="brand" href="#top" aria-label="Zurück nach oben">
+        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-6.5-4.35-8.6-8.05C1.9 9.27 3.3 5.9 6.67 5.2c2.07-.43 3.76.5 5.33 2.43 1.57-1.93 3.27-2.86 5.33-2.43 3.37.7 4.77 4.07 3.27 6.75C18.5 15.65 12 20 12 20Z"/></svg></span>
+        <span class="brand-copy"><strong>Daniel</strong><span>Unsere Reise in sechs Versen</span></span>
+      </a>
+      <div class="toolbar">
+        <button class="icon-btn" id="unlockAudio" type="button" aria-label="Musik aktivieren" title="Musik aktivieren">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
+        </button>
+        <button class="icon-btn" type="button" data-theme-toggle aria-label="Design wechseln">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+  
+  <main id="content">
+    <section class="hero shell" id="top">
+      <div class="hero-layout">
+        <div>
+          <span class="eyebrow">Zu deinem 19. Geburtstag — 8. September</span>
+          <h1>Daniel</h1>
+          <p>Zu deinem Geburtstag habe ich versucht, unsere Reise in Worte zu fassen – die Orte, die Musik, die Wärme und all die kleinen Momente, die zu unseren wurden. Ich hoffe, es gefällt dir.</p>
+          <div class="hero-actions">
+            <button class="btn btn-primary" id="unlockAudioHero">Musik starten</button>
+            <a class="btn" href="#verse-1">Beginne mit Juni</a>
+          </div>
+        </div>
+        <!-- 1 Video -->
+        <div class="hero-video">
+          <video autoplay muted loop playsinline preload="auto">
+            <source src="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/00004495-VIDEO-2026-08-13-15-44-42.mp4" type="video/mp4">
+            Dein Browser unterstützt dieses Video nicht.
+          </video>
+        </div>
+      </div>
+    </section>
+    
+    <section class="journey shell" aria-label="Gedicht Reise">
+      <div class="journey-grid">
+        <!-- Zentrierte Zeitleiste -->
+        <div class="journey-line" aria-hidden="true"></div>
+      
+        <!-- Verse 1 (3 Polaroids) -->
+        <article class="stage" id="verse-1" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-1.mp3">
+          <div class="photo-scatter" aria-hidden="true">
+            <div class="polaroid p1">
+              <img src="https://picsum.photos/seed/daniel-v1-a/600/600" alt="Erinnerung 1">
+              <span class="polaroid-caption">Juni Momente</span>
+            </div>
+            <div class="polaroid p2">
+              <img src="https://picsum.photos/seed/daniel-v1-b/600/600" alt="Erinnerung 2">
+              <span class="polaroid-caption">Späte Züge</span>
+            </div>
+            <div class="polaroid p3">
+              <img src="https://picsum.photos/seed/daniel-v1-c/600/600" alt="Erinnerung 3">
+              <span class="polaroid-caption">Schokocroissant</span>
+            </div>
+          </div>
+
+          <div class="waypoint-anchor">
+            <div class="waypoint">
+              <span class="waypoint-num">I</span>
+              <img class="waypoint-cover" src="assets/images/output-1.jpg" alt="Song Cover - Vers 1" />
+            </div>
+          </div>
+          
+          <div class="stage-card">
+            <span class="stage-kicker">Juni</span>
+            <h2>Unser Anfang</h2>
+            <div class="stage-sub">Berge, späte Züge, ein Schokocroissant.</div>
+            <div class="poem">Es begann im Juni—  
+mit Bergen, späten Zügen,  
+einem Schokocroissant,  
+und dem Gefühl, dass  
+„mit dir alles besser ist.“</div>
+            <div class="track-card">
+              <span class="track-meta">A World Alone – Lorde</span>
+              <button class="audio-btn" type="button" aria-label="Play A World Alone">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12"><polygon points="6,4 20,12 6,20"></polygon></svg>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Verse 2 (2 Polaroids) -->
+        <article class="stage" id="verse-2" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-2.mp3">
+          <div class="photo-scatter" aria-hidden="true">
+            <div class="polaroid p1">
+              <img src="https://picsum.photos/seed/daniel-v2-a/600/600" alt="Erinnerung 4">
+              <span class="polaroid-caption">Donauufer</span>
+            </div>
+            <div class="polaroid p2">
+              <img src="https://picsum.photos/seed/daniel-v2-b/600/600" alt="Erinnerung 5">
+              <span class="polaroid-caption">Sommernächte</span>
+            </div>
+          </div>
+
+          <div class="waypoint-anchor">
+            <div class="waypoint">
+              <span class="waypoint-num">II</span>
+              <img class="waypoint-cover" src="assets/images/output-2.jpg" alt="Song Cover - Vers 2" />
+            </div>
+          </div>
+          
+          <div class="stage-card">
+            <span class="stage-kicker">Zuhause</span>
+            <h2>Unsere heißen Sommernächte</h2>
+            <div class="stage-sub">Die Donau, stille Sommerabende und das Gefühl von Heimat.</div>
+            <div class="poem">Wir fanden Romantik in falschen Abzweigungen,  
+in Ulm an der Donau,  
+in Sommerabenden,  
+die die ganze Welt  
+kurz stillstehen ließen.  
+Dann kamen die Nächte  
+voller Wärme, Lachen, Verlangen—  
+bis gewöhnliche Orte  
+sich wie ein Zuhause anfühlten,  
+weil du da warst.  
+„Zuhause ist nicht Zuhause, wenn du nicht da bist.“</div>
+            <div class="track-card">
+              <span class="track-meta">Michelle Pfeiffer – Ethel Cain</span>
+              <button class="audio-btn" type="button" aria-label="Play Michelle Pfeiffer">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12"><polygon points="6,4 20,12 6,20"></polygon></svg>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Verse 3 (2 Polaroids) -->
+        <article class="stage" id="verse-3" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-3.mp3">
+          <div class="photo-scatter" aria-hidden="true">
+            <div class="polaroid p1">
+              <img src="https://picsum.photos/seed/daniel-v3-a/600/600" alt="Erinnerung 6">
+              <span class="polaroid-caption">Sonnenlicht</span>
+            </div>
+            <div class="polaroid p2">
+              <img src="https://picsum.photos/seed/daniel-v3-b/600/600" alt="Erinnerung 7">
+              <span class="polaroid-caption">Spanien</span>
+            </div>
+          </div>
+
+          <div class="waypoint-anchor">
+            <div class="waypoint">
+              <span class="waypoint-num">III</span>
+              <img class="waypoint-cover" src="assets/images/output-3.jpg" alt="Song Cover - Vers 3" />
+            </div>
+          </div>
+          
+          <div class="stage-card">
+            <span class="stage-kicker">Zugehörigkeit</span>
+            <h2>Unser Risiko</h2>
+            <div class="stage-sub">Sonnenlicht, Sprache und das Wagnis der Liebe.</div>
+            <div class="poem">Du trägst Spanien in dir:  
+sein Sonnenlicht, seine Sprache,  
+den Ort, der dich geprägt hat  
+und für immer ein Teil  
+deiner Heimat sein wird.  
+Und irgendwo zwischen  
+unseren Lieder und der Stille  
+wurde Liebe zu einem Risiko—  
+einem, das ich wieder eingehen würde.  
+„Du bist das Risiko, ich werde es eingehen.“</div>
+            <div class="track-card">
+              <span class="track-meta">Risk – Gracie Abrams</span>
+              <button class="audio-btn" type="button" aria-label="Play Risk">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12"><polygon points="6,4 20,12 6,20"></polygon></svg>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Verse 4 (3 Polaroids) -->
+        <article class="stage" id="verse-4" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-4.mp3">
+          <div class="photo-scatter" aria-hidden="true">
+            <div class="polaroid p1">
+              <img src="https://picsum.photos/seed/daniel-v4-a/600/600" alt="Erinnerung 8">
+              <span class="polaroid-caption">Neue Wege</span>
+            </div>
+            <div class="polaroid p2">
+              <img src="https://picsum.photos/seed/daniel-v4-b/600/600" alt="Erinnerung 9">
+              <span class="polaroid-caption">Neunzehn</span>
+            </div>
+            <div class="polaroid p3">
+              <img src="https://picsum.photos/seed/daniel-v4-c/600/600" alt="Erinnerung 10">
+              <span class="polaroid-caption">Zukunft</span>
+            </div>
+          </div>
+
+          <div class="waypoint-anchor">
+            <div class="waypoint">
+              <span class="waypoint-num">IV</span>
+              <img class="waypoint-cover" src="assets/images/output-4.jpg" alt="Song Cover - Vers 4" />
+            </div>
+          </div>
+          
+          <div class="stage-card">
+            <span class="stage-kicker">Neunzehn</span>
+            <h2>Unser Leben vor uns</h2>
+            <div class="stage-sub">Neue Wege, neue Städte und ein offenes Buch.</div>
+            <div class="poem">Du bist jetzt neunzehn,  
+dein ganzes Leben liegt noch vor dir,  
+neue Straßen, neue Städte,  
+und so vieles, das noch wartet.  
+„Du hast dein ganzes Leben vor dir, du bist erst 19.“</div>
+            <div class="track-card">
+              <span class="track-meta">teenage dream – Olivia Rodrigo</span>
+              <button class="audio-btn" type="button" aria-label="Play teenage dream">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12"><polygon points="6,4 20,12 6,20"></polygon></svg>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Verse 5 (2 Polaroids) -->
+        <article class="stage" id="verse-5" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-5.mp3">
+          <div class="photo-scatter" aria-hidden="true">
+            <div class="polaroid p1">
+              <img src="https://picsum.photos/seed/daniel-v5-a/600/600" alt="Erinnerung 11">
+              <span class="polaroid-caption">Farben</span>
+            </div>
+            <div class="polaroid p2">
+              <img src="https://picsum.photos/seed/daniel-v5-b/600/600" alt="Erinnerung 12">
+              <span class="polaroid-caption">Sanftheit</span>
+            </div>
+          </div>
+
+          <div class="waypoint-anchor">
+            <div class="waypoint">
+              <span class="waypoint-num">V</span>
+              <img class="waypoint-cover" src="assets/images/output-5.jpg" alt="Song Cover - Vers 5" />
+            </div>
+          </div>
+          
+          <div class="stage-card">
+            <span class="stage-kicker">Farben</span>
+            <h2>Unsere Schönheit</h2>
+            <div class="stage-sub">Sanftheit, Humor, Neugier und die vielen Farben des Lebens.</div>
+            <div class="poem">Ich hoffe, du bewahrst dir deine Sanftheit,  
+deinen Humor, deine Neugier,  
+und das wunderschöne Chaos,  
+das dich so einzigartig macht.  
+Denn all diese kleinen Momente—  
+die Berge, der Fluss,  
+die späten Züge, das Krankenzimmer,  
+die Lieder und die Nächte—  
+wurden zu etwas, das ich immer im Herzen trage.  
+Nicht perfekt,  
+aber voller Farben,  
+mit Liebe zusammengewoben.  
+„Ein Mantel aus vielen Farben.“</div>
+            <div class="track-card">
+              <span class="track-meta">Coat of Many Colors – Dolly Parton</span>
+              <button class="audio-btn" type="button" aria-label="Play Coat of Many Colors">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12"><polygon points="6,4 20,12 6,20"></polygon></svg>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Verse 6 (2 Polaroids) -->
+        <article class="stage" id="verse-6" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-6.mp3">
+          <div class="photo-scatter" aria-hidden="true">
+            <div class="polaroid p1">
+              <img src="https://picsum.photos/seed/daniel-v6-a/600/600" alt="Erinnerung 13">
+              <span class="polaroid-caption">Für immer</span>
+            </div>
+            <div class="polaroid p2">
+              <img src="https://picsum.photos/seed/daniel-v6-b/600/600" alt="Erinnerung 14">
+              <span class="polaroid-caption">Daniel</span>
+            </div>
+          </div>
+
+          <div class="waypoint-anchor">
+            <div class="waypoint">
+              <span class="waypoint-num">VI</span>
+              <img class="waypoint-cover" src="assets/images/output-6.jpg" alt="Song Cover - Vers 6" />
+            </div>
+          </div>
+          
+          <div class="stage-card">
+            <span class="stage-kicker">Daniel</span>
+            <h2>Unsere Liebe</h2>
+            <div class="stage-sub">Ein letzter Wunsch und eine Liebe für alles, was kommt.</div>
+            <div class="poem">Wohin dich das Leben auch führt,  
+ob nah oder fern,  
+denk daran, dass du geliebt wurdest—  
+am Anfang,  
+in allen Ungewissheiten,  
+und in allem, was noch vor uns liegt.  
+Alles Gute zum Geburtstag, Daniel.  
+Und wo auch immer du bist:  
+„Ich werde dich immer lieben.“</div>
+            <div class="track-card">
+              <span class="track-meta">I Will Always Love You – Dolly Parton</span>
+              <button class="audio-btn" type="button" aria-label="Play I Will Always Love You">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12"><polygon points="6,4 20,12 6,20"></polygon></svg>
+              </button>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+    
+    <section class="closing shell" aria-labelledby="closing-title">
+      <h2 id="closing-title">Zu deinem 19. Geburtstag — 8. September</h2>
+      <div class="full-poem">Es begann im Juni—  
+mit Bergen, späten Zügen,  
+einem Schokocroissant,  
+und dem Gefühl, dass  
+„mit dir alles besser ist.“  
+<span class="song-credit">A World Alone – Lorde</span>
+
+Wir fanden Romantik in falschen Abzweigungen,  
+in Ulm an der Donau,  
+in Sommerabenden,  
+die die ganze Welt  
+kurz stillstehen ließen.  
+Dann kamen die Nächte  
+voller Wärme, Lachen, Verlangen—  
+bis gewöhnliche Orte  
+sich wie ein Zuhause anfühlten,  
+weil du da warst.  
+„Zuhause ist nicht Zuhause, wenn du nicht da bist.“  
+<span class="song-credit">Michelle Pfeiffer – Ethel Cain</span>
+
+Du trägst Spanien in dir:  
+sein Sonnenlicht, seine Sprache,  
+den Ort, der dich geprägt hat  
+und für immer ein Teil  
+deiner Heimat sein wird.  
+Und irgendwo zwischen  
+unseren Lieder und der Stille  
+wurde Liebe zu einem Risiko—  
+einem, das ich wieder eingehen würde.  
+„Du bist das Risiko, ich werde es eingehen.“  
+<span class="song-credit">Risk – Gracie Abrams</span>
+
+Du bist jetzt neunzehn,  
+dein ganzes Leben liegt noch vor dir,  
+neue Straßen, neue Städte,  
+und so vieles, das noch wartet.  
+„Du hast dein ganzes Leben vor dir, du bist erst 19.“  
+<span class="song-credit">teenage dream – Olivia Rodrigo</span>
+
+Ich hoffe, du bewahrst dir deine Sanftheit,  
+deinen Humor, deine Neugier,  
+und das wunderschöne Chaos,  
+das dich so einzigartig macht.  
+Denn all diese kleinen Momente—  
+die Berge, der Fluss,  
+die späten Züge, das Krankenzimmer,  
+die Lieder und die Nächte—  
+wurden zu etwas, das ich immer im Herzen trage.  
+Nicht perfekt,  
+aber voller Farben,  
+mit Liebe zusammengewoben.  
+„Ein Mantel aus vielen Farben.“  
+<span class="song-credit">Coat of Many Colors – Dolly Parton</span>
+
+Wohin dich das Leben auch führt,  
+ob nah oder fern,  
+denk daran, dass du geliebt wurdest—  
+am Anfang,  
+in allen Ungewissheiten,  
+und in allem, was noch vor uns liegt.  
+Alles Gute zum Geburtstag, Daniel.  
+Und wo auch immer du bist:  
+„Ich werde dich immer lieben.“  
+<span class="song-credit">I Will Always Love You – Dolly Parton</span></div>
+
+      <div class="signature">
+        <span class="signature-heart" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-6.5-4.35-8.6-8.05C1.9 9.27 3.3 5.9 6.67 5.2c2.07-.43 3.76.5 5.33 2.43 1.57-1.93 3.27-2.86 5.33-2.43 3.37.7 4.77 4.07 3.27 6.75C18.5 15.65 12 20 12 20Z"/></svg>
+        </span>
+        <p class="signature-text">in Liebe aus Ulm,<br>David</p>
+      </div>
+    </section>
+  </main>
+
+  <audio id="globalAudio" preload="metadata"></audio>
+
+  <script>
+    (() => {
+      const html = document.documentElement;
+      const themeBtn = document.querySelector('[data-theme-toggle]');
+      let theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      html.setAttribute('data-theme', theme);
+
+      const renderThemeIcon = () => {
+        themeBtn.innerHTML = theme === 'dark' 
+          ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>' 
+          : '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+      };
+      renderThemeIcon();
+      themeBtn.addEventListener('click', () => {
+        theme = theme === 'dark' ? 'light' : 'dark';
+        html.setAttribute('data-theme', theme);
+        renderThemeIcon();
+      });
+
+      const stages = [...document.querySelectorAll('.stage')];
+      const audio = document.getElementById('globalAudio');
+      const unlockAudioBtn = document.getElementById('unlockAudio');
+      const unlockHeroBtn = document.getElementById('unlockAudioHero');
+
+      let isAudioEnabled = true;
+      let userMuted = false;
+      let currentActiveStage = null;
+
+      const musicNoteIcon = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>';
+      const musicMuteIcon = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle><line x1="2" y1="2" x2="22" y2="22"></line></svg>';
+
+      const playSvg = '<svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12"><polygon points="6,4 20,12 6,20"></polygon></svg>';
+      const pauseSvg = '<svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12"><rect x="5" y="4" width="4" height="16" rx="1"></rect><rect x="15" y="4" width="4" height="16" rx="1"></rect></svg>';
+
+      const updateAudioUI = () => {
+        const isPlaying = isAudioEnabled && !userMuted && !audio.paused;
+        
+        if (unlockAudioBtn) {
+          unlockAudioBtn.innerHTML = isPlaying ? musicMuteIcon : musicNoteIcon;
+          unlockAudioBtn.setAttribute('aria-label', isPlaying ? 'Musik deaktivieren' : 'Musik aktivieren');
+        }
+
+        if (unlockHeroBtn) {
+          unlockHeroBtn.textContent = isPlaying ? 'Musik pausieren' : 'Musik starten';
+        }
+
+        stages.forEach((st) => {
+          const btn = st.querySelector('.audio-btn');
+          const isCurrentPlaying = (st === currentActiveStage && isPlaying);
+
+          if (btn) {
+            btn.innerHTML = isCurrentPlaying ? pauseSvg : playSvg;
+          }
+
+          if (isCurrentPlaying) {
+            st.classList.add('is-playing');
+            st.classList.remove('is-paused');
+          } else if (st === currentActiveStage && !isPlaying) {
+            st.classList.add('is-paused');
+          } else {
+            st.classList.remove('is-playing', 'is-paused');
+          }
+        });
+      };
+
+      audio.addEventListener('play', updateAudioUI);
+      audio.addEventListener('pause', updateAudioUI);
+      audio.addEventListener('ended', updateAudioUI);
+
+      const getAbsoluteUrl = (path) => {
+        try { return new URL(path, window.location.href).href; } catch(e) { return path; }
+      };
+
+      const playStage = async (stage, manual = false) => {
+        if (!stage) return;
+        
+        stages.forEach((item) => item.classList.toggle('is-active', item === stage));
+        currentActiveStage = stage;
+
+        if (manual) {
+          userMuted = false;
+          isAudioEnabled = true;
+        }
+
+        if (userMuted || !isAudioEnabled) {
+          updateAudioUI();
+          return;
+        }
+
+        const src = stage.dataset.audio;
+        const absSrc = getAbsoluteUrl(src);
+
+        try {
+          if (audio.src !== absSrc) {
+            audio.src = absSrc;
+            audio.load();
+          }
+          await audio.play();
+        } catch (e) {
+          console.warn('Warte auf Benutzerinteraktion:', e);
+        }
+        updateAudioUI();
+      };
+
+      const getMostVisibleStage = () => {
+        let bestStage = null;
+        let maxVisibleHeight = 0;
+        const vh = window.innerHeight;
+
+        stages.forEach((stage) => {
+          const rect = stage.getBoundingClientRect();
+          const visibleHeight = Math.max(0, Math.min(rect.bottom, vh) - Math.max(rect.top, 0));
+          if (visibleHeight > maxVisibleHeight) {
+            maxVisibleHeight = visibleHeight;
+            bestStage = stage;
+          }
+        });
+        return bestStage;
+      };
+
+      const toggleAudioState = async () => {
+        if (isAudioEnabled && !userMuted && !audio.paused) {
+          userMuted = true;
+          audio.pause();
+          updateAudioUI();
+        } else {
+          userMuted = false;
+          isAudioEnabled = true;
+          const activeStage = stages.find((s) => s.classList.contains('is-active')) || getMostVisibleStage() || stages[0];
+          await playStage(activeStage, true);
+        }
+      };
+
+      const unlockOnFirstTouch = () => {
+        if (!userMuted && currentActiveStage && audio.paused) {
+          playStage(currentActiveStage);
+        }
+      };
+      ['touchstart', 'pointerdown', 'scroll', 'click'].forEach((evt) => {
+        window.addEventListener(evt, unlockOnFirstTouch, { passive: true });
+      });
+
+      if (unlockAudioBtn) unlockAudioBtn.addEventListener('click', toggleAudioState);
+      if (unlockHeroBtn) unlockHeroBtn.addEventListener('click', toggleAudioState);
+
+      stages.forEach((stage) => {
+        const btn = stage.querySelector('.audio-btn');
+        const chip = stage.querySelector('.track-card');
+        const waypoint = stage.querySelector('.waypoint');
+
+        const handlePlayClick = async (e) => {
+          e.stopPropagation();
+          if (currentActiveStage === stage && !userMuted && !audio.paused) {
+            userMuted = true;
+            audio.pause();
+            updateAudioUI();
+          } else {
+            await playStage(stage, true);
+          }
+        };
+
+        if (btn) btn.addEventListener('click', handlePlayClick);
+        if (chip) chip.addEventListener('click', handlePlayClick);
+        if (waypoint) waypoint.addEventListener('click', handlePlayClick);
+      });
+
+      /* Exakter Übergang beim Scrollen zwischen den Strophen */
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+          }
+        });
+
+        const targetStage = getMostVisibleStage();
+        if (targetStage && targetStage !== currentActiveStage) {
+          playStage(targetStage, false);
+        }
+      }, {
+        threshold: [0.25, 0.5, 0.75]
+      });
+
+      stages.forEach((stage) => observer.observe(stage));
+    })();
+  </script>
+</body>
+</html>      left: 0; 
       right: 0; 
       z-index: 100; 
       backdrop-filter: blur(16px); 
