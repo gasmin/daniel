@@ -22,7 +22,7 @@
       --space-5: 1.25rem; --space-6: 1.5rem; --space-8: 2rem; --space-10: 2.5rem;
       --space-12: 3rem; --space-16: 4rem; --space-20: 5rem; --space-24: 6rem;
       --color-bg: #f5f0ea;
-      --color-surface: rgba(255, 255, 255, 0.75);
+      --color-surface: rgba(255, 255, 255, 0.85);
       --color-surface-2: #ffffff;
       --color-border: rgba(44, 34, 26, 0.16);
       --color-text: #1a1410;
@@ -42,11 +42,11 @@
       --font-body: 'Manrope', Arial, sans-serif;
       --font-hand: 'Caveat', cursive;
       --content: 1180px;
-      --transition: 280ms cubic-bezier(0.16, 1, 0.3, 1);
+      --transition: 350ms cubic-bezier(0.16, 1, 0.3, 1);
     }
     [data-theme="dark"] {
       --color-bg: #130f0e;
-      --color-surface: rgba(28, 22, 20, 0.78);
+      --color-surface: rgba(28, 22, 20, 0.88);
       --color-surface-2: #241c19;
       --color-border: rgba(247, 238, 229, 0.2);
       --color-text: #f7f1ea;
@@ -61,7 +61,7 @@
       --shadow-polaroid: 0 18px 45px rgba(0, 0, 0, 0.5);
     }
     * { box-sizing: border-box; }
-    html, body { overflow-x: clip; }
+    html, body { overflow-x: hidden; }
     html { scroll-behavior: smooth; }
     body { margin: 0; min-height: 100vh; font-family: var(--font-body); font-size: var(--text-base); line-height: 1.7; color: var(--color-text); background: linear-gradient(180deg, #f9f5f0 0%, #f4eee7 35%, #efe8e0 100%); background-attachment: fixed; }
     [data-theme="dark"] body { background: linear-gradient(180deg, #161211 0%, #130f0e 35%, #0f0c0b 100%); background-attachment: fixed; }
@@ -132,7 +132,6 @@
     .hero p { max-width: 38rem; color: var(--color-text-muted); margin-top: 0; font-weight: 500; }
     .hero-actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-6); }
     
-    /* Hero Video */
     .hero-video {
       position: relative;
       width: 100%;
@@ -166,51 +165,57 @@
       z-index: 5; 
     }
     
-    /* Stage Layout aligned for top-to-bottom sticky progression */
+    /* Stage Layout with sticky alignment */
     .stage { 
       position: relative; 
       display: flex;
       justify-content: center;
       align-items: flex-start;
-      min-height: clamp(42rem, 75vh, 54rem); 
-      padding: var(--space-12) 0;
+      min-height: clamp(40rem, 70vh, 52rem); 
+      padding: var(--space-10) 0;
     }
 
+    /* Verskarten Layout & Alternieren auf Desktop ohne Überlappung */
     .stage-card { 
       position: relative;
       z-index: 6;
-      width: min(100%, 560px);
-      margin: 0 auto;
-      padding: clamp(var(--space-6), 4vw, var(--space-10)); 
+      width: min(100%, 450px); /* Etwas schlanker für perfekte Lesbarkeit und Platz */
+      padding: clamp(var(--space-6), 4vw, var(--space-8)); 
       padding-bottom: clamp(4.2rem, 5vw, 4.8rem);
       border: 1px solid var(--color-border); 
       border-radius: var(--radius-xl); 
       background: var(--color-surface); 
-      backdrop-filter: blur(12px); 
-      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(14px); 
+      -webkit-backdrop-filter: blur(14px);
       box-shadow: var(--shadow-md); 
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
       gap: var(--space-3); 
-      opacity: 0.75;
-      transform: translateY(20px);
-      transition: opacity 500ms ease, transform 500ms ease;
+      opacity: 0;
+      transition: opacity 650ms cubic-bezier(0.16, 1, 0.3, 1), transform 650ms cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .stage.is-visible .stage-card,
-    .stage.is-active .stage-card {
-      opacity: 1;
-      transform: translateY(0);
+    /* Desktop Alternierung mit Sicherheitsabstand zum zentralen Kreis */
+    .stage:nth-child(odd) .stage-card { 
+      margin-right: calc(50% + 3.8rem); 
+      margin-left: auto; 
+      transform: translateX(-40px); 
+    }
+    .stage:nth-child(even) .stage-card { 
+      margin-left: calc(50% + 3.8rem); 
+      margin-right: auto; 
+      transform: translateX(40px); 
     }
 
-    .stage:nth-child(odd) .stage-card { transform: translateX(-35px); }
-    .stage:nth-child(even) .stage-card { transform: translateX(35px); }
     .stage.is-visible:nth-child(odd) .stage-card,
-    .stage.is-active:nth-child(odd) .stage-card { transform: translateX(-35px); }
+    .stage.is-active:nth-child(odd) .stage-card,
     .stage.is-visible:nth-child(even) .stage-card,
-    .stage.is-active:nth-child(even) .stage-card { transform: translateX(35px); }
+    .stage.is-active:nth-child(even) .stage-card {
+      opacity: 1;
+      transform: translateX(0); /* Garantiert kein Überstehen nach Animation */
+    }
 
     /* Scattered Polaroid Background Photos */
     .photo-scatter {
@@ -223,7 +228,7 @@
 
     .polaroid {
       position: absolute;
-      width: clamp(170px, 24vw, 270px);
+      width: clamp(160px, 22vw, 250px);
       background: #ffffff;
       padding: 10px 10px 28px 10px;
       box-shadow: var(--shadow-polaroid);
@@ -243,7 +248,6 @@
       filter: contrast(1.03) brightness(0.98);
     }
 
-    /* Positions & Rotations */
     .polaroid.p1 { top: 2%; left: 2%; transform: rotate(-8deg); }
     .polaroid.p2 { bottom: 2%; right: 2%; transform: rotate(7deg); }
     .polaroid.p3 { top: 22%; right: 18%; transform: rotate(-4deg); }
@@ -252,14 +256,14 @@
     .stage:nth-child(even) .polaroid.p2 { bottom: 2%; left: 2%; right: auto; transform: rotate(-8deg); }
     .stage:nth-child(even) .polaroid.p3 { top: 20%; left: 18%; right: auto; transform: rotate(4deg); }
 
-    .stage.is-active .polaroid.p1 { transform: rotate(-6deg) scale(1.03); }
-    .stage.is-active .polaroid.p2 { transform: rotate(5deg) scale(1.03); }
+    .stage.is-active .polaroid.p1 { transform: rotate(-5deg) scale(1.03); }
+    .stage.is-active .polaroid.p2 { transform: rotate(4deg) scale(1.03); }
     .stage.is-active .polaroid.p3 { transform: rotate(-2deg) scale(1.03); }
 
-    /* Sticky Waypoint Container - Starts at top of card, scrolls down to bottom */
+    /* Sticky Waypoint Container - Mitlaufend oberhalb bis unterhalb des Verskastens */
     .waypoint-col {
       position: sticky;
-      top: 28vh;
+      top: 30vh;
       left: 50%;
       transform: translateX(-50%);
       z-index: 10;
@@ -269,37 +273,37 @@
       align-items: center;
       justify-content: center;
       pointer-events: auto;
-      margin-top: 1.5rem; /* Aligns circle nicely near top edge of stage-card */
+      margin-top: 1.2rem;
     }
 
-    /* Circle is completely opaque (deckend) */
+    /* Kreise: 100% Solid & Verdeckend */
     .waypoint { 
       position: relative;
-      width: 4.2rem; 
-      height: 4.2rem; 
+      width: 4.5rem; 
+      height: 4.5rem; 
       border-radius: 50%; 
       display: grid; 
       place-items: center; 
-      background-color: var(--color-surface-2); /* 100% Solid, verdeckend */
+      background-color: var(--color-surface-2); /* 100% Solid deckend */
       border: 2px solid var(--color-border); 
       box-shadow: var(--shadow-md); 
       font-family: var(--font-display); 
-      font-size: 1.45rem; 
+      font-size: 1.5rem; 
       font-weight: 700;
       color: var(--color-primary); 
       cursor: pointer;
       overflow: hidden;
       flex-shrink: 0;
-      opacity: 1 !important; /* Always solid */
+      opacity: 1 !important; 
       z-index: 10;
-      transition: border-color 400ms ease, box-shadow 400ms ease, transform 300ms ease;
+      transition: border-color 600ms ease, box-shadow 600ms ease, transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    /* Roman numeral transforming into album cover */
+    /* Seidenweiche Morph-Transformation (Römische Zahl -> Cover) */
     .waypoint-num {
       position: absolute;
       z-index: 2;
-      transition: opacity 450ms ease, transform 450ms cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: opacity 600ms cubic-bezier(0.16, 1, 0.3, 1), transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .waypoint-cover {
@@ -309,20 +313,20 @@
       height: 100%;
       object-fit: cover;
       border-radius: 50%;
-      background-color: var(--color-surface-2); /* Fully opaque background */
+      background-color: var(--color-surface-2);
       opacity: 0;
-      transform: scale(0.3) rotate(-90deg);
-      transition: opacity 500ms ease, transform 600ms cubic-bezier(0.34, 1.56, 0.64, 1);
+      transform: scale(0.4) rotate(-30deg);
+      transition: opacity 700ms cubic-bezier(0.16, 1, 0.3, 1), transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .stage.is-active .waypoint {
       border-color: var(--color-primary);
-      animation: pulseGlow 1.8s infinite ease-in-out;
+      animation: pulseGlow 2s infinite ease-in-out;
     }
 
     .stage.is-active .waypoint-num {
       opacity: 0;
-      transform: scale(0.1) rotate(90deg);
+      transform: scale(0.2) rotate(45deg);
     }
 
     .stage.is-active .waypoint-cover {
@@ -330,9 +334,8 @@
       transform: scale(1) rotate(0deg);
     }
 
-    /* Spinning Album Cover Animation during playback */
     .stage.is-active.is-playing .waypoint-cover {
-      animation: spinCover 10s linear infinite;
+      animation: spinCover 12s linear infinite;
     }
     
     .stage.is-active.is-playing.is-paused .waypoint-cover {
@@ -341,7 +344,7 @@
 
     @keyframes pulseGlow {
       0% { box-shadow: 0 0 0 0 rgba(142,53,87,0.45); transform: scale(1); }
-      50% { box-shadow: 0 0 0 14px rgba(142,53,87,0); transform: scale(1.06); }
+      50% { box-shadow: 0 0 0 14px rgba(142,53,87,0); transform: scale(1.05); }
       100% { box-shadow: 0 0 0 0 rgba(142,53,87,0); transform: scale(1); }
     }
 
@@ -353,8 +356,8 @@
     .stage-card h2 { 
       margin: 0; 
       font-family: var(--font-display); 
-      font-size: clamp(1.5rem, 1.2rem + 1.1vw, 2.3rem); 
-      line-height: 1.1; 
+      font-size: clamp(1.4rem, 1.1rem + 1vw, 2.2rem); 
+      line-height: 1.15; 
       font-weight: 600; 
     }
 
@@ -412,7 +415,6 @@
     .full-poem { white-space: pre-line; margin: 0 auto; max-width: 34rem; text-align: center; font-size: clamp(1rem, 0.98rem + 0.2vw, 1.15rem); color: var(--color-text); }
     .song-credit { display: block; margin-top: 0.6rem; margin-bottom: 1.4rem; font-size: 0.85em; font-style: italic; color: var(--color-text-muted); font-weight: 500; }
 
-    /* Footer Signature Style */
     .signature { 
       margin-top: var(--space-12); 
       display: flex; 
@@ -443,37 +445,42 @@
       font-style: italic; 
     }
 
-    /* Mobile Responsive Layout Fixes (Kein Überstehen) */
+    /* Mobile Responsive Optimierungen (Kein Überstehen + Größere Kreise) */
     @media (max-width: 980px) { 
       .hero-layout { grid-template-columns: 1fr; } 
       
-      /* Timeline + Circle placement cleanly offset from left screen edge */
+      /* Achse & Kreise sauber am linken Rand platziert */
       .journey-line { 
-        left: 2.2rem; 
+        left: 2.4rem; 
         transform: translateX(-50%); 
       } 
       .waypoint-col { 
-        left: 2.2rem; 
+        left: 2.4rem; 
         transform: translateX(-50%); 
-        margin-top: 1rem;
+        margin-top: 1.2rem;
       }
 
+      /* Größerer Kreis auf Mobile für bessere Sichtbarkeit */
       .waypoint {
-        width: 3.5rem;
-        height: 3.5rem;
-        font-size: 1.25rem;
+        width: 4.0rem;
+        height: 4.0rem;
+        font-size: 1.35rem;
       }
       
       .stage { min-height: auto; padding: var(--space-8) 0; }
+      
+      /* Kästen schlanker, rechts von der Achse, kein Überstand rechts */
       .stage:nth-child(odd) .stage-card, 
       .stage:nth-child(even) .stage-card { 
-        transform: none; 
-        margin-left: 4.6rem; 
-        width: calc(100% - 4.6rem); 
+        transform: translateX(30px); 
+        margin-left: 5.2rem; 
+        margin-right: 0;
+        width: calc(100% - 5.2rem); 
+        max-width: 500px;
       }
 
       .polaroid { 
-        width: clamp(160px, 44vw, 240px); 
+        width: clamp(150px, 42vw, 220px); 
         opacity: 0.92;
       }
       .polaroid.p1 { top: -15px; left: -10px; transform: rotate(-6deg); }
@@ -484,41 +491,37 @@
     @media (max-width: 640px) { 
       .shell { width: min(calc(100% - 1rem), var(--content)); } 
       
-      .journey-line { left: 1.8rem; }
-      .waypoint-col { left: 1.8rem; }
+      .journey-line { left: 2.2rem; }
+      .waypoint-col { left: 2.2rem; }
       
       .waypoint {
-        width: 3.2rem;
-        height: 3.2rem;
-        font-size: 1.15rem;
+        width: 3.8rem;
+        height: 3.8rem;
+        font-size: 1.25rem;
       }
 
       .stage:nth-child(odd) .stage-card, 
       .stage:nth-child(even) .stage-card { 
-        margin-left: 3.8rem; 
-        width: calc(100% - 3.8rem); 
+        margin-left: 4.8rem; 
+        width: calc(100% - 4.8rem); 
         padding: var(--space-5);
         padding-bottom: 4.2rem;
       }
 
       .polaroid { 
-        width: clamp(150px, 46vw, 210px); 
+        width: clamp(140px, 44vw, 190px); 
       }
     }
 
-    @media (max-width: 375px) {
-      .journey-line { left: 1.5rem; }
-      .waypoint-col { left: 1.5rem; }
-      .waypoint { width: 2.8rem; height: 2.8rem; font-size: 1rem; }
+    @media (max-width: 400px) {
+      .journey-line { left: 1.9rem; }
+      .waypoint-col { left: 1.9rem; }
+      .waypoint { width: 3.4rem; height: 3.4rem; font-size: 1.1rem; }
       .stage:nth-child(odd) .stage-card, 
       .stage:nth-child(even) .stage-card { 
-        margin-left: 3.3rem; 
-        width: calc(100% - 3.3rem); 
+        margin-left: 4.2rem; 
+        width: calc(100% - 4.2rem); 
       }
-      .brand-mark { width: 2.1rem; height: 2.1rem; }
-      .icon-btn { width: 2.2rem; height: 2.2rem; }
-      .brand-copy strong { font-size: 1.1rem; }
-      .brand-copy span { font-size: 0.62rem; }
     }
   </style>
 </head>
@@ -552,7 +555,6 @@
             <a class="btn" href="#verse-1">Start with June</a>
           </div>
         </div>
-        <!-- 1 Video -->
         <div class="hero-video">
           <video autoplay muted loop playsinline preload="auto">
             <source src="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/00004495-VIDEO-2026-08-13-15-44-42.mp4" type="video/mp4">
@@ -927,6 +929,7 @@ And wherever you go:
       let isAudioEnabled = true;
       let userMuted = false;
       let currentActiveStage = null;
+      let fadeTimer = null;
 
       const musicNoteIcon = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>';
       const musicMuteIcon = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle><line x1="2" y1="2" x2="22" y2="22"></line></svg>';
@@ -975,6 +978,52 @@ And wherever you go:
         try { return new URL(path, window.location.href).href; } catch(e) { return path; }
       };
 
+      /* Sanfter Audio-Übergang mit Aus- und Einblenden */
+      const smoothPlayTrack = async (absSrc) => {
+        if (fadeTimer) clearInterval(fadeTimer);
+
+        if (!audio.paused && audio.src === absSrc) {
+          return;
+        }
+
+        if (!audio.paused && audio.src !== absSrc) {
+          let vol = audio.volume;
+          await new Promise((resolve) => {
+            fadeTimer = setInterval(() => {
+              if (vol > 0.15) {
+                vol -= 0.15;
+                audio.volume = Math.max(0, vol);
+              } else {
+                clearInterval(fadeTimer);
+                audio.pause();
+                resolve();
+              }
+            }, 30);
+          });
+        }
+
+        audio.src = absSrc;
+        audio.load();
+        audio.volume = 0;
+
+        try {
+          await audio.play();
+          let volUp = 0;
+          fadeTimer = setInterval(() => {
+            if (volUp < 0.85) {
+              volUp += 0.15;
+              audio.volume = Math.min(1, volUp);
+            } else {
+              audio.volume = 1;
+              clearInterval(fadeTimer);
+            }
+          }, 35);
+        } catch (e) {
+          audio.volume = 1;
+          console.warn('Audio playback blocked until user interacts.', e);
+        }
+      };
+
       const playStage = async (stage, manual = false) => {
         if (!stage) return;
         
@@ -994,15 +1043,7 @@ And wherever you go:
         const src = stage.dataset.audio;
         const absSrc = getAbsoluteUrl(src);
 
-        try {
-          if (audio.src !== absSrc) {
-            audio.src = absSrc;
-            audio.load();
-          }
-          await audio.play();
-        } catch (e) {
-          console.warn('Waiting for user interaction to unblock audio:', e);
-        }
+        await smoothPlayTrack(absSrc);
         updateAudioUI();
       };
 
