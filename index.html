@@ -7,7 +7,7 @@
   <meta name="description" content="A birthday poem for Daniel, unfolding like a small journey through six verses, songs, and memories." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
   
   <style>
     :root, [data-theme="light"] {
@@ -252,10 +252,42 @@
     .gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-3); }
     .gallery-grid img:first-child { grid-column: span 2; height: 16rem; object-fit: cover; }
     .gallery-grid img:nth-child(2), .gallery-grid img:nth-child(3) { height: 10rem; object-fit: cover; }
+    
     .closing { padding: var(--space-16) 0 var(--space-24); }
     .closing h2 { margin: 0 0 var(--space-5); text-align: center; font-family: var(--font-display); font-size: var(--text-2xl); font-weight: 600; }
     .full-poem { white-space: pre-line; margin: 0 auto; max-width: 34rem; text-align: center; font-size: clamp(1rem, 0.98rem + 0.2vw, 1.15rem); color: var(--color-text); }
     .song-credit { display: block; margin-top: 0.6rem; margin-bottom: 1.4rem; font-size: 0.85em; font-style: italic; color: var(--color-text-muted); }
+
+    /* Footer Signature Style */
+    .signature { 
+      margin-top: var(--space-12); 
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+      justify-content: center; 
+      text-align: center; 
+      gap: var(--space-3); 
+    }
+    .signature-heart { 
+      width: 2.8rem; 
+      height: 2.8rem; 
+      border-radius: 50%; 
+      border: 1px solid var(--color-border); 
+      display: grid; 
+      place-items: center; 
+      color: var(--color-primary); 
+      background: var(--color-surface-2); 
+      box-shadow: var(--shadow-sm); 
+    }
+    .signature-heart svg { width: 1.35rem; height: 1.35rem; }
+    .signature-text { 
+      margin: 0; 
+      font-family: var(--font-display); 
+      font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.65rem); 
+      color: var(--color-text-muted); 
+      line-height: 1.35; 
+      font-style: italic; 
+    }
 
     @media (max-width: 980px) { 
       .hero-layout { grid-template-columns: 1fr; } 
@@ -364,7 +396,7 @@ and so much still waiting.
       <article class="stage" id="verse-5" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-5.mp3">
         <div class="stage-gallery"><div class="gallery-grid"><img src="https://picsum.photos/seed/daniel-v5-a/1200/900" alt="Memory picture" width="1200" height="900" loading="lazy"><img src="https://picsum.photos/seed/daniel-v5-b/800/800" alt="Memory picture" width="800" height="800" loading="lazy"><img src="https://picsum.photos/seed/daniel-v5-c/800/800" alt="Memory picture" width="800" height="800" loading="lazy"></div></div>
         <div class="waypoint-col"><div class="waypoint"><span class="waypoint-num">V</span><img class="waypoint-cover" src="assets/images/output-5.jpg" alt="Song cover - Verse 5" /></div></div>
-        <div class="stage-card"><span class="stage-kicker">Colors</span> climate<h2>Our beauty</h2><div class="stage-sub">Softness, humour, curiosity, and moments stitched together with love.</div><div class="poem">I hope you keep your softness,  
+        <div class="stage-card"><span class="stage-kicker">Colors</span><h2>Our beauty</h2><div class="stage-sub">Softness, humour, curiosity, and moments stitched together with love.</div><div class="poem">I hope you keep your softness,  
 your humour, your curiosity,  
 and the beautiful chaos  
 that makes you entirely yourself.  
@@ -395,7 +427,9 @@ And wherever you go:
       </article>
     </div></section>
     
-    <section class="closing shell" aria-labelledby="closing-title"><h2 id="closing-title">For your nineteenth birthday — September 8</h2><div class="full-poem">It began in June—  
+    <section class="closing shell" aria-labelledby="closing-title">
+      <h2 id="closing-title">For your nineteenth birthday — September 8</h2>
+      <div class="full-poem">It began in June—  
 with mountains, late trains,  
 a chocolate croissant,  
 and the feeling that  
@@ -458,7 +492,16 @@ and in everything still to come.
 Happy birthday, Daniel.  
 And wherever you go:  
 "I will always love you."  
-<span class="song-credit">I Will Always Love You – Dolly Parton</span></div></section>
+<span class="song-credit">I Will Always Love You – Dolly Parton</span></div>
+
+      <!-- Footer Signature -->
+      <div class="signature">
+        <span class="signature-heart" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-6.5-4.35-8.6-8.05C1.9 9.27 3.3 5.9 6.67 5.2c2.07-.43 3.76.5 5.33 2.43 1.57-1.93 3.27-2.86 5.33-2.43 3.37.7 4.77 4.07 3.27 6.75C18.5 15.65 12 20 12 20Z"/></svg>
+        </span>
+        <p class="signature-text">with love from Ulm,<br>David</p>
+      </div>
+    </section>
   </main>
 
   <audio id="globalAudio" preload="metadata"></audio>
@@ -487,8 +530,8 @@ And wherever you go:
       const unlockAudioBtn = document.getElementById('unlockAudio');
       const unlockHeroBtn = document.getElementById('unlockAudioHero');
 
-      let isAudioEnabled = true; // Auto-play enabled by default on scroll
-      let userMuted = false;      // Explicitly set to true when user pauses/mutes
+      let isAudioEnabled = true;
+      let userMuted = false;
       let currentActiveStage = null;
 
       const musicNoteIcon = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>';
@@ -553,7 +596,6 @@ And wherever you go:
           }
           await audio.play();
         } catch (e) {
-          // Playback blocked by browser policy until user gesture
           console.warn('Waiting for user interaction to unblock audio:', e);
         }
         updateAudioUI();
@@ -588,7 +630,6 @@ And wherever you go:
         }
       };
 
-      // Listener to unlock browser audio restrictions on the very first touch or scroll gesture
       const unlockOnFirstTouch = () => {
         if (!userMuted && currentActiveStage && audio.paused) {
           playStage(currentActiveStage);
