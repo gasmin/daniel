@@ -7,7 +7,7 @@
   <meta name="description" content="Ein Geburtstagsgedicht für Daniel in 6 Versen." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Caveat:wght@600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
   
   <style>
     :root, [data-theme="light"] {
@@ -146,7 +146,7 @@
     }
     .stage.is-visible, .stage.is-active { opacity: 1; transform: translateY(0); }
 
-    /* EBENE 2: Polaroids (Ohne Textbeschriftungen) */
+    /* EBENE 2: Polaroids (Hinter der Verskarte) */
     .photo-scatter {
       position: absolute;
       inset: -2rem -1rem;
@@ -159,7 +159,7 @@
       position: absolute;
       width: clamp(180px, 26vw, 290px);
       background: #ffffff;
-      padding: 10px 10px 28px 10px;
+      padding: 12px 12px 28px 12px;
       box-shadow: var(--shadow-polaroid);
       border-radius: 4px;
       transition: transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
@@ -170,9 +170,6 @@
       aspect-ratio: 1 / 1; 
       object-fit: cover; 
       border-radius: 2px; 
-      display: block;
-    }
-    .polaroid img {
       filter: contrast(1.03) brightness(0.98); 
     }
 
@@ -388,9 +385,8 @@
           </div>
         </div>
         <div class="hero-video">
-          <!-- Video 1 am Anfang -->
           <video autoplay muted loop playsinline preload="auto">
-            <source src="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/2026-07-18%2022-17-51.mov" type="video/mp4">
+            <source src="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/00004495-VIDEO-2026-08-13-15-44-42.mp4" type="video/mp4">
             Dein Browser unterstützt dieses Video nicht.
           </video>
         </div>
@@ -404,21 +400,24 @@
         <!-- Vers 1 -->
         <article class="stage" id="verse-1" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-1.mp3">
           <div class="photo-scatter" aria-hidden="true">
+            <!-- Erster Polaroid: Das erste Video -->
             <div class="polaroid p1">
-              <img src="assets/images/2026-07-08 15-41-56.HEIC" alt="Foto">
+              <video autoplay muted loop playsinline preload="auto">
+                <source src="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/2026-07-18%2022-17-51.mov">
+              </video>
             </div>
             <div class="polaroid p2">
-              <img src="assets/images/2026-07-12 12-37-05.JPEG" alt="Foto">
+              <img src="assets/images/2026-07-08 15-41-56.HEIC" alt="Erinnerung 1">
             </div>
             <div class="polaroid p3">
-              <img src="assets/images/2026-07-12 13-04-45.JPEG" alt="Foto">
+              <img src="assets/images/2026-07-12 12-37-05.JPEG" alt="Erinnerung 2">
             </div>
           </div>
 
           <div class="waypoint-anchor">
             <div class="waypoint">
               <span class="waypoint-num">I</span>
-              <img class="waypoint-cover" src="assets/images/IMG_0152.JPG" alt="Song Cover - Vers 1" />
+              <img class="waypoint-cover" src="assets/images/output-1.jpg" alt="Song Cover - Vers 1" />
             </div>
           </div>
           
@@ -444,17 +443,20 @@ und dem Gefühl, dass
         <article class="stage" id="verse-2" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-2.mp3">
           <div class="photo-scatter" aria-hidden="true">
             <div class="polaroid p1">
-              <img src="assets/images/2026-07-12 13-12-42.JPEG" alt="Foto">
+              <img src="assets/images/2026-07-12 13-04-45.JPEG" alt="Erinnerung 3">
             </div>
             <div class="polaroid p2">
-              <img src="assets/images/2026-07-12 13-16-39.JPEG" alt="Foto">
+              <img src="assets/images/2026-07-12 13-12-42.JPEG" alt="Erinnerung 4">
+            </div>
+            <div class="polaroid p3">
+              <img src="assets/images/2026-07-12 13-16-39.JPEG" alt="Erinnerung 5">
             </div>
           </div>
 
           <div class="waypoint-anchor">
             <div class="waypoint">
               <span class="waypoint-num">II</span>
-              <img class="waypoint-cover" src="assets/images/IMG_0160.JPG" alt="Song Cover - Vers 2" />
+              <img class="waypoint-cover" src="assets/images/output-2.jpg" alt="Song Cover - Vers 2" />
             </div>
           </div>
           
@@ -470,7 +472,7 @@ kurz stillstehen ließen.
 Dann kamen die Nächte  
 voller Wärme, Lachen, Verlangen—  
 bis gewöhnliche Orte  
-sich wie ein Zuhause anfehlten,  
+sich wie ein Zuhause anfühlten,  
 weil du da warst.  
 „Zuhause ist nicht Zuhause, wenn du nicht da bist.“</div>
             <div class="track-card">
@@ -486,17 +488,17 @@ weil du da warst.
         <article class="stage" id="verse-3" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-3.mp3">
           <div class="photo-scatter" aria-hidden="true">
             <div class="polaroid p1">
-              <img src="assets/images/2026-07-12 13-18-06.JPEG" alt="Foto">
+              <img src="assets/images/2026-07-12 13-18-06.JPEG" alt="Erinnerung 6">
             </div>
             <div class="polaroid p2">
-              <img src="assets/images/2026-07-12 14-07-19.JPEG" alt="Foto">
+              <img src="assets/images/2026-07-12 14-07-19.JPEG" alt="Erinnerung 7">
             </div>
           </div>
 
           <div class="waypoint-anchor">
             <div class="waypoint">
               <span class="waypoint-num">III</span>
-              <img class="waypoint-cover" src="assets/images/IMG_6910.JPG" alt="Song Cover - Vers 3" />
+              <img class="waypoint-cover" src="assets/images/output-3.jpg" alt="Song Cover - Vers 3" />
             </div>
           </div>
           
@@ -527,20 +529,20 @@ einem, das ich wieder eingehen würde.
         <article class="stage" id="verse-4" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-4.mp3">
           <div class="photo-scatter" aria-hidden="true">
             <div class="polaroid p1">
-              <img src="assets/images/2026-07-12 14-10-42.JPEG" alt="Foto">
+              <img src="assets/images/2026-07-12 14-10-42.JPEG" alt="Erinnerung 8">
             </div>
             <div class="polaroid p2">
-              <img src="assets/images/2026-07-12 16-48-31.JPEG" alt="Foto">
+              <img src="assets/images/2026-07-12 16-48-31.JPEG" alt="Erinnerung 9">
             </div>
             <div class="polaroid p3">
-              <img src="assets/images/2026-07-18 22-19-27.HEIC" alt="Foto">
+              <img src="assets/images/2026-07-18 22-19-27.HEIC" alt="Erinnerung 10">
             </div>
           </div>
 
           <div class="waypoint-anchor">
             <div class="waypoint">
               <span class="waypoint-num">IV</span>
-              <img class="waypoint-cover" src="assets/images/2026-08-12 20-01-14.JPEG" alt="Song Cover - Vers 4" />
+              <img class="waypoint-cover" src="assets/images/output-4.jpg" alt="Song Cover - Vers 4" />
             </div>
           </div>
           
@@ -566,17 +568,17 @@ und so vieles, das noch wartet.
         <article class="stage" id="verse-5" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-5.mp3">
           <div class="photo-scatter" aria-hidden="true">
             <div class="polaroid p1">
-              <img src="assets/images/2026-08-12 20-01-14.JPEG" alt="Foto">
+              <img src="assets/images/2026-08-12 20-01-14.JPEG" alt="Erinnerung 11">
             </div>
             <div class="polaroid p2">
-              <img src="assets/images/IMG_0152.JPG" alt="Foto">
+              <img src="assets/images/IMG_0152.JPG" alt="Erinnerung 12">
             </div>
           </div>
 
           <div class="waypoint-anchor">
             <div class="waypoint">
               <span class="waypoint-num">V</span>
-              <img class="waypoint-cover" src="assets/images/2026-07-08 15-41-56.HEIC" alt="Song Cover - Vers 5" />
+              <img class="waypoint-cover" src="assets/images/output-5.jpg" alt="Song Cover - Vers 5" />
             </div>
           </div>
           
@@ -610,12 +612,12 @@ mit Liebe zusammengewoben.
         <article class="stage" id="verse-6" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-6.mp3">
           <div class="photo-scatter" aria-hidden="true">
             <div class="polaroid p1">
-              <img src="assets/images/IMG_0160.JPG" alt="Foto">
+              <img src="assets/images/IMG_0160.JPG" alt="Erinnerung 13">
             </div>
             <div class="polaroid p2">
-              <img src="assets/images/IMG_6910.JPG" alt="Foto">
+              <img src="assets/images/IMG_6910.JPG" alt="Erinnerung 14">
             </div>
-            <!-- Das letzte Polaroid als Video -->
+            <!-- Letzter Polaroid: Das zweite Video -->
             <div class="polaroid p3">
               <video autoplay muted loop playsinline preload="auto">
                 <source src="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/VIDEO-2026-07-13-15-09-31.MP4" type="video/mp4">
@@ -626,7 +628,7 @@ mit Liebe zusammengewoben.
           <div class="waypoint-anchor">
             <div class="waypoint">
               <span class="waypoint-num">VI</span>
-              <img class="waypoint-cover" src="assets/images/IMG_6910.JPG" alt="Song Cover - Vers 6" />
+              <img class="waypoint-cover" src="assets/images/output-6.jpg" alt="Song Cover - Vers 6" />
             </div>
           </div>
           
@@ -671,7 +673,7 @@ kurz stillstehen ließen.
 Dann kamen die Nächte  
 voller Wärme, Lachen, Verlangen—  
 bis gewöhnliche Orte  
-sich wie ein Zuhause anfühlten,  
+sich wie ein Zuhause angefühlten,  
 weil du da warst.  
 „Zuhause ist nicht Zuhause, wenn du nicht da bist.“  
 <span class="song-credit">Michelle Pfeiffer – Ethel Cain</span>
@@ -872,6 +874,7 @@ Und wo auch immer du bist:
         if (waypoint) waypoint.addEventListener('click', handlePlayClick);
       });
 
+      /* Scroll-Erkennung & Weiche Animation zur nächsten Verskarte */
       const handleScrollJump = () => {
         if (isSnapping) return;
 
