@@ -22,9 +22,9 @@
       --space-5: 1.25rem; --space-6: 1.5rem; --space-8: 2rem; --space-10: 2.5rem;
       --space-12: 3rem; --space-16: 4rem; --space-20: 5rem; --space-24: 6rem;
       --color-bg: #f5f0ea;
-      --color-surface: rgba(255, 255, 255, 0.88);
+      --color-surface: rgba(255, 255, 255, 0.82); /* Glasartig leicht transparent */
       --color-surface-2: #ffffff;
-      --color-border: rgba(44, 34, 26, 0.16);
+      --color-border: rgba(44, 34, 26, 0.14);
       --color-text: #1a1410;
       --color-text-muted: #524840;
       --color-text-faint: #7a7066;
@@ -33,8 +33,8 @@
       --color-accent: #b88252;
       --color-inverse: #ffffff;
       --shadow-sm: 0 8px 28px rgba(44, 34, 26, 0.09);
-      --shadow-md: 0 22px 56px rgba(44, 34, 26, 0.16);
-      --shadow-polaroid: 0 16px 38px rgba(30, 20, 15, 0.18);
+      --shadow-md: 0 22px 56px rgba(44, 34, 26, 0.14);
+      --shadow-polaroid: 0 14px 35px rgba(30, 20, 15, 0.16);
       --radius-md: 0.875rem;
       --radius-lg: 1.4rem;
       --radius-xl: 2rem;
@@ -46,9 +46,9 @@
     }
     [data-theme="dark"] {
       --color-bg: #130f0e;
-      --color-surface: rgba(28, 22, 20, 0.9);
+      --color-surface: rgba(26, 20, 18, 0.85); /* Glasartig in Darkmode */
       --color-surface-2: #241c19;
-      --color-border: rgba(247, 238, 229, 0.2);
+      --color-border: rgba(247, 238, 229, 0.16);
       --color-text: #f7f1ea;
       --color-text-muted: #d8cbbf;
       --color-text-faint: #a89a8e;
@@ -74,7 +74,7 @@
     .topbar { 
       position: fixed; top: 0; left: 0; right: 0; z-index: 100; 
       backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-      background: color-mix(in srgb, var(--color-bg) 92%, transparent); 
+      background: color-mix(in srgb, var(--color-bg) 90%, transparent); 
       border-bottom: 1px solid var(--color-border); padding-top: env(safe-area-inset-top); 
     }
     .topbar-inner { display: flex; justify-content: space-between; align-items: center; gap: var(--space-2); padding: var(--space-3) 0; }
@@ -90,6 +90,7 @@
     .btn-primary { background: var(--color-primary); color: var(--color-inverse); border-color: transparent; font-weight: 700; }
     .icon-btn { width: 2.5rem; height: 2.5rem; display: grid; place-items: center; cursor: pointer; border-radius: 50%; }
     
+    /* Hero */
     .hero { min-height: calc(100vh - 4rem); display: grid; align-items: center; padding: clamp(5rem, 12vw, 8rem) 0 var(--space-12); }
     .hero-layout { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: clamp(var(--space-6), 4vw, var(--space-12)); align-items: center; }
     .eyebrow { display: inline-flex; align-items: center; padding: 0.4rem 0.9rem; background: var(--color-primary-soft); color: var(--color-primary); border-radius: 999px; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; }
@@ -99,14 +100,25 @@
     .hero-video { position: relative; width: 100%; border-radius: var(--radius-xl); overflow: hidden; border: 1px solid var(--color-border); box-shadow: var(--shadow-md); aspect-ratio: 4 / 3; }
     .hero-video video { width: 100%; height: 100%; object-fit: cover; }
     
-    /* Journey Container & SVG Timeline */
+    /* JOURNEY CONTAINER & STACKING LAYERS */
     .journey { position: relative; padding: var(--space-12) 0 var(--space-24); }
+
+    /* LAYER 1: EBENE FÜR POLAROIDS (Ganz hinten: z-index 1) */
+    .photo-scatter-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    /* LAYER 2: EBENE FÜR DIE ZEITLEISTE & KNOTEN (Mitte: z-index 10) */
     .timeline-svg {
       position: absolute;
       top: 0; left: 0;
       width: 100%; height: 100%;
       pointer-events: none;
-      z-index: 3;
+      z-index: 10;
       overflow: visible;
     }
     .timeline-path {
@@ -114,62 +126,9 @@
       transition: stroke 300ms ease;
     }
 
-    /* Mitlaufendes Album Cover auf der Zeitleiste */
-    .moving-cover {
-      position: absolute;
-      top: 0; left: 0;
-      width: 4rem; height: 4rem;
-      border-radius: 50%;
-      border: 3px solid var(--color-primary);
-      background: var(--color-surface-2);
-      box-shadow: 0 0 25px rgba(142,53,87,0.4), var(--shadow-md);
-      z-index: 30;
-      transform: translate(-50%, -50%);
-      pointer-events: auto;
-      cursor: pointer;
-      overflow: hidden;
-      will-change: transform;
-      transition: border-color 400ms ease, box-shadow 400ms ease;
-    }
-    .moving-cover .cover-img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      border-radius: 50%;
-      transition: transform 650ms cubic-bezier(0.16, 1, 0.3, 1), opacity 400ms ease;
-    }
-    .moving-cover.is-transforming .cover-img {
-      transform: scale(0.15) rotate(270deg);
-      opacity: 0.2;
-    }
-    .moving-cover.is-playing .cover-img {
-      animation: spinCover 12s linear infinite;
-    }
-    .moving-cover.is-paused .cover-img {
-      animation-play-state: paused;
-    }
-
-    @keyframes spinCover {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-
-    /* Stages & Cards Layout */
-    .journey-grid { position: relative; display: flex; flex-direction: column; gap: 14rem; }
-    
-    .stage { 
-      position: relative; 
-      display: flex; 
-      justify-content: center; 
-      align-items: center; 
-      min-height: 26rem;
-      z-index: 5;
-    }
-
-    /* Römische Zahl / Node Marker auf der Achse VOR dem Kasten */
+    /* Römische Knotenpunkte auf der Achse */
     .stage-node {
       position: absolute;
-      left: 50%;
-      top: -7rem; /* Exakt im Zwischenraum VOR dem Kasten */
       transform: translate(-50%, -50%);
       width: 3.5rem;
       height: 3.5rem;
@@ -180,9 +139,9 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 10;
+      z-index: 11;
       overflow: hidden;
-      transition: transform 500ms var(--transition), border-color 400ms ease, background 400ms ease;
+      transition: transform 500ms var(--transition), border-color 400ms ease, box-shadow 400ms ease, opacity 300ms ease;
     }
 
     .node-roman {
@@ -190,7 +149,7 @@
       font-size: 1.25rem;
       font-weight: 700;
       color: var(--color-primary);
-      transition: opacity 400ms ease, transform 400ms ease;
+      transition: opacity 300ms ease, transform 300ms ease;
     }
 
     .node-cover {
@@ -201,119 +160,82 @@
       object-fit: cover;
       border-radius: 50%;
       opacity: 0;
-      transform: scale(0.3) rotate(-90deg);
-      transition: opacity 500ms ease, transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
+      transform: scale(0.2) rotate(-90deg);
+      transition: opacity 400ms ease, transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    /* Sobald das mitlaufende Cover den Knoten erreicht/passiert hat */
+    /* Sobald der Knotenpunkt zum aktiven Albumcover transformiert ist */
     .stage-node.is-transformed {
       border-color: var(--color-accent);
+      box-shadow: 0 0 20px rgba(142,53,87,0.35);
     }
     .stage-node.is-transformed .node-roman {
       opacity: 0;
-      transform: scale(0.5);
+      transform: scale(0.3);
     }
     .stage-node.is-transformed .node-cover {
       opacity: 1;
       transform: scale(1) rotate(0deg);
     }
 
-    /* DESKTOP LAYOUT (Gerade Achse in der Mitte) */
-    @media (min-width: 901px) {
-      .stage:nth-child(odd) { justify-content: flex-start; }
-      .stage:nth-child(even) { justify-content: flex-end; }
-
-      .stage-card {
-        width: 44%;
-        z-index: 10;
-      }
-
-      /* Polaroids auf der gegenüberliegenden freien Seite */
-      .photo-scatter {
-        position: absolute;
-        width: 44%;
-        height: 100%;
-        top: 0;
-        pointer-events: none;
-        z-index: 2;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .stage:nth-child(odd) .photo-scatter { right: 0; }
-      .stage:nth-child(even) .photo-scatter { left: 0; }
-
-      .polaroid {
-        position: absolute;
-        width: clamp(180px, 22vw, 260px);
-        background: #ffffff;
-        padding: 10px 10px 28px 10px;
-        box-shadow: var(--shadow-polaroid);
-        border-radius: 4px;
-        transition: transform 700ms ease;
-      }
-      [data-theme="dark"] .polaroid { background: #251d1a; }
-
-      .polaroid img, .polaroid video {
-        width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 2px;
-      }
-
-      .photo-scatter .polaroid.p-top { top: 5%; transform: rotate(-6deg); }
-      .photo-scatter .polaroid.p-bottom { bottom: 5%; transform: rotate(7deg); }
-      .stage:nth-child(even) .photo-scatter .polaroid.p-top { transform: rotate(8deg); }
-      .stage:nth-child(even) .photo-scatter .polaroid.p-bottom { transform: rotate(-5deg); }
+    /* Mitlaufendes & Pulsierendes Cover auf der Achse */
+    .moving-cover {
+      position: absolute;
+      top: 0; left: 0;
+      width: 3.6rem; height: 3.6rem;
+      border-radius: 50%;
+      border: 2px solid var(--color-primary);
+      background: var(--color-surface-2);
+      box-shadow: 0 0 25px rgba(142,53,87,0.45), var(--shadow-md);
+      z-index: 15;
+      transform: translate(-50%, -50%);
+      pointer-events: auto;
+      cursor: pointer;
+      overflow: hidden;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 300ms ease, visibility 300ms ease;
+    }
+    .moving-cover.is-visible {
+      opacity: 1;
+      visibility: visible;
+    }
+    .moving-cover .cover-img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    
+    /* Pulsieren & Drehen bei aktiver Musik */
+    .moving-cover.is-playing {
+      animation: pulseCover 2s infinite alternate ease-in-out;
+    }
+    .moving-cover.is-playing .cover-img {
+      animation: spinCover 12s linear infinite;
     }
 
-    /* MOBILE LAYOUT (S-Kurve um Kästen & leicht überlappende Polaroids) */
-    @media (max-width: 900px) {
-      .journey-grid { gap: 11rem; }
-      
-      .stage {
-        justify-content: flex-end;
-      }
-
-      .stage-card { 
-        width: calc(100% - 3.2rem); 
-        margin-left: auto;
-      }
-
-      .stage-node {
-        left: 1.6rem; /* Knoten sitzt links auf der mobilen Kurve */
-      }
-
-      .photo-scatter {
-        position: absolute;
-        inset: -4rem -1rem;
-        pointer-events: none;
-        z-index: 2;
-      }
-
-      .polaroid {
-        position: absolute;
-        width: clamp(140px, 35vw, 200px);
-        background: #ffffff;
-        padding: 8px 8px 22px 8px;
-        box-shadow: var(--shadow-polaroid);
-        border-radius: 4px;
-      }
-      [data-theme="dark"] .polaroid { background: #251d1a; }
-
-      .polaroid img, .polaroid video {
-        width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 2px;
-      }
-
-      .polaroid.p-top { top: -3rem; left: -0.5rem; transform: rotate(-8deg); }
-      .polaroid.p-bottom { bottom: -3.5rem; right: 0.5rem; transform: rotate(7deg); }
+    @keyframes spinCover {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    @keyframes pulseCover {
+      0% { box-shadow: 0 0 15px rgba(142,53,87,0.3); }
+      100% { box-shadow: 0 0 30px rgba(142,53,87,0.7), 0 0 45px rgba(184,130,82,0.4); }
     }
 
-    @media (max-width: 600px) {
-      .stage-card { width: calc(100% - 2.6rem); padding: var(--space-5); padding-bottom: 4.2rem; }
-      .stage-node { left: 1.3rem; width: 3rem; height: 3rem; }
-      .moving-cover { width: 3.5rem; height: 3.5rem; }
+    /* LAYER 3: EBENE FÜR KARTEN / VERSKÄSTEN (Ganz vorne: z-index 20) */
+    .journey-grid { position: relative; display: flex; flex-direction: column; gap: 14rem; z-index: 20; }
+    
+    .stage { 
+      position: relative; 
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+      min-height: 26rem;
     }
 
-    /* Allgemeine Card Styles */
+    /* Card Styling (Glasartig, überdeckt Achse & Fotos beim Scrollen) */
     .stage-card { 
       position: relative; 
       padding: clamp(var(--space-6), 4vw, var(--space-8)); 
@@ -321,8 +243,8 @@
       border: 1px solid var(--color-border); 
       border-radius: var(--radius-xl); 
       background: var(--color-surface); 
-      backdrop-filter: blur(16px); 
-      -webkit-backdrop-filter: blur(16px);
+      backdrop-filter: blur(20px); 
+      -webkit-backdrop-filter: blur(20px);
       box-shadow: var(--shadow-md); 
       display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--space-3); 
       opacity: 0;
@@ -342,17 +264,82 @@
     .stage-sub { color: var(--color-text-muted); font-size: var(--text-sm); font-weight: 600; }
     .poem { white-space: pre-line; font-size: clamp(1rem, 0.98rem + 0.2vw, 1.15rem); color: var(--color-text); font-weight: 500; }
     
-    /* Track Button */
     .track-card { 
       position: absolute; bottom: var(--space-4); right: var(--space-4);
       display: inline-flex; align-items: center; gap: var(--space-2);
       padding: 0.35rem 0.35rem 0.35rem 0.85rem; border-radius: 999px;
       background: var(--color-surface-2); border: 1px solid var(--color-border);
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08); max-width: calc(100% - var(--space-8)); cursor: pointer; z-index: 12;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08); max-width: calc(100% - var(--space-8)); cursor: pointer; z-index: 22;
     }
     .track-meta { font-size: 0.8rem; font-weight: 600; color: var(--color-text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .audio-btn { width: 1.85rem; height: 1.85rem; border-radius: 50%; border: none; background: var(--color-primary); color: #fff; display: grid; place-items: center; cursor: pointer; flex-shrink: 0; padding: 0; }
     
+    /* POLAROIDS DESKTOP & MOBILE */
+    .polaroid {
+      position: absolute;
+      background: #ffffff;
+      padding: 10px 10px 28px 10px;
+      box-shadow: var(--shadow-polaroid);
+      border-radius: 4px;
+      transition: transform 700ms ease;
+    }
+    [data-theme="dark"] .polaroid { background: #251d1a; }
+    .polaroid img, .polaroid video { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 2px; }
+
+    /* DESKTOP RESPONSIVE LAYOUT (Gerade Achse in der Mitte) */
+    @media (min-width: 901px) {
+      .stage:nth-child(odd) { justify-content: flex-start; }
+      .stage:nth-child(even) { justify-content: flex-end; }
+
+      .stage-card { width: 44%; }
+
+      /* Polaroids auf freier Gegenüberseite */
+      .stage-scatter-group {
+        position: absolute;
+        width: 44%;
+        height: 100%;
+        top: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .stage:nth-child(odd) .stage-scatter-group { right: 0; }
+      .stage:nth-child(even) .stage-scatter-group { left: 0; }
+
+      .stage-scatter-group .polaroid.p-top { top: 5%; width: clamp(180px, 20vw, 250px); transform: rotate(-6deg); }
+      .stage-scatter-group .polaroid.p-bottom { bottom: 5%; width: clamp(180px, 20vw, 250px); transform: rotate(7deg); }
+      .stage:nth-child(even) .stage-scatter-group .polaroid.p-top { transform: rotate(8deg); }
+      .stage:nth-child(even) .stage-scatter-group .polaroid.p-bottom { transform: rotate(-5deg); }
+    }
+
+    /* MOBILE RESPONSIVE LAYOUT (Kurve bleibt exakt in Seitenbreite) */
+    @media (max-width: 900px) {
+      .journey-grid { gap: 11rem; }
+      
+      .stage { justify-content: flex-end; }
+
+      /* Verskästen rechtsbündig mit Abstand für die linke Achse */
+      .stage-card { 
+        width: calc(100% - 3.8rem); 
+        margin-left: auto;
+      }
+
+      /* Polaroids auf Mobile dahinter gestreut */
+      .stage-scatter-group {
+        position: absolute;
+        inset: 0;
+      }
+      .stage-scatter-group .polaroid.p-top { top: -2.5rem; left: 0; width: clamp(130px, 34vw, 180px); transform: rotate(-8deg); }
+      .stage-scatter-group .polaroid.p-bottom { bottom: -3rem; right: 0; width: clamp(130px, 34vw, 180px); transform: rotate(7deg); }
+    }
+
+    @media (max-width: 600px) {
+      .stage-card { width: calc(100% - 3rem); padding: var(--space-5); padding-bottom: 4.2rem; }
+      .stage-node { width: 3rem; height: 3rem; }
+      .moving-cover { width: 3.2rem; height: 3.2rem; }
+    }
+
+    /* Closing */
     .closing { padding: var(--space-16) 0 var(--space-24); }
     .closing h2 { margin-bottom: var(--space-5); text-align: center; font-family: var(--font-display); font-size: var(--text-2xl); }
     .full-poem { white-space: pre-line; margin: 0 auto; max-width: 34rem; text-align: center; font-size: clamp(1rem, 0.98rem + 0.2vw, 1.15rem); }
@@ -401,7 +388,65 @@
     </section>
     
     <section class="journey shell" id="journey-section">
-      <!-- Geschwungene/Gerade SVG Zeitleiste -->
+      <!-- EBENE 1: POLAROIDS (Hinter allen Elementen) -->
+      <div class="photo-scatter-layer" id="scatter-layer">
+        <!-- Scatter-Gruppen werden per JS exakt zu den Abschnitten positioniert -->
+        <div class="stage-scatter-group" data-for="verse-1">
+          <div class="polaroid p-top">
+            <video autoplay muted loop playsinline preload="auto"><source src="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/2026-07-18%2022-17-51.mov"></video>
+          </div>
+          <div class="polaroid p-bottom">
+            <img src="assets/images/2026-07-08 15-41-56.jpeg" alt="Memory">
+          </div>
+        </div>
+
+        <div class="stage-scatter-group" data-for="verse-2">
+          <div class="polaroid p-top">
+            <img src="assets/images/2026-07-12 13-12-42.jpeg" alt="Memory">
+          </div>
+          <div class="polaroid p-bottom">
+            <img src="assets/images/2026-07-12 13-04-45.jpeg" alt="Memory">
+          </div>
+        </div>
+
+        <div class="stage-scatter-group" data-for="verse-3">
+          <div class="polaroid p-top">
+            <img src="assets/images/2026-07-12 13-16-39.jpeg" alt="Memory">
+          </div>
+          <div class="polaroid p-bottom">
+            <img src="assets/images/2026-07-12 14-07-19.jpeg" alt="Memory">
+          </div>
+        </div>
+
+        <div class="stage-scatter-group" data-for="verse-4">
+          <div class="polaroid p-top">
+            <img src="assets/images/2026-07-12 14-10-42.jpeg" alt="Memory">
+          </div>
+          <div class="polaroid p-bottom">
+            <img src="assets/images/2026-07-18 22-19-27.jpeg" alt="Memory">
+          </div>
+        </div>
+
+        <div class="stage-scatter-group" data-for="verse-5">
+          <div class="polaroid p-top">
+            <img src="assets/images/2026-08-12 20-01-14.jpeg" alt="Memory">
+          </div>
+          <div class="polaroid p-bottom">
+            <img src="assets/images/IMG_0152.jpeg" alt="Memory">
+          </div>
+        </div>
+
+        <div class="stage-scatter-group" data-for="verse-6">
+          <div class="polaroid p-top">
+            <img src="assets/images/IMG_0160.jpeg" alt="Memory">
+          </div>
+          <div class="polaroid p-bottom">
+            <video autoplay muted loop playsinline preload="auto"><source src="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/VIDEO-2026-07-13-15-09-31.MP4"></video>
+          </div>
+        </div>
+      </div>
+
+      <!-- EBENE 2: SVG ZEITLEISTE & NODES (Mitte) -->
       <svg class="timeline-svg" id="timeline-svg">
         <defs>
           <linearGradient id="lineGrad" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -414,28 +459,23 @@
         <path class="timeline-path" id="timeline-path" stroke="url(#lineGrad)" stroke-width="3" fill="none"/>
       </svg>
 
-      <!-- Mitlaufendes Album Cover Element -->
-      <div class="moving-cover" id="moving-cover" title="Current track cover">
+      <!-- Römische Zahl Knotenelemente (Werden per JS auf der Zeitleiste positioniert) -->
+      <div class="stage-node" id="node-0"><span class="node-roman">I</span><img class="node-cover" src="assets/images/output-1.jpg" alt="Cover 1"></div>
+      <div class="stage-node" id="node-1"><span class="node-roman">II</span><img class="node-cover" src="assets/images/output-2.jpg" alt="Cover 2"></div>
+      <div class="stage-node" id="node-2"><span class="node-roman">III</span><img class="node-cover" src="assets/images/output-3.jpg" alt="Cover 3"></div>
+      <div class="stage-node" id="node-3"><span class="node-roman">IV</span><img class="node-cover" src="assets/images/output-4.jpg" alt="Cover 4"></div>
+      <div class="stage-node" id="node-4"><span class="node-roman">V</span><img class="node-cover" src="assets/images/output-5.jpg" alt="Cover 5"></div>
+      <div class="stage-node" id="node-5"><span class="node-roman">VI</span><img class="node-cover" src="assets/images/output-6.jpg" alt="Cover 6"></div>
+
+      <!-- Mitlaufendes, drehendes Cover auf der Achse zwischen 2 Abschnitten -->
+      <div class="moving-cover" id="moving-cover" title="Active Track Cover">
         <img class="cover-img" id="moving-cover-img" src="assets/images/output-1.jpg" alt="Active Album Cover" />
       </div>
 
+      <!-- EBENE 3: VERSKÄSTEN / KARTEN (Vorne & Leicht Glasartig) -->
       <div class="journey-grid">
         <!-- Verse 1 -->
-        <article class="stage" id="verse-1" data-roman="I" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-1.mp3" data-cover="assets/images/output-1.jpg" data-title="A World Alone – Lorde">
-          <div class="stage-node" id="node-0">
-            <span class="node-roman">I</span>
-            <img class="node-cover" src="assets/images/output-1.jpg" alt="Cover 1">
-          </div>
-
-          <div class="photo-scatter">
-            <div class="polaroid p-top">
-              <video autoplay muted loop playsinline preload="auto"><source src="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/2026-07-18%2022-17-51.mov"></video>
-            </div>
-            <div class="polaroid p-bottom">
-              <img src="assets/images/2026-07-08 15-41-56.jpeg" alt="Memory">
-            </div>
-          </div>
-          
+        <article class="stage" id="verse-1" data-roman="I" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-1.mp3" data-cover="assets/images/output-1.jpg">
           <div class="stage-card">
             <span class="stage-kicker">June</span>
             <h2>Our beginning</h2>
@@ -455,21 +495,7 @@ and the feeling that
         </article>
 
         <!-- Verse 2 -->
-        <article class="stage" id="verse-2" data-roman="II" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-2.mp3" data-cover="assets/images/output-2.jpg" data-title="Michelle Pfeiffer – Ethel Cain">
-          <div class="stage-node" id="node-1">
-            <span class="node-roman">II</span>
-            <img class="node-cover" src="assets/images/output-2.jpg" alt="Cover 2">
-          </div>
-
-          <div class="photo-scatter">
-            <div class="polaroid p-top">
-              <img src="assets/images/2026-07-12 13-12-42.jpeg" alt="Memory">
-            </div>
-            <div class="polaroid p-bottom">
-              <img src="assets/images/2026-07-12 13-04-45.jpeg" alt="Memory">
-            </div>
-          </div>
-          
+        <article class="stage" id="verse-2" data-roman="II" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-2.mp3" data-cover="assets/images/output-2.jpg">
           <div class="stage-card">
             <span class="stage-kicker">Home</span>
             <h2>Our hot summer nights</h2>
@@ -495,21 +521,7 @@ because you were there.
         </article>
 
         <!-- Verse 3 -->
-        <article class="stage" id="verse-3" data-roman="III" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-3.mp3" data-cover="assets/images/output-3.jpg" data-title="Risk – Gracie Abrams">
-          <div class="stage-node" id="node-2">
-            <span class="node-roman">III</span>
-            <img class="node-cover" src="assets/images/output-3.jpg" alt="Cover 3">
-          </div>
-
-          <div class="photo-scatter">
-            <div class="polaroid p-top">
-              <img src="assets/images/2026-07-12 13-16-39.jpeg" alt="Memory">
-            </div>
-            <div class="polaroid p-bottom">
-              <img src="assets/images/2026-07-12 14-07-19.jpeg" alt="Memory">
-            </div>
-          </div>
-          
+        <article class="stage" id="verse-3" data-roman="III" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-3.mp3" data-cover="assets/images/output-3.jpg">
           <div class="stage-card">
             <span class="stage-kicker">Belonging</span>
             <h2>Our risk</h2>
@@ -534,21 +546,7 @@ one I would take again.
         </article>
 
         <!-- Verse 4 -->
-        <article class="stage" id="verse-4" data-roman="IV" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-4.mp3" data-cover="assets/images/output-4.jpg" data-title="teenage dream – Olivia Rodrigo">
-          <div class="stage-node" id="node-3">
-            <span class="node-roman">IV</span>
-            <img class="node-cover" src="assets/images/output-4.jpg" alt="Cover 4">
-          </div>
-
-          <div class="photo-scatter">
-            <div class="polaroid p-top">
-              <img src="assets/images/2026-07-12 14-10-42.jpeg" alt="Memory">
-            </div>
-            <div class="polaroid p-bottom">
-              <img src="assets/images/2026-07-18 22-19-27.jpeg" alt="Memory">
-            </div>
-          </div>
-          
+        <article class="stage" id="verse-4" data-roman="IV" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-4.mp3" data-cover="assets/images/output-4.jpg">
           <div class="stage-card">
             <span class="stage-kicker">Nineteen</span>
             <h2>Our life ahead</h2>
@@ -568,21 +566,7 @@ and so much still waiting.
         </article>
 
         <!-- Verse 5 -->
-        <article class="stage" id="verse-5" data-roman="V" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-5.mp3" data-cover="assets/images/output-5.jpg" data-title="Coat of Many Colors – Dolly Parton">
-          <div class="stage-node" id="node-4">
-            <span class="node-roman">V</span>
-            <img class="node-cover" src="assets/images/output-5.jpg" alt="Cover 5">
-          </div>
-
-          <div class="photo-scatter">
-            <div class="polaroid p-top">
-              <img src="assets/images/2026-08-12 20-01-14.jpeg" alt="Memory">
-            </div>
-            <div class="polaroid p-bottom">
-              <img src="assets/images/IMG_0152.jpeg" alt="Memory">
-            </div>
-          </div>
-          
+        <article class="stage" id="verse-5" data-roman="V" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-5.mp3" data-cover="assets/images/output-5.jpg">
           <div class="stage-card">
             <span class="stage-kicker">Colors</span>
             <h2>Our beauty</h2>
@@ -610,21 +594,7 @@ stitched together with love.
         </article>
 
         <!-- Verse 6 -->
-        <article class="stage" id="verse-6" data-roman="VI" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-6.mp3" data-cover="assets/images/output-6.jpg" data-title="I Will Always Love You – Dolly Parton">
-          <div class="stage-node" id="node-5">
-            <span class="node-roman">VI</span>
-            <img class="node-cover" src="assets/images/output-6.jpg" alt="Cover 6">
-          </div>
-
-          <div class="photo-scatter">
-            <div class="polaroid p-top">
-              <img src="assets/images/IMG_0160.jpeg" alt="Memory">
-            </div>
-            <div class="polaroid p-bottom">
-              <video autoplay muted loop playsinline preload="auto"><source src="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/VIDEO-2026-07-13-15-09-31.MP4"></video>
-            </div>
-          </div>
-          
+        <article class="stage" id="verse-6" data-roman="VI" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-6.mp3" data-cover="assets/images/output-6.jpg">
           <div class="stage-card">
             <span class="stage-kicker">Daniel</span>
             <h2>Our love</h2>
@@ -746,9 +716,10 @@ And wherever you go:
         renderThemeIcon();
       });
 
-      // Elements & Audio Setup
+      // Elements
       const stages = [...document.querySelectorAll('.stage')];
       const stageNodes = [...document.querySelectorAll('.stage-node')];
+      const scatterGroups = [...document.querySelectorAll('.stage-scatter-group')];
       const audio = document.getElementById('globalAudio');
       const unlockAudioBtn = document.getElementById('unlockAudio');
       const unlockHeroBtn = document.getElementById('unlockAudioHero');
@@ -764,6 +735,7 @@ And wherever you go:
       let fadeTimer = null;
       let pathLength = 0;
       let pathSamplePoints = [];
+      let nodePositions = [];
 
       const musicNoteIcon = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>';
       const musicMuteIcon = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle><line x1="2" y1="2" x2="22" y2="22"></line></svg>';
@@ -777,7 +749,6 @@ And wherever you go:
         if (unlockHeroBtn) unlockHeroBtn.textContent = isPlaying ? 'Disable music' : 'Enable music';
 
         movingCover.classList.toggle('is-playing', isPlaying);
-        movingCover.classList.toggle('is-paused', !isPlaying && !audio.paused);
 
         stages.forEach((st, idx) => {
           const btn = st.querySelector('.audio-btn');
@@ -846,14 +817,6 @@ And wherever you go:
 
         stages.forEach((st, idx) => st.classList.toggle('is-active', idx === index));
 
-        if (isIndexChanged) {
-          movingCover.classList.add('is-transforming');
-          setTimeout(() => {
-            movingCoverImg.src = targetStage.dataset.cover;
-            movingCover.classList.remove('is-transforming');
-          }, 300);
-        }
-
         if (manual) {
           userMuted = false;
           isAudioEnabled = true;
@@ -871,7 +834,7 @@ And wherever you go:
         updateAudioUI();
       };
 
-      // Berechne Zeitleiste (Mobil = geschwungene S-Kurve, Desktop = Schnurgerade)
+      // BERECHNUNG DER ZEITLEISTE & KNOTEN-POSITIONEN
       const buildTimelinePath = () => {
         const jRect = journeySection.getBoundingClientRect();
         const width = jRect.width;
@@ -881,37 +844,67 @@ And wherever you go:
 
         svgElement.setAttribute('viewBox', `0 0 ${width} ${height}`);
 
+        nodePositions = [];
         let d = '';
 
         if (!isMobile) {
-          // DESKTOP: Schnurgerade Achse genau in der Mitte
+          // DESKTOP: GERADE ACHSE IN DER MITTE
           d = `M ${centerX} 0 L ${centerX} ${height}`;
+
+          stages.forEach((stage, idx) => {
+            const card = stage.querySelector('.stage-card');
+            const cRect = card.getBoundingClientRect();
+            const nodeY = (cRect.top - jRect.top) - 35; // Positioniert knapp über dem Verskasten
+
+            nodePositions.push({ x: centerX, y: nodeY, index: idx });
+
+            const node = stageNodes[idx];
+            node.style.left = `${centerX}px`;
+            node.style.top = `${nodeY}px`;
+
+            // Positioniere Polaroids entsprechend
+            const scatter = scatterGroups[idx];
+            if (scatter) {
+              scatter.style.top = `${cRect.top - jRect.top}px`;
+              scatter.style.height = `${cRect.height}px`;
+            }
+          });
+
         } else {
-          // MOBILE: Geschwungene S-Kurve um die Verskästen herum
+          // MOBILE: CURVED PATH (Bleibt sicher innerhalb der Seitenbreite)
+          const mobileAxisX = 28; // ~1.75rem von links
           const points = [];
-          const mobileAxisX = 1.6 * 16; // Positiv ausgerichtete linke Achse auf Mobile (~25.6px)
 
           points.push({ x: mobileAxisX, y: 0 });
 
           stages.forEach((stage, idx) => {
-            const node = stage.querySelector('.stage-node');
             const card = stage.querySelector('.stage-card');
-            const nRect = node.getBoundingClientRect();
             const cRect = card.getBoundingClientRect();
+            
+            const nodeY = (cRect.top - jRect.top) - 35;
+            const cardMidY = (cRect.top - jRect.top) + cRect.height / 2;
+            
+            // Kurve verläuft rechts um die Karte herum, bleibt aber max. 95% der Seitenbreite
+            const curveX = Math.min(width - 20, (cRect.right - jRect.left) + 12);
 
-            const nodeY = nRect.top - jRect.top + nRect.height / 2;
-            const cardMidY = cRect.top - jRect.top + cRect.height / 2;
-            const curveX = cRect.right - jRect.left + 15; // Schwingt rechts außen am Verskasten vorbei
+            nodePositions.push({ x: mobileAxisX, y: nodeY, index: idx });
 
-            // 1. Römischer Knotenpunkt VOR dem Kasten
+            const node = stageNodes[idx];
+            node.style.left = `${mobileAxisX}px`;
+            node.style.top = `${nodeY}px`;
+
+            const scatter = scatterGroups[idx];
+            if (scatter) {
+              scatter.style.top = `${cRect.top - jRect.top}px`;
+              scatter.style.height = `${cRect.height}px`;
+            }
+
             points.push({ x: mobileAxisX, y: nodeY });
-            // 2. Schwung nach außen um den Verskasten herum
             points.push({ x: curveX, y: cardMidY });
           });
 
           points.push({ x: mobileAxisX, y: height });
 
-          // S-Kurve verbinden
           d = `M ${points[0].x} ${points[0].y}`;
           for (let i = 1; i < points.length; i++) {
             const prev = points[i - 1];
@@ -924,9 +917,8 @@ And wherever you go:
         pathElement.setAttribute('d', d);
         pathLength = pathElement.getTotalLength();
 
-        // Pfadpunkte für Scroll-Tracking samplen
         pathSamplePoints = [];
-        const samples = 400;
+        const samples = 500;
         for (let i = 0; i <= samples; i++) {
           const l = (i / samples) * pathLength;
           const pt = pathElement.getPointAtLength(l);
@@ -934,15 +926,17 @@ And wherever you go:
         }
       };
 
-      // Finde Position des Cover-Markers & Aktualisiere Römische Zahl Transformationen
+      // ANIMATIONS- & TRANSFORMATIONSLOGIK BEIM SCROLLEN
       const updateCoverPositionOnScroll = () => {
+        if (!nodePositions.length) return;
+
         const jRect = journeySection.getBoundingClientRect();
         const viewportTargetY = window.innerHeight * 0.42;
         const currentTargetY = viewportTargetY - jRect.top;
 
+        // Finde nähesten Punkt auf der SVG-Achse für das mitlaufende Cover
         let closestPoint = pathSamplePoints[0];
         let minDiff = Infinity;
-
         for (let pt of pathSamplePoints) {
           const diff = Math.abs(pt.y - currentTargetY);
           if (diff < minDiff) {
@@ -951,36 +945,45 @@ And wherever you go:
           }
         }
 
-        if (closestPoint) {
-          movingCover.style.transform = `translate3d(${closestPoint.x}px, ${closestPoint.y}px, 0) translate(-50%, -50%)`;
+        // Transformation der Römischen Knotenpunkte zu Albumcovern
+        let activeSectionIdx = 0;
+
+        nodePositions.forEach((nodePos, idx) => {
+          const nodeEl = stageNodes[idx];
+
+          // Sobald die Scrollposition/das Cover diesen Römischen Knoten erreicht:
+          if (currentTargetY >= nodePos.y - 15) {
+            nodeEl.classList.add('is-transformed');
+            activeSectionIdx = idx;
+          } else {
+            nodeEl.classList.remove('is-transformed');
+          }
+        });
+
+        // Logik für das mitlaufende Cover zwischen zwei Knoten:
+        // Es läuft auf der Achse, verschwindet aber exakt, wenn es über einem Knoten liegt,
+        // da in diesem Moment der Knoten selbst zum Albumcover transformiert ist.
+        const currentNextNode = nodePositions[activeSectionIdx + 1];
+        const currentActiveNode = nodePositions[activeSectionIdx];
+
+        let isOverlappingNode = false;
+        if (currentActiveNode && Math.abs(currentTargetY - currentActiveNode.y) < 30) {
+          isOverlappingNode = true;
+        }
+        if (currentNextNode && Math.abs(currentTargetY - currentNextNode.y) < 30) {
+          isOverlappingNode = true;
         }
 
-        // Transformation der Römischen Zahlen -> Albumcover VOR jedem Verskasten
-        stages.forEach((stage, idx) => {
-          const node = stageNodes[idx];
-          const nodeRect = node.getBoundingClientRect();
-          const nodeY = nodeRect.top + nodeRect.height / 2;
+        if (closestPoint && !isOverlappingNode && currentTargetY >= nodePositions[0].y) {
+          movingCover.style.transform = `translate3d(${closestPoint.x}px, ${closestPoint.y}px, 0) translate(-50%, -50%)`;
+          movingCoverImg.src = stages[activeSectionIdx].dataset.cover;
+          movingCover.classList.add('is-visible');
+        } else {
+          movingCover.classList.remove('is-visible');
+        }
 
-          // Sobald das mitlaufende Cover den Knotenpunkt (vor dem Verskasten) erreicht:
-          if (viewportTargetY >= nodeY - 10) {
-            node.classList.add('is-transformed');
-          } else {
-            node.classList.remove('is-transformed');
-          }
-        });
-
-        // Aktiven Vers wechseln
-        let newVersIndex = 0;
-        stages.forEach((stage, idx) => {
-          const node = stageNodes[idx];
-          const nRect = node.getBoundingClientRect();
-          if (nRect.top < window.innerHeight * 0.55) {
-            newVersIndex = idx;
-          }
-        });
-
-        if (newVersIndex !== currentActiveIndex) {
-          switchVersIndex(newVersIndex, false);
+        if (activeSectionIdx !== currentActiveIndex) {
+          switchVersIndex(activeSectionIdx, false);
         }
       };
 
@@ -1034,14 +1037,14 @@ And wherever you go:
         if (chip) chip.addEventListener('click', handleClick);
       });
 
-      // Observer für Karten-Einblenden
+      // Observer für sanftes Einblenden der Verskästen
       const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add('is-visible');
           }
         });
-      }, { threshold: 0.2 });
+      }, { threshold: 0.15 });
 
       stages.forEach((stage) => observer.observe(stage));
     })();
