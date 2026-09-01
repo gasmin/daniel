@@ -119,7 +119,7 @@
       position: absolute;
       inset: 0;
       pointer-events: none;
-      z-index: 1;
+      z-index: 10;
       overflow: hidden;
     }
 
@@ -167,7 +167,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 11;
+      z-index: 12;
       overflow: hidden;
       transition: transform 500ms var(--transition), border-color 400ms ease, box-shadow 400ms ease, opacity 300ms ease;
     }
@@ -199,7 +199,7 @@
     .stage-node.is-transformed .node-roman { opacity: 0; transform: scale(0.3); }
     .stage-node.is-transformed .node-cover { opacity: 1; transform: scale(1) rotate(0deg); }
 
-    /* Mitlaufendes Cover auf der Achse */
+    /* Mitlaufendes Cover */
     .moving-cover {
       position: absolute;
       top: 0; left: 0;
@@ -236,7 +236,7 @@
       display: flex; 
       justify-content: center; 
       align-items: center; 
-      min-height: 26rem;
+      min-height: 28rem;
     }
 
     .stage-card { 
@@ -251,6 +251,7 @@
       box-shadow: var(--shadow-md); 
       display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--space-3); 
       opacity: 0;
+      z-index: 20;
       transition: opacity 700ms cubic-bezier(0.16, 1, 0.3, 1), transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
     }
     
@@ -281,62 +282,63 @@
       padding: 10px 10px 28px 10px;
       box-shadow: var(--shadow-polaroid);
       border-radius: 4px;
-      transition: transform 500ms ease, box-shadow 500ms ease, z-index 300ms ease;
+      transition: transform 400ms ease, box-shadow 400ms ease;
       pointer-events: auto;
+      z-index: 10;
     }
     .polaroid:hover {
-      transform: scale(1.08) rotate(0deg) !important;
-      z-index: 30 !important;
+      transform: scale(1.1) rotate(0deg) !important;
+      z-index: 35 !important;
+      box-shadow: 0 24px 50px rgba(0, 0, 0, 0.25);
     }
     [data-theme="dark"] .polaroid { background: #251d1a; }
     .polaroid img, .polaroid video { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 2px; }
 
-    /* DESKTOP LAYOUT (ANPASSUNGEN FÜR ECKEN-KNOTEN UND POLAROIDS) */
+    /* DESKTOP LAYOUT (AKURATE POLAROID-VERTEILUNG IM FREIEN RAUM) */
     @media (min-width: 901px) {
       .stage:nth-child(odd) { justify-content: flex-start; }
       .stage:nth-child(even) { justify-content: flex-end; }
 
       .stage-card { width: 44%; }
 
+      /* Der freie Bereich gegenüber der Verskarte */
       .stage-scatter-group {
         position: absolute;
-        width: 44%;
+        width: 48%;
         height: 100%;
         top: 0;
         pointer-events: auto;
       }
 
-      .stage:nth-child(odd) .stage-scatter-group { right: 0; left: auto; }
-      .stage:nth-child(even) .stage-scatter-group { left: 0; right: auto; }
+      .stage:nth-child(odd) .stage-scatter-group { right: 0; left: 52%; }
+      .stage:nth-child(even) .stage-scatter-group { left: 0; right: 52%; }
 
       .stage-scatter-group .polaroid {
-        position: absolute;
-        width: clamp(160px, 16vw, 230px);
-        z-index: 2;
+        width: clamp(150px, 14vw, 210px);
       }
 
-      /* Odd stages: Fotos rechts sauber in Ecken verteilt */
+      /* Ungerade Stufen (Karte LINKS, Polaroids RECHTS im freien Raum verteilt) */
       .stage:nth-child(odd) .stage-scatter-group .polaroid.p-top {
-        top: -15px;
-        left: 5%;
-        transform: rotate(-6deg);
+        top: 0%;
+        left: 8%;
+        transform: rotate(-7deg);
       }
       .stage:nth-child(odd) .stage-scatter-group .polaroid.p-bottom {
-        bottom: -15px;
-        right: 5%;
-        transform: rotate(5deg);
-      }
-
-      /* Even stages: Fotos links sauber in Ecken verteilt */
-      .stage:nth-child(even) .stage-scatter-group .polaroid.p-top {
-        top: -15px;
-        right: 5%;
+        bottom: 0%;
+        right: 8%;
         transform: rotate(6deg);
       }
+
+      /* Gerade Stufen (Karte RECHTS, Polaroids LINKS im freien Raum verteilt) */
+      .stage:nth-child(even) .stage-scatter-group .polaroid.p-top {
+        top: 0%;
+        right: 8%;
+        transform: rotate(7deg);
+      }
       .stage:nth-child(even) .stage-scatter-group .polaroid.p-bottom {
-        bottom: -15px;
-        left: 5%;
-        transform: rotate(-5deg);
+        bottom: 0%;
+        left: 8%;
+        transform: rotate(-6deg);
       }
     }
 
@@ -857,7 +859,7 @@ And wherever you go:
         nodePositions = [];
 
         if (!isMobile) {
-          // DESKTOP: Knotenpunkte auf Höhe der oberen Ecke der Karte platzieren (+28px Offset)
+          // DESKTOP
           stages.forEach((stage, idx) => {
             const card = stage.querySelector('.stage-card');
             const cRect = card.getBoundingClientRect();
@@ -878,7 +880,7 @@ And wherever you go:
           });
 
         } else {
-          // MOBILE: Geschwungene Achse im SVG zeichnen
+          // MOBILE
           svgElement.setAttribute('viewBox', `0 0 ${width} ${height}`);
           const mobileAxisX = 24;
           const points = [];
@@ -932,7 +934,7 @@ And wherever you go:
         }
       };
 
-      // SCROLL-LOGIK MIT AUTOMATISCHEM AUSBLENDEN AM ENDE
+      // SCROLL-LOGIK MIT COVER-BEWEGUNG BIS ZUM ENDE VON VERS 6
       const updateCoverPositionOnScroll = () => {
         if (!nodePositions.length) return;
 
@@ -983,10 +985,11 @@ And wherever you go:
         }
 
         const firstNodeY = nodePositions[0].y;
-        const lastNodeY = nodePositions[nodePositions.length - 1].y;
+        // Ende-Grenze für die Bewegung: Unterkante der letzten Verskarte (Vers 6)
+        const lastStageCard = stages[stages.length - 1].querySelector('.stage-card');
+        const lastCardBottomY = (lastStageCard.getBoundingClientRect().bottom - jRect.top);
 
-        // Bounding-Check: Cover blendet nach dem 6. Knotenpunkt (lastNodeY + 30) komplett aus
-        if (!isOverlappingNode && currentTargetY >= firstNodeY && currentTargetY <= lastNodeY + 30) {
+        if (!isOverlappingNode && currentTargetY >= firstNodeY && currentTargetY <= lastCardBottomY) {
           movingCover.style.transform = `translate3d(${targetX}px, ${targetY}px, 0) translate(-50%, -50%)`;
           movingCoverImg.src = stages[activeSectionIdx].dataset.cover;
           movingCover.classList.add('is-visible');
