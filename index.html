@@ -413,7 +413,8 @@
     .full-poem { white-space: pre-line; margin: 0 auto; max-width: 34rem; text-align: center; font-size: clamp(1rem, 0.98rem + 0.2vw, 1.15rem); }
     .song-credit { display: block; margin: 0.6rem 0 1.4rem; font-size: 0.85em; font-style: italic; color: var(--color-text-muted); }
     .signature { margin-top: var(--space-12); display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--space-3); }
-    .signature-heart { width: 2.8rem; height: 2.8rem; border-radius: 50%; border: 1px solid var(--color-border); display: grid; place-items: center; color: var(--color-primary); background: var(--color-surface-2); }
+    .signature-heart { display: inline-flex; place-items: center; color: var(--color-primary); }
+    .signature-heart svg { width: 2.4rem; height: 2.4rem; }
     .signature-text { margin: 0; font-family: var(--font-display); font-size: 1.4rem; color: var(--color-text-muted); font-style: italic; }
   </style>
 </head>
@@ -444,7 +445,6 @@
           <p>For your birthday, I tried to put our journey into words — the places, the music, the warmth, and all the little moments that became ours. I hope you like it.</p>
           <div class="hero-actions">
             <button class="btn btn-primary" id="unlockAudioHero">Enable music</button>
-            <a class="btn" href="#verse-1">Start with July</a>
           </div>
         </div>
         <div class="hero-video">
