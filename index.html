@@ -234,7 +234,7 @@
       width: 100%;
     }
 
-    /* VERSKARTE (Optimiertes Frosted-Glass-Design) */
+    /* VERSKARTE */
     .stage-card { 
       position: relative; 
       padding: clamp(var(--space-6), 4vw, var(--space-8)); 
@@ -269,7 +269,7 @@
     .track-meta { font-size: 0.8rem; font-weight: 600; color: var(--color-text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .audio-btn { width: 1.85rem; height: 1.85rem; border-radius: 50%; border: none; background: var(--color-primary); color: #fff; display: grid; place-items: center; cursor: pointer; flex-shrink: 0; padding: 0; }
     
-    /* DIGITALE POLAROID-GALERIE & HANDSCHRIFT-UNTERSCHRIFTEN */
+    /* DIGITALE POLAROID-GALERIE */
     .polaroid-gallery {
       display: flex;
       justify-content: center;
@@ -456,12 +456,14 @@
     </section>
     
     <section class="journey shell" id="journey-section">
+      <!-- ZEITLEISTEN -->
       <div class="timeline-desktop-line"></div>
 
       <svg class="timeline-svg" id="timeline-svg">
         <path class="timeline-path" id="timeline-path" stroke="var(--color-primary)" stroke-width="3.5" stroke-opacity="0.85" fill="none"/>
       </svg>
 
+      <!-- Knotenpunkte auf der Achse -->
       <div class="stage-node" id="node-0"><span class="node-roman">I</span><img class="node-cover" src="assets/images/output-1.jpg" alt="Cover 1"></div>
       <div class="stage-node" id="node-1"><span class="node-roman">II</span><img class="node-cover" src="assets/images/output-2.jpg" alt="Cover 2"></div>
       <div class="stage-node" id="node-2"><span class="node-roman">III</span><img class="node-cover" src="assets/images/output-3.jpg" alt="Cover 3"></div>
@@ -469,12 +471,15 @@
       <div class="stage-node" id="node-4"><span class="node-roman">V</span><img class="node-cover" src="assets/images/output-5.jpg" alt="Cover 5"></div>
       <div class="stage-node" id="node-5"><span class="node-roman">VI</span><img class="node-cover" src="assets/images/output-6.jpg" alt="Cover 6"></div>
 
+      <!-- Mitlaufendes Cover -->
       <div class="moving-cover" id="moving-cover" title="Active Track Cover">
         <img class="cover-img" id="moving-cover-img" src="assets/images/output-1.jpg" alt="Active Album Cover" />
       </div>
 
+      <!-- HAUPT-CONTAINER FÜR VERSEN & POLAROIDS -->
       <div class="journey-grid">
         
+        <!-- Verse 1 -->
         <article class="stage" id="verse-1" data-roman="I" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-1.mp3" data-cover="assets/images/output-1.jpg">
           <div class="stage-card">
             <span class="stage-kicker">July</span>
@@ -509,6 +514,7 @@ and the feeling that
           </div>
         </article>
 
+        <!-- Verse 2 -->
         <article class="stage" id="verse-2" data-roman="II" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-2.mp3" data-cover="assets/images/output-2.jpg">
           <div class="stage-card">
             <span class="stage-kicker">Home</span>
@@ -545,6 +551,7 @@ because you were there.
           </div>
         </article>
 
+        <!-- Verse 3 -->
         <article class="stage" id="verse-3" data-roman="III" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-3.mp3" data-cover="assets/images/output-3.jpg">
           <div class="stage-card">
             <span class="stage-kicker">Belonging</span>
@@ -584,6 +591,7 @@ one I would take again.
           </div>
         </article>
 
+        <!-- Verse 4 -->
         <article class="stage" id="verse-4" data-roman="IV" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-4.mp3" data-cover="assets/images/output-4.jpg">
           <div class="stage-card">
             <span class="stage-kicker">Nineteen</span>
@@ -618,6 +626,7 @@ and so much still waiting.
           </div>
         </article>
 
+        <!-- Verse 5 -->
         <article class="stage" id="verse-5" data-roman="V" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-5.mp3" data-cover="assets/images/output-5.jpg">
           <div class="stage-card">
             <span class="stage-kicker">Colors</span>
@@ -656,6 +665,7 @@ stitched together with love.
           </div>
         </article>
 
+        <!-- Verse 6 -->
         <article class="stage" id="verse-6" data-roman="VI" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-6.mp3" data-cover="assets/images/output-6.jpg">
           <div class="stage-card">
             <span class="stage-kicker">Daniel</span>
@@ -806,8 +816,9 @@ And wherever you go:
       const movingCover = document.getElementById('moving-cover');
       const movingCoverImg = document.getElementById('moving-cover-img');
 
-      let isAudioEnabled = true;
-      let userMuted = false;
+      // Audio Control States
+      let userMuted = false;        // Explicit user pause status
+      let hasInteracted = false;    // Tracks first mobile user gesture to unblock browser autoplay policy
       let currentActiveIndex = 0;
       let fadeTimer = null;
       let pathLength = 0;
@@ -820,7 +831,7 @@ And wherever you go:
       const pauseSvg = '<svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12"><rect x="5" y="4" width="4" height="16" rx="1"></rect><rect x="15" y="4" width="4" height="16" rx="1"></rect></svg>';
 
       const updateAudioUI = () => {
-        const isPlaying = isAudioEnabled && !userMuted && !audio.paused;
+        const isPlaying = !userMuted && !audio.paused;
         
         if (unlockAudioBtn) unlockAudioBtn.innerHTML = isPlaying ? musicMuteIcon : musicNoteIcon;
         if (unlockHeroBtn) unlockHeroBtn.textContent = isPlaying ? 'Disable music' : 'Enable music';
@@ -896,10 +907,10 @@ And wherever you go:
 
         if (manual) {
           userMuted = false;
-          isAudioEnabled = true;
         }
 
-        if (userMuted || !isAudioEnabled) {
+        // Return early if explicitly muted by user
+        if (userMuted) {
           updateAudioUI();
           return;
         }
@@ -910,6 +921,21 @@ And wherever you go:
         }
         updateAudioUI();
       };
+
+      // Unlocks mobile audio on first user touch/scroll gesture
+      const unlockMobileAudio = () => {
+        if (hasInteracted) return;
+        hasInteracted = true;
+
+        if (!userMuted && audio.paused) {
+          const targetStage = stages[currentActiveIndex];
+          const absSrc = getAbsoluteUrl(targetStage.dataset.audio);
+          smoothPlayTrack(absSrc);
+        }
+      };
+
+      window.addEventListener('touchstart', unlockMobileAudio, { passive: true, once: true });
+      window.addEventListener('scroll', unlockMobileAudio, { passive: true, once: true });
 
       const buildTimelinePath = () => {
         const jRect = journeySection.getBoundingClientRect();
@@ -1079,14 +1105,15 @@ And wherever you go:
         document.fonts.ready.then(rebuildTimeline);
       }
 
+      // Explicit Button Audio Controls
       const toggleAudioState = async () => {
-        if (isAudioEnabled && !userMuted && !audio.paused) {
+        hasInteracted = true;
+        if (!userMuted && !audio.paused) {
           userMuted = true;
           audio.pause();
           updateAudioUI();
         } else {
           userMuted = false;
-          isAudioEnabled = true;
           await switchVersIndex(currentActiveIndex, true);
         }
       };
@@ -1101,6 +1128,7 @@ And wherever you go:
 
         const handleClick = async (e) => {
           e.stopPropagation();
+          hasInteracted = true;
           if (currentActiveIndex === idx && !userMuted && !audio.paused) {
             userMuted = true;
             audio.pause();
