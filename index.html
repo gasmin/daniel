@@ -22,7 +22,7 @@
       --space-5: 1.25rem; --space-6: 1.5rem; --space-8: 2rem; --space-10: 2.5rem;
       --space-12: 3rem; --space-16: 4rem; --space-20: 5rem; --space-24: 6rem;
       --color-bg: #f5f0ea;
-      --color-surface: rgba(255, 255, 255, 0.86);
+      --color-surface: rgba(255, 255, 255, 0.88);
       --color-surface-2: #ffffff;
       --color-border: rgba(44, 34, 26, 0.14);
       --color-text: #1a1410;
@@ -46,7 +46,7 @@
     }
     [data-theme="dark"] {
       --color-bg: #130f0e;
-      --color-surface: rgba(28, 22, 20, 0.88);
+      --color-surface: rgba(28, 22, 20, 0.90);
       --color-surface-2: #241c19;
       --color-border: rgba(247, 238, 229, 0.16);
       --color-text: #f7f1ea;
@@ -230,7 +230,7 @@
       width: 100%;
     }
 
-    /* VERSKARTE (Milchglas-Optik, liegt über den Knoten & Cover) */
+    /* VERSKARTE (Milchglas-Optik, z-index: 25 liegt sicher VOR dem Albumcover z-index: 15) */
     .stage-card { 
       position: relative; 
       padding: clamp(var(--space-6), 4vw, var(--space-8)); 
@@ -238,8 +238,8 @@
       border: 1px solid var(--color-border); 
       border-radius: var(--radius-xl); 
       background: var(--color-surface); 
-      backdrop-filter: blur(20px) saturate(180%); 
-      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      backdrop-filter: blur(24px) saturate(190%); 
+      -webkit-backdrop-filter: blur(24px) saturate(190%);
       box-shadow: var(--shadow-md); 
       display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--space-3); 
       opacity: 0;
@@ -275,7 +275,7 @@
 
     .polaroid {
       background: #ffffff;
-      padding: 12px 12px 30px 12px;
+      padding: 12px 12px 32px 12px;
       box-shadow: var(--shadow-polaroid);
       border-radius: 4px;
       transition: transform 350ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 350ms ease;
@@ -297,12 +297,12 @@
     }
 
     .polaroid:hover {
-      transform: scale(1.1) rotate(0deg) translateY(-8px) !important;
+      transform: scale(1.12) rotate(0deg) translateY(-10px) !important;
       z-index: 40 !important;
-      box-shadow: 0 24px 50px rgba(0, 0, 0, 0.32);
+      box-shadow: 0 28px 60px rgba(0, 0, 0, 0.35);
     }
 
-    /* DESKTOP LAYOUT (ABWECHSELNDE SEITEN, VERGRÖSSERTE POLAROIDS) */
+    /* DESKTOP LAYOUT (VERGRÖSSERTE POLAROIDS) */
     @media (min-width: 901px) {
       .stage:nth-child(odd) {
         flex-direction: row;
@@ -312,7 +312,7 @@
       }
 
       .stage-card {
-        width: 42%;
+        width: 44%;
         flex-shrink: 0;
       }
 
@@ -320,35 +320,36 @@
       .stage:nth-child(even) .stage-card { transform: translateX(30px); }
 
       .polaroid-gallery {
-        width: 50%;
+        width: 52%;
         flex-shrink: 0;
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
         align-items: center;
-        gap: 1.2rem;
+        gap: 1.4rem;
       }
 
-      /* Vergrößerte Polaroids für Desktop */
+      /* Deutlich vergrößerte Polaroids für Desktop */
       .polaroid-gallery .polaroid {
-        width: clamp(180px, 15vw, 240px);
+        width: clamp(210px, 17vw, 270px);
+        padding: 14px 14px 38px 14px;
       }
 
-      /* Variierende Drehungen & spielerische Überlappungen */
+      /* Spielerische Drehungen & Überlappungen */
       .polaroid-gallery .p-1 {
-        transform: rotate(-6deg) translateY(-10px);
+        transform: rotate(-6deg) translateY(-8px);
       }
       .polaroid-gallery .p-2 {
-        transform: rotate(5deg) translateY(12px);
-        margin-left: -20px;
+        transform: rotate(5deg) translateY(14px);
+        margin-left: -24px;
       }
       .polaroid-gallery .p-3 {
-        transform: rotate(-3deg) translateY(-6px);
-        margin-left: -15px;
+        transform: rotate(-4deg) translateY(-6px);
+        margin-left: -18px;
       }
     }
 
-    /* MOBILE LAYOUT (GESTAPELT: MILCHGLAS-VERSKARTE LIEGT VOR COVER & AKSE) */
+    /* MOBILE LAYOUT (COVER GLEITET DASHINTER DURCH, LESBARKEIT DURCH MILCHGLAS GESICHERT) */
     @media (max-width: 900px) {
       .journey-grid { gap: 6.5rem; }
       
@@ -362,10 +363,10 @@
         width: calc(100% - 3.8rem);
         margin-left: auto;
         transform: translateY(20px);
-        /* Milchglas sorgt dafür, dass das darunter durchlaufende Cover nicht die Lesbarkeit stört */
+        /* Milchglas sorgt dafür, dass das dahinter durchlaufende Cover den Text absolut nicht beeinträchtigt */
         background: var(--color-surface);
-        backdrop-filter: blur(20px) saturate(180%);
-        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        backdrop-filter: blur(24px) saturate(190%);
+        -webkit-backdrop-filter: blur(24px) saturate(190%);
         box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15);
       }
 
@@ -380,8 +381,8 @@
       }
 
       .polaroid-gallery .polaroid {
-        width: clamp(120px, 34vw, 160px);
-        padding: 8px 8px 20px 8px;
+        width: clamp(125px, 35vw, 170px);
+        padding: 8px 8px 24px 8px;
       }
 
       .polaroid-gallery .p-1 { transform: rotate(-4deg); }
@@ -436,7 +437,7 @@
             <a class="btn" href="#verse-1">Start with June</a>
           </div>
         </div>
-        <!-- Unverändertes Intro-Video (Medienelement 1) -->
+        <!-- Unverändertes Intro-Video (Medienelement 1 von 17) -->
         <div class="hero-video">
           <video autoplay muted loop playsinline preload="auto">
             <source src="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/00004495-VIDEO-2026-08-13-15-44-42.mp4" type="video/mp4">
@@ -461,15 +462,15 @@
       <div class="stage-node" id="node-4"><span class="node-roman">V</span><img class="node-cover" src="assets/images/output-5.jpg" alt="Cover 5"></div>
       <div class="stage-node" id="node-5"><span class="node-roman">VI</span><img class="node-cover" src="assets/images/output-6.jpg" alt="Cover 6"></div>
 
-      <!-- Mitlaufendes Cover (Glidet hinter den Verskarten durch) -->
+      <!-- Mitlaufendes Cover (Gleitet auf Mobilgeräten HINTER den Milchglas-Verskarten durch) -->
       <div class="moving-cover" id="moving-cover" title="Active Track Cover">
         <img class="cover-img" id="moving-cover-img" src="assets/images/output-1.jpg" alt="Active Album Cover" />
       </div>
 
-      <!-- HAUPT-CONTAINER FÜR VERSEN & POLAROID-GALERIEN -->
+      <!-- HAUPT-CONTAINER FÜR VERSEN & POLAROID-GALERIEN (INSGESAMT 16 POLAROID-ELEMENTE) -->
       <div class="journey-grid">
         
-        <!-- Verse 1 (3 Polaroids: 1 Video, 2 Bilder) -->
+        <!-- Verse 1 (3 Polaroids: Video 1 + Bild 1 + Bild 2) -->
         <article class="stage" id="verse-1" data-roman="I" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-1.mp3" data-cover="assets/images/output-1.jpg">
           <div class="stage-card">
             <span class="stage-kicker">June</span>
@@ -493,15 +494,15 @@ and the feeling that
               <video autoplay muted loop playsinline preload="auto"><source src="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/2026-07-18%2022-17-51.mp4" type="video/mp4"></video>
             </div>
             <div class="polaroid p-2">
-              <img src="assets/images/2026-07-08 15-41-56.jpeg" alt="Memory 1">
+              <img src="assets/images/2026-07-08 15-41-56.jpeg" alt="Memory June 1">
             </div>
             <div class="polaroid p-3">
-              <img src="assets/images/2026-07-12 13-12-42.jpeg" alt="Memory 2">
+              <img src="assets/images/2026-07-12 12-37-05.jpeg" alt="Memory June 2">
             </div>
           </div>
         </article>
 
-        <!-- Verse 2 (3 Polaroids: 3 Bilder) -->
+        <!-- Verse 2 (3 Polaroids: Bild 3 + Bild 4 + Bild 5) -->
         <article class="stage" id="verse-2" data-roman="II" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-2.mp3" data-cover="assets/images/output-2.jpg">
           <div class="stage-card">
             <span class="stage-kicker">Home</span>
@@ -528,18 +529,18 @@ because you were there.
 
           <div class="polaroid-gallery">
             <div class="polaroid p-1">
-              <img src="assets/images/2026-07-12 13-04-45.jpeg" alt="Memory 3">
+              <img src="assets/images/2026-07-12 13-04-45.jpeg" alt="Memory Home 1">
             </div>
             <div class="polaroid p-2">
-              <img src="assets/images/2026-07-12 13-16-39.jpeg" alt="Memory 4">
+              <img src="assets/images/2026-07-12 13-12-42.jpeg" alt="Memory Home 2">
             </div>
             <div class="polaroid p-3">
-              <img src="assets/images/2026-07-12 14-07-19.jpeg" alt="Memory 5">
+              <img src="assets/images/2026-07-12 13-16-39.jpeg" alt="Memory Home 3">
             </div>
           </div>
         </article>
 
-        <!-- Verse 3 (3 Polaroids: 3 Bilder) -->
+        <!-- Verse 3 (3 Polaroids: Bild 6 + Bild 7 + Bild 8) -->
         <article class="stage" id="verse-3" data-roman="III" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-3.mp3" data-cover="assets/images/output-3.jpg">
           <div class="stage-card">
             <span class="stage-kicker">Belonging</span>
@@ -565,18 +566,18 @@ one I would take again.
 
           <div class="polaroid-gallery">
             <div class="polaroid p-1">
-              <img src="assets/images/2026-07-12 14-10-42.jpeg" alt="Memory 6">
+              <img src="assets/images/2026-07-12 13-18-06.jpeg" alt="Memory Risk 1">
             </div>
             <div class="polaroid p-2">
-              <img src="assets/images/2026-07-18 22-19-27.jpeg" alt="Memory 7">
+              <img src="assets/images/2026-07-12 14-07-19.jpeg" alt="Memory Risk 2">
             </div>
             <div class="polaroid p-3">
-              <img src="assets/images/2026-08-12 20-01-14.jpeg" alt="Memory 8">
+              <img src="assets/images/2026-07-12 14-10-42.jpeg" alt="Memory Risk 3">
             </div>
           </div>
         </article>
 
-        <!-- Verse 4 (3 Polaroids: 3 Bilder) -->
+        <!-- Verse 4 (3 Polaroids: Bild 9 + Bild 10 + Bild 11) -->
         <article class="stage" id="verse-4" data-roman="IV" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-4.mp3" data-cover="assets/images/output-4.jpg">
           <div class="stage-card">
             <span class="stage-kicker">Nineteen</span>
@@ -597,18 +598,18 @@ and so much still waiting.
 
           <div class="polaroid-gallery">
             <div class="polaroid p-1">
-              <img src="assets/images/IMG_0152.jpeg" alt="Memory 9">
+              <img src="assets/images/2026-07-12 16-48-31.jpeg" alt="Memory Nineteen 1">
             </div>
             <div class="polaroid p-2">
-              <img src="assets/images/IMG_0153.jpeg" alt="Memory 10">
+              <img src="assets/images/2026-07-18 22-19-27.jpeg" alt="Memory Nineteen 2">
             </div>
             <div class="polaroid p-3">
-              <img src="assets/images/IMG_0154.jpeg" alt="Memory 11">
+              <img src="assets/images/2026-08-12 20-01-14.jpeg" alt="Memory Nineteen 3">
             </div>
           </div>
         </article>
 
-        <!-- Verse 5 (2 Polaroids: 2 Bilder) -->
+        <!-- Verse 5 (2 Polaroids: Bild 12 + Bild 13) -->
         <article class="stage" id="verse-5" data-roman="V" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-5.mp3" data-cover="assets/images/output-5.jpg">
           <div class="stage-card">
             <span class="stage-kicker">Colors</span>
@@ -637,15 +638,15 @@ stitched together with love.
 
           <div class="polaroid-gallery">
             <div class="polaroid p-1">
-              <img src="assets/images/IMG_0160.jpeg" alt="Memory 12">
+              <img src="assets/images/IMG_0152.jpeg" alt="Memory Colors 1">
             </div>
             <div class="polaroid p-2">
-              <img src="assets/images/IMG_0161.jpeg" alt="Memory 13">
+              <img src="assets/images/IMG_0160.jpeg" alt="Memory Colors 2">
             </div>
           </div>
         </article>
 
-        <!-- Verse 6 (2 Polaroids: 1 Bild, 1 Video) -->
+        <!-- Verse 6 (2 Polaroids: Bild 14 + Video 2) -->
         <article class="stage" id="verse-6" data-roman="VI" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-6.mp3" data-cover="assets/images/output-6.jpg">
           <div class="stage-card">
             <span class="stage-kicker">Daniel</span>
@@ -670,10 +671,10 @@ And wherever you go:
 
           <div class="polaroid-gallery">
             <div class="polaroid p-1">
-              <img src="assets/images/2026-08-15 18-30-00.jpeg" alt="Memory 14">
+              <img src="assets/images/IMG_6910.jpeg" alt="Memory Love 1">
             </div>
             <div class="polaroid p-2">
-              <video autoplay muted loop playsinline preload="auto"><source src="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/VIDEO-2026-07-13-15-09-31.MP4"></video>
+              <video autoplay muted loop playsinline preload="auto"><source src="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/VIDEO-2026-07-13-15-09-31.MP4" type="video/mp4"></video>
             </div>
           </div>
         </article>
