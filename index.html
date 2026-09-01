@@ -155,7 +155,27 @@
       overflow: hidden;
     }
 
-    /* LAYER 2: ZEITLEISTE & KNOTEN */
+    /* LAYER 2: DESKTOP UND MOBILE ZEITLEISTEN GETRENNT */
+
+    /* Desktop-Linie (Garantierte CSS-Darstellung) */
+    .timeline-desktop-line {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 3.5px;
+      transform: translateX(-50%);
+      background: linear-gradient(180deg, 
+        rgba(142,53,87,0.15) 0%, 
+        var(--color-primary) 8%, 
+        var(--color-primary) 92%, 
+        rgba(142,53,87,0.15) 100%
+      );
+      z-index: 9;
+      pointer-events: none;
+    }
+
+    /* Mobile-Linie (Geschwungenes SVG) */
     .timeline-svg {
       position: absolute;
       inset: 0;
@@ -167,6 +187,13 @@
     .timeline-path {
       stroke-linecap: round;
       transition: stroke 300ms ease;
+    }
+
+    @media (min-width: 901px) {
+      .timeline-svg { display: none; } /* Auf Desktop deaktiviert */
+    }
+    @media (max-width: 900px) {
+      .timeline-desktop-line { display: none; } /* Auf Mobile deaktiviert */
     }
 
     /* Römische Knotenpunkte auf der Achse */
@@ -331,7 +358,7 @@
     [data-theme="dark"] .polaroid { background: #251d1a; }
     .polaroid img, .polaroid video { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 2px; }
 
-    /* DESKTOP RESPONSIVE LAYOUT (Gerade Achse in der Mitte & Freier Raum für Polaroids) */
+    /* DESKTOP RESPONSIVE LAYOUT */
     @media (min-width: 901px) {
       .stage:nth-child(odd) { justify-content: flex-start; }
       .stage:nth-child(even) { justify-content: flex-end; }
@@ -355,7 +382,6 @@
         width: clamp(170px, 18vw, 240px);
       }
 
-      /* Verteilung über die freie Seite ohne Zwang zur Überlappung */
       .stage:nth-child(odd) .stage-scatter-group .polaroid.p-top {
         top: 0%;
         left: 5%;
@@ -379,7 +405,7 @@
       }
     }
 
-    /* MOBILE RESPONSIVE LAYOUT (Geschwungene Achse links) */
+    /* MOBILE RESPONSIVE LAYOUT */
     @media (max-width: 900px) {
       .journey-grid { gap: 11rem; }
       
@@ -457,7 +483,7 @@
       <div class="photo-scatter-layer" id="scatter-layer">
         <div class="stage-scatter-group" data-for="verse-1">
           <div class="polaroid p-top">
-            <video autoplay muted loop playsinline preload="auto"><source src="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/2026-07-18%2022-17-51.mov"></video>
+            <video autoplay muted loop playsinline preload="auto"><source src="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/2026-07-18%2022-17-51.mp4" type="video/mp4"></video>
           </div>
           <div class="polaroid p-bottom">
             <img src="assets/images/2026-07-08 15-41-56.jpeg" alt="Memory">
@@ -510,17 +536,14 @@
         </div>
       </div>
 
-      <!-- EBENE 2: SVG PINKE ZEITLEISTE & NODES -->
+      <!-- EBENE 2: ZEITLEISTEN -->
+      
+      <!-- DESKTOP LINIE -->
+      <div class="timeline-desktop-line"></div>
+
+      <!-- MOBILE SVG LINIE -->
       <svg class="timeline-svg" id="timeline-svg">
-        <defs>
-          <linearGradient id="lineGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stop-color="var(--color-primary)" stop-opacity="0.3"/>
-            <stop offset="10%" stop-color="var(--color-primary)" stop-opacity="0.9"/>
-            <stop offset="90%" stop-color="var(--color-primary)" stop-opacity="0.9"/>
-            <stop offset="100%" stop-color="var(--color-primary)" stop-opacity="0.3"/>
-          </linearGradient>
-        </defs>
-        <path class="timeline-path" id="timeline-path" stroke="url(#lineGrad)" stroke-width="3.5" fill="none"/>
+        <path class="timeline-path" id="timeline-path" stroke="var(--color-primary)" stroke-width="3.5" stroke-opacity="0.85" fill="none"/>
       </svg>
 
       <!-- Römische Zahl Knotenelemente -->
@@ -898,7 +921,7 @@ And wherever you go:
         updateAudioUI();
       };
 
-      // BERECHNUNG DER ZEITLEISTE & KNOTEN-POSITIONEN
+      // BERECHNUNG DER KNOTEN-POSITIONEN & MOBILE SVG-LINIE
       const buildTimelinePath = () => {
         const jRect = journeySection.getBoundingClientRect();
         const width = jRect.width;
@@ -908,20 +931,14 @@ And wherever you go:
         const isMobile = window.innerWidth <= 900;
         const centerX = width / 2;
 
-        svgElement.setAttribute('viewBox', `0 0 ${width} ${height}`);
-
         nodePositions = [];
-        let d = '';
 
         if (!isMobile) {
-          // DESKTOP: GERADE ACHSE IN DER MITTE
-          d = `M ${centerX} 0 L ${centerX} ${height}`;
-
+          // DESKTOP: Knoten zentriert platzieren (Linie wird per CSS erzeugt)
           stages.forEach((stage, idx) => {
             const card = stage.querySelector('.stage-card');
             const cRect = card.getBoundingClientRect();
             
-            // Knotenpunkte zentriert auf Höhe der jeweiligen Verskarte
             const nodeY = (cRect.top - jRect.top) + (cRect.height / 2);
 
             nodePositions.push({ x: centerX, y: nodeY, index: idx });
@@ -938,7 +955,8 @@ And wherever you go:
           });
 
         } else {
-          // MOBILE: GESCHWUNGENE ACHSE LINKS
+          // MOBILE: Geschwungene Achse im SVG zeichnen
+          svgElement.setAttribute('viewBox', `0 0 ${width} ${height}`);
           const mobileAxisX = 24;
           const points = [];
 
@@ -950,7 +968,6 @@ And wherever you go:
             
             const nodeY = (cRect.top - jRect.top) + 24;
             const cardMidY = (cRect.top - jRect.top) + cRect.height / 2;
-            
             const curveX = Math.min(width - 15, (cRect.right - jRect.left) + 12);
 
             nodePositions.push({ x: mobileAxisX, y: nodeY, index: idx });
@@ -971,24 +988,24 @@ And wherever you go:
 
           points.push({ x: mobileAxisX, y: height });
 
-          d = `M ${points[0].x} ${points[0].y}`;
+          let d = `M ${points[0].x} ${points[0].y}`;
           for (let i = 1; i < points.length; i++) {
             const prev = points[i - 1];
             const curr = points[i];
             const cpY = (prev.y + curr.y) / 2;
             d += ` C ${prev.x} ${cpY}, ${curr.x} ${cpY}, ${curr.x} ${curr.y}`;
           }
-        }
 
-        pathElement.setAttribute('d', d);
-        pathLength = pathElement.getTotalLength();
+          pathElement.setAttribute('d', d);
+          pathLength = pathElement.getTotalLength();
 
-        pathSamplePoints = [];
-        const samples = 400;
-        for (let i = 0; i <= samples; i++) {
-          const l = (i / samples) * pathLength;
-          const pt = pathElement.getPointAtLength(l);
-          pathSamplePoints.push({ length: l, x: pt.x, y: pt.y });
+          pathSamplePoints = [];
+          const samples = 400;
+          for (let i = 0; i <= samples; i++) {
+            const l = (i / samples) * pathLength;
+            const pt = pathElement.getPointAtLength(l);
+            pathSamplePoints.push({ length: l, x: pt.x, y: pt.y });
+          }
         }
       };
 
@@ -999,15 +1016,23 @@ And wherever you go:
         const jRect = journeySection.getBoundingClientRect();
         const viewportTargetY = window.innerHeight * 0.45;
         const currentTargetY = viewportTargetY - jRect.top;
+        const isMobile = window.innerWidth <= 900;
 
-        let closestPoint = pathSamplePoints[0];
-        let minDiff = Infinity;
-        for (let pt of pathSamplePoints) {
-          const diff = Math.abs(pt.y - currentTargetY);
-          if (diff < minDiff) {
-            minDiff = diff;
-            closestPoint = pt;
+        let targetX = jRect.width / 2;
+        let targetY = currentTargetY;
+
+        if (isMobile && pathSamplePoints.length) {
+          let closestPoint = pathSamplePoints[0];
+          let minDiff = Infinity;
+          for (let pt of pathSamplePoints) {
+            const diff = Math.abs(pt.y - currentTargetY);
+            if (diff < minDiff) {
+              minDiff = diff;
+              closestPoint = pt;
+            }
           }
+          targetX = closestPoint.x;
+          targetY = closestPoint.y;
         }
 
         let activeSectionIdx = 0;
@@ -1034,8 +1059,8 @@ And wherever you go:
           isOverlappingNode = true;
         }
 
-        if (closestPoint && !isOverlappingNode && currentTargetY >= nodePositions[0].y) {
-          movingCover.style.transform = `translate3d(${closestPoint.x}px, ${closestPoint.y}px, 0) translate(-50%, -50%)`;
+        if (!isOverlappingNode && currentTargetY >= nodePositions[0].y) {
+          movingCover.style.transform = `translate3d(${targetX}px, ${targetY}px, 0) translate(-50%, -50%)`;
           movingCoverImg.src = stages[activeSectionIdx].dataset.cover;
           movingCover.classList.add('is-visible');
         } else {
