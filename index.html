@@ -100,50 +100,18 @@
     .hero-video { position: relative; width: 100%; border-radius: var(--radius-xl); overflow: hidden; border: 1px solid var(--color-border); box-shadow: var(--shadow-md); aspect-ratio: 4 / 3; }
     .hero-video video { width: 100%; height: 100%; object-fit: cover; }
 
-    /* Hero Mobile Adaptations */
     @media (max-width: 900px) {
-      .hero {
-        padding-top: calc(var(--space-12) + 3.5rem);
-        padding-bottom: var(--space-8);
-        min-height: auto;
-      }
-      .hero-layout {
-        grid-template-columns: 1fr;
-        gap: var(--space-6);
-      }
-      .eyebrow {
-        width: 100%;
-        justify-content: center;
-      }
-      .hero h1 {
-        text-align: center;
-        width: 100%;
-      }
-      .hero p {
-        max-width: 100%;
-        width: 100%;
-        text-align: center;
-      }
-      .hero-actions {
-        width: 100%;
-        flex-direction: column;
-        gap: var(--space-3);
-        margin-top: var(--space-5);
-      }
-      .hero-actions .btn {
-        width: 100%;
-        text-align: center;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-      .hero-video {
-        width: 100%;
-        aspect-ratio: 4 / 3;
-      }
+      .hero { padding-top: calc(var(--space-12) + 3.5rem); padding-bottom: var(--space-8); min-height: auto; }
+      .hero-layout { grid-template-columns: 1fr; gap: var(--space-6); }
+      .eyebrow { width: 100%; justify-content: center; }
+      .hero h1 { text-align: center; width: 100%; }
+      .hero p { max-width: 100%; width: 100%; text-align: center; }
+      .hero-actions { width: 100%; flex-direction: column; gap: var(--space-3); margin-top: var(--space-5); }
+      .hero-actions .btn { width: 100%; text-align: center; display: flex; justify-content: center; align-items: center; }
+      .hero-video { width: 100%; aspect-ratio: 4 / 3; }
     }
     
-    /* JOURNEY CONTAINER & STACKING LAYERS */
+    /* JOURNEY CONTAINER */
     .journey { position: relative; padding: var(--space-12) 0 var(--space-24); }
 
     /* LAYER 1: POLAROIDS */
@@ -155,9 +123,7 @@
       overflow: hidden;
     }
 
-    /* LAYER 2: DESKTOP UND MOBILE ZEITLEISTEN GETRENNT */
-
-    /* Desktop-Linie (Garantierte CSS-Darstellung) */
+    /* LAYER 2: ZEITLEISTEN */
     .timeline-desktop-line {
       position: absolute;
       top: 0;
@@ -175,7 +141,6 @@
       pointer-events: none;
     }
 
-    /* Mobile-Linie (Geschwungenes SVG) */
     .timeline-svg {
       position: absolute;
       inset: 0;
@@ -184,19 +149,12 @@
       z-index: 10;
       overflow: visible;
     }
-    .timeline-path {
-      stroke-linecap: round;
-      transition: stroke 300ms ease;
-    }
+    .timeline-path { stroke-linecap: round; transition: stroke 300ms ease; }
 
-    @media (min-width: 901px) {
-      .timeline-svg { display: none; } /* Auf Desktop deaktiviert */
-    }
-    @media (max-width: 900px) {
-      .timeline-desktop-line { display: none; } /* Auf Mobile deaktiviert */
-    }
+    @media (min-width: 901px) { .timeline-svg { display: none; } }
+    @media (max-width: 900px) { .timeline-desktop-line { display: none; } }
 
-    /* Römische Knotenpunkte auf der Achse */
+    /* Knotenpunkte auf der Achse */
     .stage-node {
       position: absolute;
       transform: translate(-50%, -50%);
@@ -238,14 +196,8 @@
       border-color: var(--color-accent);
       box-shadow: 0 0 20px rgba(142,53,87,0.35);
     }
-    .stage-node.is-transformed .node-roman {
-      opacity: 0;
-      transform: scale(0.3);
-    }
-    .stage-node.is-transformed .node-cover {
-      opacity: 1;
-      transform: scale(1) rotate(0deg);
-    }
+    .stage-node.is-transformed .node-roman { opacity: 0; transform: scale(0.3); }
+    .stage-node.is-transformed .node-cover { opacity: 1; transform: scale(1) rotate(0deg); }
 
     /* Mitlaufendes Cover auf der Achse */
     .moving-cover {
@@ -265,34 +217,18 @@
       visibility: hidden;
       transition: opacity 300ms ease, visibility 300ms ease;
     }
-    .moving-cover.is-visible {
-      opacity: 1;
-      visibility: visible;
-    }
-    .moving-cover .cover-img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      border-radius: 50%;
-      transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    
-    .moving-cover.is-playing {
-      animation: pulseCover 2s infinite alternate ease-in-out;
-    }
-    .moving-cover.is-playing .cover-img {
-      animation: spinCover 12s linear infinite;
-    }
+    .moving-cover.is-visible { opacity: 1; visibility: visible; }
+    .moving-cover .cover-img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1); }
+    .moving-cover.is-playing { animation: pulseCover 2s infinite alternate ease-in-out; }
+    .moving-cover.is-playing .cover-img { animation: spinCover 12s linear infinite; }
 
-    @keyframes spinCover {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
+    @keyframes spinCover { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
     @keyframes pulseCover {
       0% { box-shadow: 0 0 15px rgba(142,53,87,0.3); }
       100% { box-shadow: 0 0 30px rgba(142,53,87,0.7), 0 0 45px rgba(184,130,82,0.4); }
     }
 
-    /* LAYER 3: KARTEN / VERSKÄSTEN */
+    /* LAYER 3: KARTEN */
     .journey-grid { position: relative; display: flex; flex-direction: column; gap: 14rem; z-index: 20; }
     
     .stage { 
@@ -321,10 +257,7 @@
     .stage:nth-child(odd) .stage-card { transform: translateX(-30px); }
     .stage:nth-child(even) .stage-card { transform: translateX(30px); }
 
-    .stage.is-visible .stage-card {
-      opacity: 1;
-      transform: translateX(0) !important;
-    }
+    .stage.is-visible .stage-card { opacity: 1; transform: translateX(0) !important; }
 
     .stage-card h2 { margin: 0; font-family: var(--font-display); font-size: clamp(1.4rem, 1.1rem + 1vw, 2.2rem); line-height: 1.15; }
     .stage-kicker { display: inline-flex; padding: 0.3rem 0.8rem; background: var(--color-primary-soft); color: var(--color-primary); border-radius: 999px; font-size: 0.72rem; text-transform: uppercase; font-weight: 700; }
@@ -348,24 +281,23 @@
       padding: 10px 10px 28px 10px;
       box-shadow: var(--shadow-polaroid);
       border-radius: 4px;
-      transition: transform 500ms ease, box-shadow 500ms ease;
+      transition: transform 500ms ease, box-shadow 500ms ease, z-index 300ms ease;
       pointer-events: auto;
     }
     .polaroid:hover {
-      transform: scale(1.05) rotate(0deg) !important;
-      z-index: 10;
+      transform: scale(1.08) rotate(0deg) !important;
+      z-index: 30 !important;
     }
     [data-theme="dark"] .polaroid { background: #251d1a; }
     .polaroid img, .polaroid video { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 2px; }
 
-    /* DESKTOP RESPONSIVE LAYOUT */
+    /* DESKTOP LAYOUT (ANPASSUNGEN FÜR ECKEN-KNOTEN UND POLAROIDS) */
     @media (min-width: 901px) {
       .stage:nth-child(odd) { justify-content: flex-start; }
       .stage:nth-child(even) { justify-content: flex-end; }
 
       .stage-card { width: 44%; }
 
-      /* Polaroids im freien Raum gegenüber der Karte verteilt */
       .stage-scatter-group {
         position: absolute;
         width: 44%;
@@ -379,47 +311,41 @@
 
       .stage-scatter-group .polaroid {
         position: absolute;
-        width: clamp(170px, 18vw, 240px);
+        width: clamp(160px, 16vw, 230px);
+        z-index: 2;
       }
 
+      /* Odd stages: Fotos rechts sauber in Ecken verteilt */
       .stage:nth-child(odd) .stage-scatter-group .polaroid.p-top {
-        top: 0%;
+        top: -15px;
         left: 5%;
-        transform: rotate(-5deg);
+        transform: rotate(-6deg);
       }
       .stage:nth-child(odd) .stage-scatter-group .polaroid.p-bottom {
-        bottom: 0%;
+        bottom: -15px;
+        right: 5%;
+        transform: rotate(5deg);
+      }
+
+      /* Even stages: Fotos links sauber in Ecken verteilt */
+      .stage:nth-child(even) .stage-scatter-group .polaroid.p-top {
+        top: -15px;
         right: 5%;
         transform: rotate(6deg);
       }
-
-      .stage:nth-child(even) .stage-scatter-group .polaroid.p-top {
-        top: 0%;
-        right: 5%;
-        transform: rotate(7deg);
-      }
       .stage:nth-child(even) .stage-scatter-group .polaroid.p-bottom {
-        bottom: 0%;
+        bottom: -15px;
         left: 5%;
-        transform: rotate(-4deg);
+        transform: rotate(-5deg);
       }
     }
 
-    /* MOBILE RESPONSIVE LAYOUT */
+    /* MOBILE LAYOUT */
     @media (max-width: 900px) {
       .journey-grid { gap: 11rem; }
-      
       .stage { justify-content: flex-end; }
-
-      .stage-card { 
-        width: calc(100% - 3.8rem); 
-        margin-left: auto;
-      }
-
-      .stage-scatter-group {
-        position: absolute;
-        inset: 0;
-      }
+      .stage-card { width: calc(100% - 3.8rem); margin-left: auto; }
+      .stage-scatter-group { position: absolute; inset: 0; }
       .stage-scatter-group .polaroid.p-top { top: -2.5rem; left: 0; width: clamp(130px, 34vw, 180px); transform: rotate(-8deg); }
       .stage-scatter-group .polaroid.p-bottom { bottom: -3rem; right: 0; width: clamp(130px, 34vw, 180px); transform: rotate(7deg); }
     }
@@ -537,16 +463,13 @@
       </div>
 
       <!-- EBENE 2: ZEITLEISTEN -->
-      
-      <!-- DESKTOP LINIE -->
       <div class="timeline-desktop-line"></div>
 
-      <!-- MOBILE SVG LINIE -->
       <svg class="timeline-svg" id="timeline-svg">
         <path class="timeline-path" id="timeline-path" stroke="var(--color-primary)" stroke-width="3.5" stroke-opacity="0.85" fill="none"/>
       </svg>
 
-      <!-- Römische Zahl Knotenelemente -->
+      <!-- Knotenelemente -->
       <div class="stage-node" id="node-0"><span class="node-roman">I</span><img class="node-cover" src="assets/images/output-1.jpg" alt="Cover 1"></div>
       <div class="stage-node" id="node-1"><span class="node-roman">II</span><img class="node-cover" src="assets/images/output-2.jpg" alt="Cover 2"></div>
       <div class="stage-node" id="node-2"><span class="node-roman">III</span><img class="node-cover" src="assets/images/output-3.jpg" alt="Cover 3"></div>
@@ -554,12 +477,12 @@
       <div class="stage-node" id="node-4"><span class="node-roman">V</span><img class="node-cover" src="assets/images/output-5.jpg" alt="Cover 5"></div>
       <div class="stage-node" id="node-5"><span class="node-roman">VI</span><img class="node-cover" src="assets/images/output-6.jpg" alt="Cover 6"></div>
 
-      <!-- Mitlaufendes, drehendes Cover auf der Achse -->
+      <!-- Mitlaufendes, drehendes Cover -->
       <div class="moving-cover" id="moving-cover" title="Active Track Cover">
         <img class="cover-img" id="moving-cover-img" src="assets/images/output-1.jpg" alt="Active Album Cover" />
       </div>
 
-      <!-- EBENE 3: VERSKÄSTEN / KARTEN -->
+      <!-- EBENE 3: VERSKÄSTEN -->
       <div class="journey-grid">
         <!-- Verse 1 -->
         <article class="stage" id="verse-1" data-roman="I" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-1.mp3" data-cover="assets/images/output-1.jpg">
@@ -921,7 +844,7 @@ And wherever you go:
         updateAudioUI();
       };
 
-      // BERECHNUNG DER KNOTEN-POSITIONEN & MOBILE SVG-LINIE
+      // BERECHNUNG DER KNOTEN-POSITIONEN
       const buildTimelinePath = () => {
         const jRect = journeySection.getBoundingClientRect();
         const width = jRect.width;
@@ -934,12 +857,12 @@ And wherever you go:
         nodePositions = [];
 
         if (!isMobile) {
-          // DESKTOP: Knoten zentriert platzieren (Linie wird per CSS erzeugt)
+          // DESKTOP: Knotenpunkte auf Höhe der oberen Ecke der Karte platzieren (+28px Offset)
           stages.forEach((stage, idx) => {
             const card = stage.querySelector('.stage-card');
             const cRect = card.getBoundingClientRect();
             
-            const nodeY = (cRect.top - jRect.top) + (cRect.height / 2);
+            const nodeY = (cRect.top - jRect.top) + 28;
 
             nodePositions.push({ x: centerX, y: nodeY, index: idx });
 
@@ -1009,7 +932,7 @@ And wherever you go:
         }
       };
 
-      // ANIMATIONS- & TRANSFORMATIONSLOGIK BEIM SCROLLEN
+      // SCROLL-LOGIK MIT AUTOMATISCHEM AUSBLENDEN AM ENDE
       const updateCoverPositionOnScroll = () => {
         if (!nodePositions.length) return;
 
@@ -1059,7 +982,11 @@ And wherever you go:
           isOverlappingNode = true;
         }
 
-        if (!isOverlappingNode && currentTargetY >= nodePositions[0].y) {
+        const firstNodeY = nodePositions[0].y;
+        const lastNodeY = nodePositions[nodePositions.length - 1].y;
+
+        // Bounding-Check: Cover blendet nach dem 6. Knotenpunkt (lastNodeY + 30) komplett aus
+        if (!isOverlappingNode && currentTargetY >= firstNodeY && currentTargetY <= lastNodeY + 30) {
           movingCover.style.transform = `translate3d(${targetX}px, ${targetY}px, 0) translate(-50%, -50%)`;
           movingCoverImg.src = stages[activeSectionIdx].dataset.cover;
           movingCover.classList.add('is-visible');
