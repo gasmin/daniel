@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de" data-theme="light">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
@@ -22,7 +22,7 @@
       --space-5: 1.25rem; --space-6: 1.5rem; --space-8: 2rem; --space-10: 2.5rem;
       --space-12: 3rem; --space-16: 4rem; --space-20: 5rem; --space-24: 6rem;
       --color-bg: #f5f0ea;
-      --color-surface: rgba(255, 255, 255, 0.82); /* Glasartig leicht transparent */
+      --color-surface: rgba(255, 255, 255, 0.85);
       --color-surface-2: #ffffff;
       --color-border: rgba(44, 34, 26, 0.14);
       --color-text: #1a1410;
@@ -34,7 +34,7 @@
       --color-inverse: #ffffff;
       --shadow-sm: 0 8px 28px rgba(44, 34, 26, 0.09);
       --shadow-md: 0 22px 56px rgba(44, 34, 26, 0.14);
-      --shadow-polaroid: 0 14px 35px rgba(30, 20, 15, 0.16);
+      --shadow-polaroid: 0 16px 38px rgba(30, 20, 15, 0.18);
       --radius-md: 0.875rem;
       --radius-lg: 1.4rem;
       --radius-xl: 2rem;
@@ -46,7 +46,7 @@
     }
     [data-theme="dark"] {
       --color-bg: #130f0e;
-      --color-surface: rgba(26, 20, 18, 0.85); /* Glasartig in Darkmode */
+      --color-surface: rgba(26, 20, 18, 0.88);
       --color-surface-2: #241c19;
       --color-border: rgba(247, 238, 229, 0.16);
       --color-text: #f7f1ea;
@@ -92,18 +92,61 @@
     
     /* Hero */
     .hero { min-height: calc(100vh - 4rem); display: grid; align-items: center; padding: clamp(5rem, 12vw, 8rem) 0 var(--space-12); }
-    .hero-layout { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: clamp(var(--space-6), 4vw, var(--space-12)); align-items: center; }
+    .hero-layout { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: clamp(var(--space-6), 4vw, var(--space-12)); align-items: center; width: 100%; }
     .eyebrow { display: inline-flex; align-items: center; padding: 0.4rem 0.9rem; background: var(--color-primary-soft); color: var(--color-primary); border-radius: 999px; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; }
     h1 { margin: var(--space-3) 0; font-family: var(--font-display); font-weight: 600; line-height: 0.92; font-size: var(--text-3xl); }
     .hero p { max-width: 38rem; color: var(--color-text-muted); font-weight: 500; }
     .hero-actions { display: flex; gap: var(--space-3); margin-top: var(--space-6); }
     .hero-video { position: relative; width: 100%; border-radius: var(--radius-xl); overflow: hidden; border: 1px solid var(--color-border); box-shadow: var(--shadow-md); aspect-ratio: 4 / 3; }
     .hero-video video { width: 100%; height: 100%; object-fit: cover; }
+
+    /* Hero Mobile Adaptations */
+    @media (max-width: 900px) {
+      .hero {
+        padding-top: calc(var(--space-12) + 3.5rem);
+        padding-bottom: var(--space-8);
+        min-height: auto;
+      }
+      .hero-layout {
+        grid-template-columns: 1fr;
+        gap: var(--space-6);
+      }
+      .eyebrow {
+        width: 100%;
+        justify-content: center;
+      }
+      .hero h1 {
+        text-align: center;
+        width: 100%;
+      }
+      .hero p {
+        max-width: 100%;
+        width: 100%;
+        text-align: center;
+      }
+      .hero-actions {
+        width: 100%;
+        flex-direction: column;
+        gap: var(--space-3);
+        margin-top: var(--space-5);
+      }
+      .hero-actions .btn {
+        width: 100%;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .hero-video {
+        width: 100%;
+        aspect-ratio: 4 / 3;
+      }
+    }
     
     /* JOURNEY CONTAINER & STACKING LAYERS */
     .journey { position: relative; padding: var(--space-12) 0 var(--space-24); }
 
-    /* LAYER 1: EBENE FÜR POLAROIDS (Ganz hinten: z-index 1) */
+    /* LAYER 1: POLAROIDS */
     .photo-scatter-layer {
       position: absolute;
       inset: 0;
@@ -112,7 +155,7 @@
       overflow: hidden;
     }
 
-    /* LAYER 2: EBENE FÜR DIE ZEITLEISTE & KNOTEN (Mitte: z-index 10) */
+    /* LAYER 2: ZEITLEISTE & KNOTEN */
     .timeline-svg {
       position: absolute;
       inset: 0;
@@ -164,7 +207,6 @@
       transition: opacity 400ms ease, transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    /* Sobald der Knotenpunkt zum aktiven Albumcover transformiert ist */
     .stage-node.is-transformed {
       border-color: var(--color-accent);
       box-shadow: 0 0 20px rgba(142,53,87,0.35);
@@ -178,7 +220,7 @@
       transform: scale(1) rotate(0deg);
     }
 
-    /* Mitlaufendes & Pulsierendes Cover auf der Achse */
+    /* Mitlaufendes Cover auf der Achse */
     .moving-cover {
       position: absolute;
       top: 0; left: 0;
@@ -207,7 +249,6 @@
       transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
     }
     
-    /* Pulsieren & Drehen bei aktiver Musik */
     .moving-cover.is-playing {
       animation: pulseCover 2s infinite alternate ease-in-out;
     }
@@ -224,7 +265,7 @@
       100% { box-shadow: 0 0 30px rgba(142,53,87,0.7), 0 0 45px rgba(184,130,82,0.4); }
     }
 
-    /* LAYER 3: EBENE FÜR KARTEN / VERSKÄSTEN (Ganz vorne: z-index 20) */
+    /* LAYER 3: KARTEN / VERSKÄSTEN */
     .journey-grid { position: relative; display: flex; flex-direction: column; gap: 14rem; z-index: 20; }
     
     .stage { 
@@ -235,7 +276,6 @@
       min-height: 26rem;
     }
 
-    /* Card Styling (Glasartig, überdeckt Achse & Fotos beim Scrollen) */
     .stage-card { 
       position: relative; 
       padding: clamp(var(--space-6), 4vw, var(--space-8)); 
@@ -281,50 +321,75 @@
       padding: 10px 10px 28px 10px;
       box-shadow: var(--shadow-polaroid);
       border-radius: 4px;
-      transition: transform 700ms ease;
+      transition: transform 500ms ease, box-shadow 500ms ease;
+      pointer-events: auto;
+    }
+    .polaroid:hover {
+      transform: scale(1.05) rotate(0deg) !important;
+      z-index: 10;
     }
     [data-theme="dark"] .polaroid { background: #251d1a; }
     .polaroid img, .polaroid video { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 2px; }
 
-    /* DESKTOP RESPONSIVE LAYOUT (Gerade Achse in der Mitte) */
+    /* DESKTOP RESPONSIVE LAYOUT (Gerade Achse in der Mitte & Freier Raum für Polaroids) */
     @media (min-width: 901px) {
       .stage:nth-child(odd) { justify-content: flex-start; }
       .stage:nth-child(even) { justify-content: flex-end; }
 
       .stage-card { width: 44%; }
 
-      /* Polaroids auf freier Gegenüberseite */
+      /* Polaroids im freien Raum gegenüber der Karte verteilt */
       .stage-scatter-group {
         position: absolute;
         width: 44%;
         height: 100%;
         top: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        pointer-events: auto;
       }
-      .stage:nth-child(odd) .stage-scatter-group { right: 0; }
-      .stage:nth-child(even) .stage-scatter-group { left: 0; }
 
-      .stage-scatter-group .polaroid.p-top { top: 5%; width: clamp(180px, 20vw, 250px); transform: rotate(-6deg); }
-      .stage-scatter-group .polaroid.p-bottom { bottom: 5%; width: clamp(180px, 20vw, 250px); transform: rotate(7deg); }
-      .stage:nth-child(even) .stage-scatter-group .polaroid.p-top { transform: rotate(8deg); }
-      .stage:nth-child(even) .stage-scatter-group .polaroid.p-bottom { transform: rotate(-5deg); }
+      .stage:nth-child(odd) .stage-scatter-group { right: 0; left: auto; }
+      .stage:nth-child(even) .stage-scatter-group { left: 0; right: auto; }
+
+      .stage-scatter-group .polaroid {
+        position: absolute;
+        width: clamp(170px, 18vw, 240px);
+      }
+
+      /* Verteilung über die freie Seite ohne Zwang zur Überlappung */
+      .stage:nth-child(odd) .stage-scatter-group .polaroid.p-top {
+        top: 0%;
+        left: 5%;
+        transform: rotate(-5deg);
+      }
+      .stage:nth-child(odd) .stage-scatter-group .polaroid.p-bottom {
+        bottom: 0%;
+        right: 5%;
+        transform: rotate(6deg);
+      }
+
+      .stage:nth-child(even) .stage-scatter-group .polaroid.p-top {
+        top: 0%;
+        right: 5%;
+        transform: rotate(7deg);
+      }
+      .stage:nth-child(even) .stage-scatter-group .polaroid.p-bottom {
+        bottom: 0%;
+        left: 5%;
+        transform: rotate(-4deg);
+      }
     }
 
-    /* MOBILE RESPONSIVE LAYOUT (Kurve bleibt exakt in Seitenbreite) */
+    /* MOBILE RESPONSIVE LAYOUT (Geschwungene Achse links) */
     @media (max-width: 900px) {
       .journey-grid { gap: 11rem; }
       
       .stage { justify-content: flex-end; }
 
-      /* Verskästen rechtsbündig mit Abstand für die linke Achse */
       .stage-card { 
         width: calc(100% - 3.8rem); 
         margin-left: auto;
       }
 
-      /* Polaroids auf Mobile dahinter gestreut */
       .stage-scatter-group {
         position: absolute;
         inset: 0;
@@ -352,15 +417,15 @@
 <body>
   <header class="topbar">
     <div class="shell topbar-inner">
-      <a class="brand" href="#top" aria-label="Zurück nach oben">
+      <a class="brand" href="#top" aria-label="Back to top">
         <span class="brand-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M12 20s-6.5-4.35-8.6-8.05C1.9 9.27 3.3 5.9 6.67 5.2c2.07-.43 3.76.5 5.33 2.43 1.57-1.93 3.27-2.86 5.33-2.43 3.37.7 4.77 4.07 3.27 6.75C18.5 15.65 12 20 12 20Z"/></svg></span>
         <span class="brand-copy"><strong>Daniel</strong><span>Our journey in six verses</span></span>
       </a>
       <div class="toolbar">
-        <button class="icon-btn" id="unlockAudio" type="button" aria-label="Musik aktivieren">
+        <button class="icon-btn" id="unlockAudio" type="button" aria-label="Toggle music">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
         </button>
-        <button class="icon-btn" type="button" data-theme-toggle aria-label="Theme wechseln">
+        <button class="icon-btn" type="button" data-theme-toggle aria-label="Toggle theme">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
         </button>
       </div>
@@ -388,9 +453,8 @@
     </section>
     
     <section class="journey shell" id="journey-section">
-      <!-- EBENE 1: POLAROIDS (Hinter allen Elementen) -->
+      <!-- EBENE 1: POLAROIDS -->
       <div class="photo-scatter-layer" id="scatter-layer">
-        <!-- Scatter-Gruppen werden per JS exakt zu den Abschnitten positioniert -->
         <div class="stage-scatter-group" data-for="verse-1">
           <div class="polaroid p-top">
             <video autoplay muted loop playsinline preload="auto"><source src="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/2026-07-18%2022-17-51.mov"></video>
@@ -446,20 +510,20 @@
         </div>
       </div>
 
-      <!-- EBENE 2: SVG ZEITLEISTE & NODES (Mitte) -->
+      <!-- EBENE 2: SVG PINKE ZEITLEISTE & NODES -->
       <svg class="timeline-svg" id="timeline-svg">
         <defs>
           <linearGradient id="lineGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stop-color="var(--color-accent)" stop-opacity="0.3"/>
-            <stop offset="10%" stop-color="var(--color-primary)" stop-opacity="0.8"/>
-            <stop offset="90%" stop-color="var(--color-primary)" stop-opacity="0.8"/>
-            <stop offset="100%" stop-color="var(--color-accent)" stop-opacity="0.3"/>
+            <stop offset="0%" stop-color="var(--color-primary)" stop-opacity="0.3"/>
+            <stop offset="10%" stop-color="var(--color-primary)" stop-opacity="0.9"/>
+            <stop offset="90%" stop-color="var(--color-primary)" stop-opacity="0.9"/>
+            <stop offset="100%" stop-color="var(--color-primary)" stop-opacity="0.3"/>
           </linearGradient>
         </defs>
-        <path class="timeline-path" id="timeline-path" stroke="url(#lineGrad)" stroke-width="3" fill="none"/>
+        <path class="timeline-path" id="timeline-path" stroke="url(#lineGrad)" stroke-width="3.5" fill="none"/>
       </svg>
 
-      <!-- Römische Zahl Knotenelemente (Werden per JS auf der Zeitleiste positioniert) -->
+      <!-- Römische Zahl Knotenelemente -->
       <div class="stage-node" id="node-0"><span class="node-roman">I</span><img class="node-cover" src="assets/images/output-1.jpg" alt="Cover 1"></div>
       <div class="stage-node" id="node-1"><span class="node-roman">II</span><img class="node-cover" src="assets/images/output-2.jpg" alt="Cover 2"></div>
       <div class="stage-node" id="node-2"><span class="node-roman">III</span><img class="node-cover" src="assets/images/output-3.jpg" alt="Cover 3"></div>
@@ -467,12 +531,12 @@
       <div class="stage-node" id="node-4"><span class="node-roman">V</span><img class="node-cover" src="assets/images/output-5.jpg" alt="Cover 5"></div>
       <div class="stage-node" id="node-5"><span class="node-roman">VI</span><img class="node-cover" src="assets/images/output-6.jpg" alt="Cover 6"></div>
 
-      <!-- Mitlaufendes, drehendes Cover auf der Achse zwischen 2 Abschnitten -->
+      <!-- Mitlaufendes, drehendes Cover auf der Achse -->
       <div class="moving-cover" id="moving-cover" title="Active Track Cover">
         <img class="cover-img" id="moving-cover-img" src="assets/images/output-1.jpg" alt="Active Album Cover" />
       </div>
 
-      <!-- EBENE 3: VERSKÄSTEN / KARTEN (Vorne & Leicht Glasartig) -->
+      <!-- EBENE 3: VERSKÄSTEN / KARTEN -->
       <div class="journey-grid">
         <!-- Verse 1 -->
         <article class="stage" id="verse-1" data-roman="I" data-audio="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/verse-1.mp3" data-cover="assets/images/output-1.jpg">
@@ -839,6 +903,8 @@ And wherever you go:
         const jRect = journeySection.getBoundingClientRect();
         const width = jRect.width;
         const height = jRect.height;
+        if (width === 0 || height === 0) return;
+
         const isMobile = window.innerWidth <= 900;
         const centerX = width / 2;
 
@@ -854,7 +920,9 @@ And wherever you go:
           stages.forEach((stage, idx) => {
             const card = stage.querySelector('.stage-card');
             const cRect = card.getBoundingClientRect();
-            const nodeY = (cRect.top - jRect.top) - 35; // Positioniert knapp über dem Verskasten
+            
+            // Knotenpunkte zentriert auf Höhe der jeweiligen Verskarte
+            const nodeY = (cRect.top - jRect.top) + (cRect.height / 2);
 
             nodePositions.push({ x: centerX, y: nodeY, index: idx });
 
@@ -862,7 +930,6 @@ And wherever you go:
             node.style.left = `${centerX}px`;
             node.style.top = `${nodeY}px`;
 
-            // Positioniere Polaroids entsprechend
             const scatter = scatterGroups[idx];
             if (scatter) {
               scatter.style.top = `${cRect.top - jRect.top}px`;
@@ -871,8 +938,8 @@ And wherever you go:
           });
 
         } else {
-          // MOBILE: CURVED PATH (Bleibt sicher innerhalb der Seitenbreite)
-          const mobileAxisX = 28; // ~1.75rem von links
+          // MOBILE: GESCHWUNGENE ACHSE LINKS
+          const mobileAxisX = 24;
           const points = [];
 
           points.push({ x: mobileAxisX, y: 0 });
@@ -881,11 +948,10 @@ And wherever you go:
             const card = stage.querySelector('.stage-card');
             const cRect = card.getBoundingClientRect();
             
-            const nodeY = (cRect.top - jRect.top) - 35;
+            const nodeY = (cRect.top - jRect.top) + 24;
             const cardMidY = (cRect.top - jRect.top) + cRect.height / 2;
             
-            // Kurve verläuft rechts um die Karte herum, bleibt aber max. 95% der Seitenbreite
-            const curveX = Math.min(width - 20, (cRect.right - jRect.left) + 12);
+            const curveX = Math.min(width - 15, (cRect.right - jRect.left) + 12);
 
             nodePositions.push({ x: mobileAxisX, y: nodeY, index: idx });
 
@@ -918,7 +984,7 @@ And wherever you go:
         pathLength = pathElement.getTotalLength();
 
         pathSamplePoints = [];
-        const samples = 500;
+        const samples = 400;
         for (let i = 0; i <= samples; i++) {
           const l = (i / samples) * pathLength;
           const pt = pathElement.getPointAtLength(l);
@@ -931,10 +997,9 @@ And wherever you go:
         if (!nodePositions.length) return;
 
         const jRect = journeySection.getBoundingClientRect();
-        const viewportTargetY = window.innerHeight * 0.42;
+        const viewportTargetY = window.innerHeight * 0.45;
         const currentTargetY = viewportTargetY - jRect.top;
 
-        // Finde nähesten Punkt auf der SVG-Achse für das mitlaufende Cover
         let closestPoint = pathSamplePoints[0];
         let minDiff = Infinity;
         for (let pt of pathSamplePoints) {
@@ -945,13 +1010,11 @@ And wherever you go:
           }
         }
 
-        // Transformation der Römischen Knotenpunkte zu Albumcovern
         let activeSectionIdx = 0;
 
         nodePositions.forEach((nodePos, idx) => {
           const nodeEl = stageNodes[idx];
 
-          // Sobald die Scrollposition/das Cover diesen Römischen Knoten erreicht:
           if (currentTargetY >= nodePos.y - 15) {
             nodeEl.classList.add('is-transformed');
             activeSectionIdx = idx;
@@ -960,9 +1023,6 @@ And wherever you go:
           }
         });
 
-        // Logik für das mitlaufende Cover zwischen zwei Knoten:
-        // Es läuft auf der Achse, verschwindet aber exakt, wenn es über einem Knoten liegt,
-        // da in diesem Moment der Knoten selbst zum Albumcover transformiert ist.
         const currentNextNode = nodePositions[activeSectionIdx + 1];
         const currentActiveNode = nodePositions[activeSectionIdx];
 
@@ -987,40 +1047,31 @@ And wherever you go:
         }
       };
 
-      // Event Listeners
       const rebuildTimeline = () => {
         buildTimelinePath();
         updateCoverPositionOnScroll();
       };
 
       window.addEventListener('resize', rebuildTimeline);
-
       window.addEventListener('scroll', () => {
         requestAnimationFrame(updateCoverPositionOnScroll);
       }, { passive: true });
 
-      // Achse & Knoten müssen neu berechnet werden, sobald sich die Höhe der
-      // Verskästen nachträglich ändert (z. B. durch nachladende Google Fonts,
-      // Bilder oder Videos). Genau das war der Grund, warum die Zeitachse auf
-      // dem Desktop bisher praktisch "fehlte" bzw. an falscher Position lag.
       if ('ResizeObserver' in window) {
         const resizeObserver = new ResizeObserver(() => rebuildTimeline());
         resizeObserver.observe(journeySection);
       }
 
-      // Mehrfacher Rebuild kurz nach dem Start, um Font- & Bild-Ladezeiten abzufedern
       [0, 150, 400, 800, 1500].forEach((delay) => setTimeout(rebuildTimeline, delay));
 
       window.addEventListener('load', rebuildTimeline);
 
-      // Neu berechnen, sobald einzelne Bilder innerhalb der Journey-Sektion laden
       journeySection.querySelectorAll('img').forEach((img) => {
         if (!img.complete) {
           img.addEventListener('load', rebuildTimeline, { once: true });
         }
       });
 
-      // Web Fonts können die Höhe der Verskästen nach dem ersten Render verändern
       if (document.fonts && document.fonts.ready) {
         document.fonts.ready.then(rebuildTimeline);
       }
@@ -1060,7 +1111,6 @@ And wherever you go:
         if (chip) chip.addEventListener('click', handleClick);
       });
 
-      // Observer für sanftes Einblenden der Verskästen
       const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
