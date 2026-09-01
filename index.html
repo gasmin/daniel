@@ -10,7 +10,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Caveat:wght@600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
   
   <style>
-    :root, [data-theme="light"] {
+    :root,
+    [data-theme="light"] {
       --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
       --text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
       --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
@@ -18,9 +19,18 @@
       --text-xl: clamp(1.4rem, 1.1rem + 1vw, 2.2rem);
       --text-2xl: clamp(1.8rem, 1.2rem + 1.8vw, 3rem);
       --text-3xl: clamp(2.5rem, 1rem + 5vw, 5.5rem);
-      --space-1: 0.25rem; --space-2: 0.5rem; --space-3: 0.75rem; --space-4: 1rem;
-      --space-5: 1.25rem; --space-6: 1.5rem; --space-8: 2rem; --space-10: 2.5rem;
-      --space-12: 3rem; --space-16: 4rem; --space-20: 5rem; --space-24: 6rem;
+      --space-1: 0.25rem;
+      --space-2: 0.5rem;
+      --space-3: 0.75rem;
+      --space-4: 1rem;
+      --space-5: 1.25rem;
+      --space-6: 1.5rem;
+      --space-8: 2rem;
+      --space-10: 2.5rem;
+      --space-12: 3rem;
+      --space-16: 4rem;
+      --space-20: 5rem;
+      --space-24: 6rem;
       --color-bg: #f5f0ea;
       --color-surface: rgba(255, 255, 255, 0.65);
       --color-surface-2: #ffffff;
@@ -31,7 +41,7 @@
       --color-text-muted: #524840;
       --color-text-faint: #7a7066;
       --color-primary: #8e3557;
-      --color-primary-soft: rgba(142,53,87,0.12);
+      --color-primary-soft: rgba(142, 53, 87, 0.12);
       --color-accent: #b88252;
       --color-inverse: #ffffff;
       --shadow-sm: 0 8px 28px rgba(44, 34, 26, 0.09);
@@ -46,6 +56,7 @@
       --content: 1220px;
       --transition: 350ms cubic-bezier(0.16, 1, 0.3, 1);
     }
+
     [data-theme="dark"] {
       --color-bg: #130f0e;
       --color-surface: rgba(24, 18, 16, 0.68);
@@ -57,68 +68,288 @@
       --color-text-muted: #d8cbbf;
       --color-text-faint: #a89a8e;
       --color-primary: #eab4c7;
-      --color-primary-soft: rgba(234,180,199,0.16);
+      --color-primary-soft: rgba(234, 180, 199, 0.16);
       --color-accent: #e4b893;
       --color-inverse: #1c1513;
-      --shadow-sm: 0 8px 28px rgba(0,0,0,0.4);
-      --shadow-md: 0 24px 60px rgba(0,0,0,0.6);
+      --shadow-sm: 0 8px 28px rgba(0, 0, 0, 0.4);
+      --shadow-md: 0 24px 60px rgba(0, 0, 0, 0.6);
       --shadow-polaroid: 0 18px 44px rgba(0, 0, 0, 0.55);
     }
-    * { box-sizing: border-box; }
-    html, body { overflow-x: hidden; }
-    html { scroll-behavior: smooth; }
-    body { margin: 0; min-height: 100vh; font-family: var(--font-body); font-size: var(--text-base); line-height: 1.7; color: var(--color-text); background: linear-gradient(180deg, #f9f5f0 0%, #f4eee7 35%, #efe8e0 100%); background-attachment: fixed; }
-    [data-theme="dark"] body { background: linear-gradient(180deg, #161211 0%, #130f0e 35%, #0f0c0b 100%); background-attachment: fixed; }
-    img, video { display: block; width: 100%; height: auto; }
-    button, a { font: inherit; color: inherit; }
-    
-    .shell { width: min(calc(100% - 2rem), var(--content)); margin: 0 auto; }
-    
-    /* Topbar */
-    .topbar { 
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100; 
-      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-      background: color-mix(in srgb, var(--color-bg) 85%, transparent); 
-      border-bottom: 1px solid var(--color-border); padding-top: env(safe-area-inset-top); 
+
+    * {
+      box-sizing: border-box;
     }
-    .topbar-inner { display: flex; justify-content: space-between; align-items: center; gap: var(--space-2); padding: var(--space-3) 0; }
-    .brand { text-decoration: none; display: flex; align-items: center; gap: var(--space-2); flex: 1 1 auto; }
-    .brand-mark { width: 2.4rem; height: 2.4rem; border-radius: 50%; border: 1px solid var(--color-border); display: grid; place-items: center; color: var(--color-primary); background: var(--color-surface-2); box-shadow: var(--shadow-sm); flex-shrink: 0; }
-    .brand-mark svg { width: 1.2rem; height: 1.2rem; }
-    .brand-copy strong { display: block; font-family: var(--font-display); font-size: clamp(1.1rem, 4vw, 1.4rem); line-height: 1; font-weight: 600; }
-    .brand-copy span { display: block; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-text-muted); font-weight: 600; }
-    .toolbar { display: flex; align-items: center; gap: var(--space-2); }
-    .btn, .icon-btn { border: 1px solid var(--color-border); background: var(--color-surface-2); border-radius: 999px; transition: transform var(--transition); }
-    .btn:hover, .icon-btn:hover { transform: translateY(-1px); }
-    .btn { padding: 0.85rem 1.15rem; text-decoration: none; cursor: pointer; }
-    .btn-primary { background: var(--color-primary); color: var(--color-inverse); border-color: transparent; font-weight: 700; }
-    .icon-btn { width: 2.5rem; height: 2.5rem; display: grid; place-items: center; cursor: pointer; border-radius: 50%; }
-    
+
+    html,
+    body {
+      overflow-x: hidden;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      line-height: 1.7;
+      color: var(--color-text);
+      background: linear-gradient(180deg, #f9f5f0 0%, #f4eee7 35%, #efe8e0 100%);
+      background-attachment: fixed;
+    }
+
+    [data-theme="dark"] body {
+      background: linear-gradient(180deg, #161211 0%, #130f0e 35%, #0f0c0b 100%);
+      background-attachment: fixed;
+    }
+
+    img,
+    video {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    button,
+    a {
+      font: inherit;
+      color: inherit;
+    }
+
+    .shell {
+      width: min(calc(100% - 2rem), var(--content));
+      margin: 0 auto;
+    }
+
+    /* Topbar */
+    .topbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      background: color-mix(in srgb, var(--color-bg) 85%, transparent);
+      border-bottom: 1px solid var(--color-border);
+      padding-top: env(safe-area-inset-top);
+    }
+
+    .topbar-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--space-2);
+      padding: var(--space-3) 0;
+    }
+
+    .brand {
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      flex: 1 1 auto;
+    }
+
+    .brand-mark {
+      width: 2.4rem;
+      height: 2.4rem;
+      border-radius: 50%;
+      border: 1px solid var(--color-border);
+      display: grid;
+      place-items: center;
+      color: var(--color-primary);
+      background: var(--color-surface-2);
+      box-shadow: var(--shadow-sm);
+      flex-shrink: 0;
+    }
+
+    .brand-mark svg {
+      width: 1.2rem;
+      height: 1.2rem;
+    }
+
+    .brand-copy strong {
+      display: block;
+      font-family: var(--font-display);
+      font-size: clamp(1.1rem, 4vw, 1.4rem);
+      line-height: 1;
+      font-weight: 600;
+    }
+
+    .brand-copy span {
+      display: block;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--color-text-muted);
+      font-weight: 600;
+    }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .btn,
+    .icon-btn {
+      border: 1px solid var(--color-border);
+      background: var(--color-surface-2);
+      border-radius: 999px;
+      transition: transform var(--transition);
+    }
+
+    .btn:hover,
+    .icon-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn {
+      padding: 0.85rem 1.15rem;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: var(--color-primary);
+      color: var(--color-inverse);
+      border-color: transparent;
+      font-weight: 700;
+    }
+
+    .icon-btn {
+      width: 2.5rem;
+      height: 2.5rem;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      border-radius: 50%;
+    }
+
     /* Hero */
-    .hero { min-height: calc(100vh - 4rem); display: grid; align-items: center; padding: clamp(5rem, 12vw, 8rem) 0 var(--space-12); }
-    .hero-layout { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: clamp(var(--space-6), 4vw, var(--space-12)); align-items: center; width: 100%; }
-    .eyebrow { display: inline-flex; align-items: center; padding: 0.4rem 0.9rem; background: var(--color-primary-soft); color: var(--color-primary); border-radius: 999px; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; }
-    h1 { margin: var(--space-3) 0; font-family: var(--font-display); font-weight: 600; line-height: 0.92; font-size: var(--text-3xl); }
-    .hero p { max-width: 38rem; color: var(--color-text-muted); font-weight: 500; }
-    .hero-actions { display: flex; gap: var(--space-3); margin-top: var(--space-6); }
-    .hero-video { position: relative; width: 100%; border-radius: var(--radius-xl); overflow: hidden; border: 1px solid var(--color-border); box-shadow: var(--shadow-md); aspect-ratio: 4 / 3; }
-    .hero-video video { width: 100%; height: 100%; object-fit: cover; }
+    .hero {
+      min-height: calc(100vh - 4rem);
+      display: grid;
+      align-items: center;
+      padding: clamp(5rem, 12vw, 8rem) 0 var(--space-12);
+    }
+
+    .hero-layout {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: clamp(var(--space-6), 4vw, var(--space-12));
+      align-items: center;
+      width: 100%;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.4rem 0.9rem;
+      background: var(--color-primary-soft);
+      color: var(--color-primary);
+      border-radius: 999px;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 700;
+    }
+
+    h1 {
+      margin: var(--space-3) 0;
+      font-family: var(--font-display);
+      font-weight: 600;
+      line-height: 0.92;
+      font-size: var(--text-3xl);
+    }
+
+    .hero p {
+      max-width: 38rem;
+      color: var(--color-text-muted);
+      font-weight: 500;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: var(--space-3);
+      margin-top: var(--space-6);
+    }
+
+    .hero-video {
+      position: relative;
+      width: 100%;
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      border: 1px solid var(--color-border);
+      box-shadow: var(--shadow-md);
+      aspect-ratio: 4 / 3;
+    }
+
+    .hero-video video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
 
     @media (max-width: 900px) {
-      .hero { padding-top: calc(var(--space-12) + 3.5rem); padding-bottom: var(--space-8); min-height: auto; }
-      .hero-layout { grid-template-columns: 1fr; gap: var(--space-6); }
-      .eyebrow { width: 100%; justify-content: center; }
-      .hero h1 { text-align: center; width: 100%; }
-      .hero p { max-width: 100%; width: 100%; text-align: center; }
-      .hero-actions { width: 100%; flex-direction: column; gap: var(--space-3); margin-top: var(--space-5); }
-      .hero-actions .btn { width: 100%; text-align: center; display: flex; justify-content: center; align-items: center; }
-      .hero-video { width: 100%; aspect-ratio: 4 / 3; }
-    }
-    
-    /* JOURNEY CONTAINER */
-    .journey { position: relative; padding: var(--space-12) 0 var(--space-24); }
+      .hero {
+        padding-top: calc(var(--space-12) + 3.5rem);
+        padding-bottom: var(--space-8);
+        min-height: auto;
+      }
 
-    /* ZEITLEISTEN & KNOTENPUNKTE */
+      .hero-layout {
+        grid-template-columns: 1fr;
+        gap: var(--space-6);
+      }
+
+      .eyebrow {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .hero h1 {
+        text-align: center;
+        width: 100%;
+      }
+
+      .hero p {
+        max-width: 100%;
+        width: 100%;
+        text-align: center;
+      }
+
+      .hero-actions {
+        width: 100%;
+        flex-direction: column;
+        gap: var(--space-3);
+        margin-top: var(--space-5);
+      }
+
+      .hero-actions .btn {
+        width: 100%;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .hero-video {
+        width: 100%;
+        aspect-ratio: 4 / 3;
+      }
+    }
+
+    /* Journey Container */
+    .journey {
+      position: relative;
+      padding: var(--space-12) 0 var(--space-24);
+    }
+
+    /* Timeline & Nodes */
     .timeline-desktop-line {
       position: absolute;
       top: 0;
@@ -126,11 +357,12 @@
       left: 50%;
       width: 3.5px;
       transform: translateX(-50%);
-      background: linear-gradient(180deg, 
-        rgba(142,53,87,0.15) 0%, 
-        var(--color-primary) 8%, 
-        var(--color-primary) 92%, 
-        rgba(142,53,87,0.15) 100%
+      background: linear-gradient(
+        180deg,
+        rgba(142, 53, 87, 0.15) 0%,
+        var(--color-primary) 8%,
+        var(--color-primary) 92%,
+        rgba(142, 53, 87, 0.15) 100%
       );
       z-index: 10;
       pointer-events: none;
@@ -139,15 +371,29 @@
     .timeline-svg {
       position: absolute;
       inset: 0;
-      width: 100%; height: 100%;
+      width: 100%;
+      height: 100%;
       pointer-events: none;
       z-index: 5;
       overflow: visible;
     }
-    .timeline-path { stroke-linecap: round; transition: stroke 300ms ease; }
 
-    @media (min-width: 901px) { .timeline-svg { display: none; } }
-    @media (max-width: 900px) { .timeline-desktop-line { display: none; } }
+    .timeline-path {
+      stroke-linecap: round;
+      transition: stroke 300ms ease;
+    }
+
+    @media (min-width: 901px) {
+      .timeline-svg {
+        display: none;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .timeline-desktop-line {
+        display: none;
+      }
+    }
 
     .stage-node {
       position: absolute;
@@ -188,20 +434,30 @@
 
     .stage-node.is-transformed {
       border-color: var(--color-accent);
-      box-shadow: 0 0 20px rgba(142,53,87,0.35);
+      box-shadow: 0 0 20px rgba(142, 53, 87, 0.35);
     }
-    .stage-node.is-transformed .node-roman { opacity: 0; transform: scale(0.3); }
-    .stage-node.is-transformed .node-cover { opacity: 1; transform: scale(1) rotate(0deg); }
 
-    /* Mitlaufendes Cover */
+    .stage-node.is-transformed .node-roman {
+      opacity: 0;
+      transform: scale(0.3);
+    }
+
+    .stage-node.is-transformed .node-cover {
+      opacity: 1;
+      transform: scale(1) rotate(0deg);
+    }
+
+    /* Moving Cover */
     .moving-cover {
       position: absolute;
-      top: 0; left: 0;
-      width: 3.8rem; height: 3.8rem;
+      top: 0;
+      left: 0;
+      width: 3.8rem;
+      height: 3.8rem;
       border-radius: 50%;
       border: 2px solid var(--color-primary);
       background: var(--color-surface-2);
-      box-shadow: 0 0 25px rgba(142,53,87,0.45), var(--shadow-md);
+      box-shadow: 0 0 25px rgba(142, 53, 87, 0.45), var(--shadow-md);
       z-index: 15;
       transform: translate(-50%, -50%);
       pointer-events: auto;
@@ -211,65 +467,160 @@
       visibility: hidden;
       transition: opacity 300ms ease, visibility 300ms ease;
     }
-    .moving-cover.is-visible { opacity: 1; visibility: visible; }
-    .moving-cover .cover-img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1); }
-    .moving-cover.is-playing { animation: pulseCover 2s infinite alternate ease-in-out; }
-    .moving-cover.is-playing .cover-img { animation: spinCover 12s linear infinite; }
 
-    @keyframes spinCover { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-    @keyframes pulseCover {
-      0% { box-shadow: 0 0 15px rgba(142,53,87,0.3); }
-      100% { box-shadow: 0 0 30px rgba(142,53,87,0.7), 0 0 45px rgba(184,130,82,0.4); }
+    .moving-cover.is-visible {
+      opacity: 1;
+      visibility: visible;
     }
 
-    /* JOURNEY GRID & STAGES */
-    .journey-grid { position: relative; display: flex; flex-direction: column; gap: 11rem; z-index: 20; }
-    
-    .stage { 
-      position: relative; 
-      display: flex; 
-      align-items: center; 
+    .moving-cover .cover-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .moving-cover.is-playing {
+      animation: pulseCover 2s infinite alternate ease-in-out;
+    }
+
+    .moving-cover.is-playing .cover-img {
+      animation: spinCover 12s linear infinite;
+    }
+
+    @keyframes spinCover {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes pulseCover {
+      0% { box-shadow: 0 0 15px rgba(142, 53, 87, 0.3); }
+      100% { box-shadow: 0 0 30px rgba(142, 53, 87, 0.7), 0 0 45px rgba(184, 130, 82, 0.4); }
+    }
+
+    /* Journey Grid & Stages */
+    .journey-grid {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 11rem;
+      z-index: 20;
+    }
+
+    .stage {
+      position: relative;
+      display: flex;
+      align-items: center;
       justify-content: space-between;
       gap: 3rem;
       width: 100%;
     }
 
-    /* VERSKARTE */
-    .stage-card { 
-      position: relative; 
-      padding: clamp(var(--space-6), 4vw, var(--space-8)); 
+    /* Verse Card */
+    .stage-card {
+      position: relative;
+      padding: clamp(var(--space-6), 4vw, var(--space-8));
       padding-bottom: 4.8rem;
-      border: 1px solid var(--glass-border); 
-      border-radius: var(--radius-xl); 
-      background: var(--color-surface); 
-      backdrop-filter: blur(28px) saturate(210%); 
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-xl);
+      background: var(--color-surface);
+      backdrop-filter: blur(28px) saturate(210%);
       -webkit-backdrop-filter: blur(28px) saturate(210%);
-      box-shadow: var(--glass-shadow); 
-      display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--space-3); 
+      box-shadow: var(--glass-shadow);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: var(--space-3);
       opacity: 0;
       z-index: 25;
       transition: opacity 700ms cubic-bezier(0.16, 1, 0.3, 1), transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
     }
-    
-    .stage.is-visible .stage-card { opacity: 1; transform: translateX(0) !important; }
 
-    .stage-card h2 { margin: 0; font-family: var(--font-display); font-size: clamp(1.4rem, 1.1rem + 1vw, 2.2rem); line-height: 1.15; }
-    .stage-kicker { display: inline-flex; padding: 0.3rem 0.8rem; background: var(--color-primary-soft); color: var(--color-primary); border-radius: 999px; font-size: 0.72rem; text-transform: uppercase; font-weight: 700; }
-    .stage-sub { color: var(--color-text-muted); font-size: var(--text-sm); font-weight: 600; }
-    .poem { white-space: pre-line; font-size: clamp(1rem, 0.98rem + 0.2vw, 1.15rem); color: var(--color-text); font-weight: 500; text-shadow: 0 1px 1px rgba(255, 255, 255, 0.4); }
-    [data-theme="dark"] .poem { text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6); }
-
-    .track-card { 
-      position: absolute; bottom: var(--space-4); left: 50%; transform: translateX(-50%);
-      display: flex; align-items: center; gap: var(--space-2);
-      padding: 0.35rem 0.35rem 0.35rem 0.85rem; border-radius: 999px;
-      background: var(--color-surface-2); border: 1px solid var(--color-border);
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08); max-width: calc(100% - var(--space-8)); cursor: pointer; z-index: 27;
+    .stage.is-visible .stage-card {
+      opacity: 1;
+      transform: translateX(0) !important;
     }
-    .track-meta { font-size: 0.8rem; font-weight: 600; color: var(--color-text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .audio-btn { width: 1.85rem; height: 1.85rem; border-radius: 50%; border: none; background: var(--color-primary); color: #fff; display: grid; place-items: center; cursor: pointer; flex-shrink: 0; padding: 0; }
-    
-    /* DIGITALE POLAROID-GALERIE */
+
+    .stage-card h2 {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: clamp(1.4rem, 1.1rem + 1vw, 2.2rem);
+      line-height: 1.15;
+    }
+
+    .stage-kicker {
+      display: inline-flex;
+      padding: 0.3rem 0.8rem;
+      background: var(--color-primary-soft);
+      color: var(--color-primary);
+      border-radius: 999px;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .stage-sub {
+      color: var(--color-text-muted);
+      font-size: var(--text-sm);
+      font-weight: 600;
+    }
+
+    .poem {
+      white-space: pre-line;
+      font-size: clamp(1rem, 0.98rem + 0.2vw, 1.15rem);
+      color: var(--color-text);
+      font-weight: 500;
+      text-shadow: 0 1px 1px rgba(255, 255, 255, 0.4);
+    }
+
+    [data-theme="dark"] .poem {
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+    }
+
+    .track-card {
+      position: absolute;
+      bottom: var(--space-4);
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: 0.35rem 0.35rem 0.35rem 0.85rem;
+      border-radius: 999px;
+      background: var(--color-surface-2);
+      border: 1px solid var(--color-border);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+      max-width: calc(100% - var(--space-8));
+      cursor: pointer;
+      z-index: 27;
+    }
+
+    .track-meta {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--color-text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .audio-btn {
+      width: 1.85rem;
+      height: 1.85rem;
+      border-radius: 50%;
+      border: none;
+      background: var(--color-primary);
+      color: #ffffff;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      padding: 0;
+    }
+
+    /* Polaroid Gallery */
     .polaroid-gallery {
       display: flex;
       justify-content: center;
@@ -285,23 +636,24 @@
       border-radius: 4px;
       transition: transform 350ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 350ms ease;
       pointer-events: auto;
-      border: 1px solid rgba(0,0,0,0.06);
+      border: 1px solid rgba(0, 0, 0, 0.06);
       flex-shrink: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
 
-    [data-theme="dark"] .polaroid { 
-      background: #251d1a; 
-      border-color: rgba(255,255,255,0.08);
+    [data-theme="dark"] .polaroid {
+      background: #251d1a;
+      border-color: rgba(255, 255, 255, 0.08);
     }
 
-    .polaroid img, .polaroid video { 
-      width: 100%; 
-      aspect-ratio: 1 / 1; 
-      object-fit: cover; 
-      border-radius: 2px; 
+    .polaroid img,
+    .polaroid video {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      border-radius: 2px;
     }
 
     .polaroid-caption {
@@ -326,15 +678,28 @@
       box-shadow: 0 28px 60px rgba(0, 0, 0, 0.35);
     }
 
-    /* DESKTOP LAYOUT */
+    /* Desktop Layout */
     @media (min-width: 901px) {
-      .stage:nth-child(odd) { flex-direction: row; }
-      .stage:nth-child(even) { flex-direction: row-reverse; }
+      .stage:nth-child(odd) {
+        flex-direction: row;
+      }
 
-      .stage-card { width: 44%; flex-shrink: 0; }
+      .stage:nth-child(even) {
+        flex-direction: row-reverse;
+      }
 
-      .stage:nth-child(odd) .stage-card { transform: translateX(-30px); }
-      .stage:nth-child(even) .stage-card { transform: translateX(30px); }
+      .stage-card {
+        width: 44%;
+        flex-shrink: 0;
+      }
+
+      .stage:nth-child(odd) .stage-card {
+        transform: translateX(-30px);
+      }
+
+      .stage:nth-child(even) .stage-card {
+        transform: translateX(30px);
+      }
 
       .polaroid-gallery {
         width: 52%;
@@ -351,15 +716,27 @@
         padding: 12px 12px 16px 12px;
       }
 
-      .polaroid-gallery .p-1 { transform: rotate(-6deg) translateY(-8px); }
-      .polaroid-gallery .p-2 { transform: rotate(5deg) translateY(14px); margin-left: -24px; }
-      .polaroid-gallery .p-3 { transform: rotate(-4deg) translateY(-6px); margin-left: -18px; }
+      .polaroid-gallery .p-1 {
+        transform: rotate(-6deg) translateY(-8px);
+      }
+
+      .polaroid-gallery .p-2 {
+        transform: rotate(5deg) translateY(14px);
+        margin-left: -24px;
+      }
+
+      .polaroid-gallery .p-3 {
+        transform: rotate(-4deg) translateY(-6px);
+        margin-left: -18px;
+      }
     }
 
-    /* MOBILE LAYOUT */
+    /* Mobile Layout */
     @media (max-width: 900px) {
-      .journey-grid { gap: 6.5rem; }
-      
+      .journey-grid {
+        gap: 6.5rem;
+      }
+
       .stage {
         flex-direction: column;
         gap: 2rem;
@@ -395,42 +772,123 @@
         margin-top: 5px;
       }
 
-      .polaroid-gallery .p-1 { transform: rotate(-4deg); }
-      .polaroid-gallery .p-2 { transform: rotate(4deg); margin-left: -10px; }
-      .polaroid-gallery .p-3 { transform: rotate(-2deg); margin-left: -10px; }
+      .polaroid-gallery .p-1 {
+        transform: rotate(-4deg);
+      }
+
+      .polaroid-gallery .p-2 {
+        transform: rotate(4deg);
+        margin-left: -10px;
+      }
+
+      .polaroid-gallery .p-3 {
+        transform: rotate(-2deg);
+        margin-left: -10px;
+      }
     }
 
     @media (max-width: 600px) {
-      .stage-card { width: calc(100% - 3rem); padding: var(--space-5); padding-bottom: 4.5rem; }
-      .polaroid-gallery { width: calc(100% - 3rem); }
-      .stage-node { width: 3rem; height: 3rem; }
-      .moving-cover { width: 3.4rem; height: 3.4rem; }
+      .stage-card {
+        width: calc(100% - 3rem);
+        padding: var(--space-5);
+        padding-bottom: 4.5rem;
+      }
+
+      .polaroid-gallery {
+        width: calc(100% - 3rem);
+      }
+
+      .stage-node {
+        width: 3rem;
+        height: 3rem;
+      }
+
+      .moving-cover {
+        width: 3.4rem;
+        height: 3.4rem;
+      }
     }
 
     /* Closing */
-    .closing { padding: var(--space-16) 0 var(--space-24); }
-    .closing h2 { margin-bottom: var(--space-5); text-align: center; font-family: var(--font-display); font-size: var(--text-2xl); }
-    .full-poem { white-space: pre-line; margin: 0 auto; max-width: 34rem; text-align: center; font-size: clamp(1rem, 0.98rem + 0.2vw, 1.15rem); }
-    .song-credit { display: block; margin: 0.6rem 0 1.4rem; font-size: 0.85em; font-style: italic; color: var(--color-text-muted); }
-    .signature { margin-top: var(--space-12); display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--space-3); }
-    .signature-heart { display: inline-flex; place-items: center; color: var(--color-primary); }
-    .signature-heart svg { width: 2.4rem; height: 2.4rem; }
-    .signature-text { margin: 0; font-family: var(--font-display); font-size: 1.4rem; color: var(--color-text-muted); font-style: italic; }
+    .closing {
+      padding: var(--space-16) 0 var(--space-24);
+    }
+
+    .closing h2 {
+      margin-bottom: var(--space-5);
+      text-align: center;
+      font-family: var(--font-display);
+      font-size: var(--text-2xl);
+    }
+
+    .full-poem {
+      white-space: pre-line;
+      margin: 0 auto;
+      max-width: 34rem;
+      text-align: center;
+      font-size: clamp(1rem, 0.98rem + 0.2vw, 1.15rem);
+    }
+
+    .song-credit {
+      display: block;
+      margin: 0.6rem 0 1.4rem;
+      font-size: 0.85em;
+      font-style: italic;
+      color: var(--color-text-muted);
+    }
+
+    .signature {
+      margin-top: var(--space-12);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: var(--space-3);
+    }
+
+    .signature-heart {
+      display: inline-flex;
+      place-items: center;
+      color: var(--color-primary);
+    }
+
+    .signature-heart svg {
+      width: 2.4rem;
+      height: 2.4rem;
+    }
+
+    .signature-text {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      color: var(--color-text-muted);
+      font-style: italic;
+    }
   </style>
 </head>
 <body>
   <header class="topbar">
     <div class="shell topbar-inner">
       <a class="brand" href="#top" aria-label="Back to top">
-        <span class="brand-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M12 20s-6.5-4.35-8.6-8.05C1.9 9.27 3.3 5.9 6.67 5.2c2.07-.43 3.76.5 5.33 2.43 1.57-1.93 3.27-2.86 5.33-2.43 3.37.7 4.77 4.07 3.27 6.75C18.5 15.65 12 20 12 20Z"/></svg></span>
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+            <path d="M12 20s-6.5-4.35-8.6-8.05C1.9 9.27 3.3 5.9 6.67 5.2c2.07-.43 3.76.5 5.33 2.43 1.57-1.93 3.27-2.86 5.33-2.43 3.37.7 4.77 4.07 3.27 6.75C18.5 15.65 12 20 12 20Z"/>
+          </svg>
+        </span>
         <span class="brand-copy"><strong>Daniel</strong><span>Our journey in six verses</span></span>
       </a>
       <div class="toolbar">
         <button class="icon-btn" id="unlockAudio" type="button" aria-label="Toggle music">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 18V5l12-2v13"></path>
+            <circle cx="6" cy="18" r="3"></circle>
+            <circle cx="18" cy="16" r="3"></circle>
+          </svg>
         </button>
         <button class="icon-btn" type="button" data-theme-toggle aria-label="Toggle theme">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
         </button>
       </div>
     </div>
@@ -444,7 +902,7 @@
           <h1>Daniel</h1>
           <p>For your birthday, I tried to put our journey into words — the places, the music, the warmth, and all the little moments that became ours. I hope you like it.</p>
           <div class="hero-actions">
-            <button class="btn btn-primary" id="unlockAudioHero">Enable music</button>
+            <button class="btn btn-primary" id="unlockAudioHero" type="button">Enable music</button>
           </div>
         </div>
         <div class="hero-video">
@@ -456,14 +914,14 @@
     </section>
     
     <section class="journey shell" id="journey-section">
-      <!-- ZEITLEISTEN -->
+      <!-- Timeline -->
       <div class="timeline-desktop-line"></div>
 
       <svg class="timeline-svg" id="timeline-svg">
         <path class="timeline-path" id="timeline-path" stroke="var(--color-primary)" stroke-width="3.5" stroke-opacity="0.85" fill="none"/>
       </svg>
 
-      <!-- Knotenpunkte auf der Achse -->
+      <!-- Nodes -->
       <div class="stage-node" id="node-0"><span class="node-roman">I</span><img class="node-cover" src="assets/images/output-1.jpg" alt="Cover 1"></div>
       <div class="stage-node" id="node-1"><span class="node-roman">II</span><img class="node-cover" src="assets/images/output-2.jpg" alt="Cover 2"></div>
       <div class="stage-node" id="node-2"><span class="node-roman">III</span><img class="node-cover" src="assets/images/output-3.jpg" alt="Cover 3"></div>
@@ -471,12 +929,12 @@
       <div class="stage-node" id="node-4"><span class="node-roman">V</span><img class="node-cover" src="assets/images/output-5.jpg" alt="Cover 5"></div>
       <div class="stage-node" id="node-5"><span class="node-roman">VI</span><img class="node-cover" src="assets/images/output-6.jpg" alt="Cover 6"></div>
 
-      <!-- Mitlaufendes Cover -->
+      <!-- Moving Cover -->
       <div class="moving-cover" id="moving-cover" title="Active Track Cover">
         <img class="cover-img" id="moving-cover-img" src="assets/images/output-1.jpg" alt="Active Album Cover" />
       </div>
 
-      <!-- HAUPT-CONTAINER FÜR VERSEN & POLAROIDS -->
+      <!-- Verses & Polaroids Container -->
       <div class="journey-grid">
         
         <!-- Verse 1 -->
@@ -489,7 +947,7 @@
 with mountains, late trains,  
 a chocolate croissant,  
 and the feeling that  
-"with you it's better."</div>
+&quot;with you it's better.&quot;</div>
             <div class="track-card">
               <span class="track-meta">A World Alone – Lorde</span>
               <button class="audio-btn" type="button" aria-label="Play A World Alone">
@@ -500,15 +958,17 @@ and the feeling that
 
           <div class="polaroid-gallery">
             <div class="polaroid p-1">
-              <video autoplay muted loop playsinline preload="auto"><source src="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/2026-07-18%2022-17-51.mp4" type="video/mp4"></video>
-              <span class="polaroid-caption">Almost missed it</span>
+              <video autoplay muted loop playsinline preload="auto">
+                <source src="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/2026-07-18%2022-17-51.mp4" type="video/mp4">
+              </video>
+              <span class="polaroid-caption">Main character energy</span>
             </div>
             <div class="polaroid p-2">
-              <img src="assets/images/2026-07-08 15-41-56.jpeg" alt="Memory July 1">
-              <span class="polaroid-caption">First selfies</span>
+              <img src="assets/images/2026-07-08%2015-41-56.jpeg" alt="Memory July 1">
+              <span class="polaroid-caption">Unplanned &amp; perfect</span>
             </div>
             <div class="polaroid p-3">
-              <img src="assets/images/2026-07-12 12-37-05.jpeg" alt="Memory July 2">
+              <img src="assets/images/2026-07-12%2012-37-05.jpeg" alt="Memory July 2">
               <span class="polaroid-caption">Forever favorite memory</span>
             </div>
           </div>
@@ -530,7 +990,7 @@ of warmth, laughter, desire—
 until ordinary places  
 began to feel like home,  
 because you were there.  
-"Home's not home unless you're there."</div>
+&quot;Home's not home unless you're there.&quot;</div>
             <div class="track-card">
               <span class="track-meta">Michelle Pfeiffer – Ethel Cain</span>
               <button class="audio-btn" type="button" aria-label="Play Michelle Pfeiffer">
@@ -541,12 +1001,12 @@ because you were there.
 
           <div class="polaroid-gallery">
             <div class="polaroid p-1">
-              <img src="assets/images/2026-07-12 13-04-45.jpeg" alt="Memory Home 1">
+              <img src="assets/images/2026-07-12%2013-04-45.jpeg" alt="Memory Home 1">
               <span class="polaroid-caption">Hot summer feelings</span>
             </div>
             <div class="polaroid p-2">
-              <img src="assets/images/2026-07-12 13-16-39.jpeg" alt="Memory Home 3">
-              <span class="polaroid-caption">Album cover vibes</span>
+              <img src="assets/images/2026-07-12%2013-16-39.jpeg" alt="Memory Home 3">
+              <span class="polaroid-caption">Home is you</span>
             </div>
           </div>
         </article>
@@ -566,7 +1026,7 @@ And somewhere between
 our songs and our silences,  
 love became a risk—  
 one I would take again.  
-"You're the risk, I'm gonna take it."</div>
+&quot;You're the risk, I'm gonna take it.&quot;</div>
             <div class="track-card">
               <span class="track-meta">Risk – Gracie Abrams</span>
               <button class="audio-btn" type="button" aria-label="Play Risk">
@@ -577,16 +1037,16 @@ one I would take again.
 
           <div class="polaroid-gallery">
             <div class="polaroid p-1">
-              <img src="assets/images/2026-07-12 13-18-06.jpeg" alt="Memory Risk 1">
-              <span class="polaroid-caption">That smile</span>
-            </div>
-            <div class="polaroid p-2">
-              <img src="assets/images/2026-07-12 14-07-19.jpeg" alt="Memory Risk 2">
+              <img src="assets/images/2026-07-12%2013-18-06.jpeg" alt="Memory Risk 1">
               <span class="polaroid-caption">Worth every risk</span>
             </div>
+            <div class="polaroid p-2">
+              <img src="assets/images/2026-07-12%2014-07-19.jpeg" alt="Memory Risk 2">
+              <span class="polaroid-caption">Sunlight &amp; soft smiles</span>
+            </div>
             <div class="polaroid p-3">
-              <img src="assets/images/2026-07-12 14-10-42.jpeg" alt="Memory Risk 3">
-              <span class="polaroid-caption">Freshly bathed</span>
+              <img src="assets/images/2026-07-12%2014-10-42.jpeg" alt="Memory Risk 3">
+              <span class="polaroid-caption">Lost in conversation</span>
             </div>
           </div>
         </article>
@@ -601,7 +1061,7 @@ one I would take again.
 with your whole life ahead of you,  
 new roads, new cities,  
 and so much still waiting.  
-"Got your whole life ahead of you, you're only 19."</div>
+&quot;Got your whole life ahead of you, you're only 19.&quot;</div>
             <div class="track-card">
               <span class="track-meta">teenage dream – Olivia Rodrigo</span>
               <button class="audio-btn" type="button" aria-label="Play teenage dream">
@@ -612,16 +1072,16 @@ and so much still waiting.
 
           <div class="polaroid-gallery">
             <div class="polaroid p-1">
-              <img src="assets/images/2026-07-12 16-48-31.jpeg" alt="Memory Nineteen 1">
+              <img src="assets/images/2026-07-12%2016-48-31.jpeg" alt="Memory Nineteen 1">
               <span class="polaroid-caption">Forever 19 vibes</span>
             </div>
             <div class="polaroid p-2">
-              <img src="assets/images/2026-07-18 22-19-27.jpeg" alt="Memory Nineteen 2">
-              <span class="polaroid-caption">Romantic nights/span>
+              <img src="assets/images/2026-07-18%2022-19-27.jpeg" alt="Memory Nineteen 2">
+              <span class="polaroid-caption">Plot twist: love</span>
             </div>
             <div class="polaroid p-3">
-              <img src="assets/images/2026-08-12 20-01-14.jpeg" alt="Memory Nineteen 3">
-              <span class="polaroid-caption">Eclipsed</span>
+              <img src="assets/images/2026-08-12%2020-01-14.jpeg" alt="Memory Nineteen 3">
+              <span class="polaroid-caption">Making magic together</span>
             </div>
           </div>
         </article>
@@ -644,7 +1104,7 @@ became something I will carry.
 Not perfect,  
 but full of colour,  
 stitched together with love.  
-"Coat of many colors."</div>
+&quot;Coat of many colors.&quot;</div>
             <div class="track-card">
               <span class="track-meta">Coat of Many Colors – Dolly Parton</span>
               <button class="audio-btn" type="button" aria-label="Play Coat of Many Colors">
@@ -656,11 +1116,11 @@ stitched together with love.
           <div class="polaroid-gallery">
             <div class="polaroid p-1">
               <img src="assets/images/IMG_0152.jpeg" alt="Memory Colors 1">
-              <span class="polaroid-caption">That view</span>
+              <span class="polaroid-caption">Too cute, honestly</span>
             </div>
             <div class="polaroid p-2">
               <img src="assets/images/IMG_0160.jpeg" alt="Memory Colors 2">
-              <span class="polaroid-caption">Careful, rocks!</span>
+              <span class="polaroid-caption">Pure chaos &amp; love</span>
             </div>
           </div>
         </article>
@@ -679,7 +1139,7 @@ in the uncertainty,
 and in everything still to come.  
 Happy birthday, Daniel.  
 And wherever you go:  
-"I will always love you."</div>
+&quot;I will always love you.&quot;</div>
             <div class="track-card">
               <span class="track-meta">I Will Always Love You – Dolly Parton</span>
               <button class="audio-btn" type="button" aria-label="Play I Will Always Love You">
@@ -694,12 +1154,14 @@ And wherever you go:
               <span class="polaroid-caption">My whole heart</span>
             </div>
             <div class="polaroid p-2">
-              <img src="assets/images/2026-07-12 13-12-42.jpeg" alt="Memory Home 2">
-              <span class="polaroid-caption">Too many cows?!</span>
+              <img src="assets/images/2026-07-12%2013-12-42.jpeg" alt="Memory Home 2">
+              <span class="polaroid-caption">Partner in crime</span>
             </div>
             <div class="polaroid p-3">
-              <video autoplay muted loop playsinline preload="auto"><source src="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/VIDEO-2026-07-13-15-09-31.MP4" type="video/mp4"></video>
-              <span class="polaroid-caption">To die for</span>
+              <video autoplay muted loop playsinline preload="auto">
+                <source src="https://filedn.eu/l1jSTHMydS8uA7wFuLNBqd5/danilieder/VIDEO-2026-07-13-15-09-31.MP4" type="video/mp4">
+              </video>
+              <span class="polaroid-caption">To infinity &amp; back</span>
             </div>
           </div>
         </article>
@@ -713,7 +1175,7 @@ And wherever you go:
 with mountains, late trains,  
 a chocolate croissant,  
 and the feeling that  
-"with you it's better."  
+&quot;with you it's better.&quot;  
 <span class="song-credit">A World Alone – Lorde</span>
 
 We found romance in wrong turns,  
@@ -726,7 +1188,7 @@ of warmth, laughter, desire—
 until ordinary places  
 began to feel like home,  
 because you were there.  
-"Home's not home unless you're there."  
+&quot;Home's not home unless you're there.&quot;  
 <span class="song-credit">Michelle Pfeiffer – Ethel Cain</span>
 
 You carry Spain with you:  
@@ -735,16 +1197,16 @@ the place that shaped you
 and will always be part  
 of where you belong.  
 And somewhere between  
-our songs and our silences,  love became a risk—  
+our songs and our silences, love became a risk—  
 one I would take again.  
-"You're the risk, I'm gonna take it."  
+&quot;You're the risk, I'm gonna take it.&quot;  
 <span class="song-credit">Risk – Gracie Abrams</span>
 
 You are nineteen now,  
 with your whole life ahead of you,  
 new roads, new cities,  
 and so much still waiting.  
-"Got your whole life ahead of you, you're only 19."  
+&quot;Got your whole life ahead of you, you're only 19.&quot;  
 <span class="song-credit">teenage dream – Olivia Rodrigo</span>
 
 I hope you keep your softness,  
@@ -759,7 +1221,7 @@ became something I will carry.
 Not perfect,  
 but full of colour,  
 stitched together with love.  
-"Coat of many colors."  
+&quot;Coat of many colors.&quot;  
 <span class="song-credit">Coat of Many Colors – Dolly Parton</span>
 
 So wherever life takes you,  
@@ -770,12 +1232,14 @@ in the uncertainty,
 and in everything still to come.  
 Happy birthday, Daniel.  
 And wherever you go:  
-"I will always love you."  
+&quot;I will always love you.&quot;  
 <span class="song-credit">I Will Always Love You – Dolly Parton</span></div>
 
       <div class="signature">
         <span class="signature-heart">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M12 20s-6.5-4.35-8.6-8.05C1.9 9.27 3.3 5.9 6.67 5.2c2.07-.43 3.76.5 5.33 2.43 1.57-1.93 3.27-2.86 5.33-2.43 3.37.7 4.77 4.07 3.27 6.75C18.5 15.65 12 20 12 20Z"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+            <path d="M12 20s-6.5-4.35-8.6-8.05C1.9 9.27 3.3 5.9 6.67 5.2c2.07-.43 3.76.5 5.33 2.43 1.57-1.93 3.27-2.86 5.33-2.43 3.37.7 4.77 4.07 3.27 6.75C18.5 15.65 12 20 12 20Z"/>
+          </svg>
         </span>
         <p class="signature-text">with love from Ulm,<br>David</p>
       </div>
@@ -789,22 +1253,27 @@ And wherever you go:
       // Theme Switcher
       const html = document.documentElement;
       const themeBtn = document.querySelector('[data-theme-toggle]');
-      let theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      let theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
       html.setAttribute('data-theme', theme);
 
       const renderThemeIcon = () => {
+        if (!themeBtn) return;
         themeBtn.innerHTML = theme === 'dark' 
           ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>' 
           : '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
       };
+      
       renderThemeIcon();
-      themeBtn.addEventListener('click', () => {
-        theme = theme === 'dark' ? 'light' : 'dark';
-        html.setAttribute('data-theme', theme);
-        renderThemeIcon();
-      });
 
-      // Elements
+      if (themeBtn) {
+        themeBtn.addEventListener('click', () => {
+          theme = theme === 'dark' ? 'light' : 'dark';
+          html.setAttribute('data-theme', theme);
+          renderThemeIcon();
+        });
+      }
+
+      // DOM Elements
       const stages = [...document.querySelectorAll('.stage')];
       const stageNodes = [...document.querySelectorAll('.stage-node')];
       const audio = document.getElementById('globalAudio');
@@ -816,9 +1285,9 @@ And wherever you go:
       const movingCover = document.getElementById('moving-cover');
       const movingCoverImg = document.getElementById('moving-cover-img');
 
-      // Audio Control States
-      let userMuted = false;        // Explicit user pause status
-      let hasInteracted = false;    // Tracks first mobile user gesture to unblock browser autoplay policy
+      // State Management
+      let userMuted = false;
+      let hasInteracted = false;
       let currentActiveIndex = 0;
       let fadeTimer = null;
       let pathLength = 0;
@@ -831,12 +1300,12 @@ And wherever you go:
       const pauseSvg = '<svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12"><rect x="5" y="4" width="4" height="16" rx="1"></rect><rect x="15" y="4" width="4" height="16" rx="1"></rect></svg>';
 
       const updateAudioUI = () => {
+        if (!audio) return;
         const isPlaying = !userMuted && !audio.paused;
         
         if (unlockAudioBtn) unlockAudioBtn.innerHTML = isPlaying ? musicMuteIcon : musicNoteIcon;
         if (unlockHeroBtn) unlockHeroBtn.textContent = isPlaying ? 'Disable music' : 'Enable music';
-
-        movingCover.classList.toggle('is-playing', isPlaying);
+        if (movingCover) movingCover.classList.toggle('is-playing', isPlaying);
 
         stages.forEach((st, idx) => {
           const btn = st.querySelector('.audio-btn');
@@ -847,15 +1316,22 @@ And wherever you go:
         });
       };
 
-      audio.addEventListener('play', updateAudioUI);
-      audio.addEventListener('pause', updateAudioUI);
-      audio.addEventListener('ended', updateAudioUI);
+      if (audio) {
+        audio.addEventListener('play', updateAudioUI);
+        audio.addEventListener('pause', updateAudioUI);
+        audio.addEventListener('ended', updateAudioUI);
+      }
 
       const getAbsoluteUrl = (path) => {
-        try { return new URL(path, window.location.href).href; } catch(e) { return path; }
+        try { 
+          return new URL(path, window.location.href).href; 
+        } catch (e) { 
+          return path; 
+        }
       };
 
       const smoothPlayTrack = async (absSrc) => {
+        if (!audio) return;
         if (fadeTimer) clearInterval(fadeTimer);
         if (!audio.paused && audio.src === absSrc) return;
 
@@ -909,25 +1385,23 @@ And wherever you go:
           userMuted = false;
         }
 
-        // Return early if explicitly muted by user
         if (userMuted) {
           updateAudioUI();
           return;
         }
 
-        if (isIndexChanged || audio.paused) {
+        if (audio && (isIndexChanged || audio.paused)) {
           const absSrc = getAbsoluteUrl(targetStage.dataset.audio);
           await smoothPlayTrack(absSrc);
         }
         updateAudioUI();
       };
 
-      // Unlocks mobile audio on first user touch/scroll gesture
       const unlockMobileAudio = () => {
         if (hasInteracted) return;
         hasInteracted = true;
 
-        if (!userMuted && audio.paused) {
+        if (audio && !userMuted && audio.paused && stages[currentActiveIndex]) {
           const targetStage = stages[currentActiveIndex];
           const absSrc = getAbsoluteUrl(targetStage.dataset.audio);
           smoothPlayTrack(absSrc);
@@ -938,6 +1412,7 @@ And wherever you go:
       window.addEventListener('scroll', unlockMobileAudio, { passive: true, once: true });
 
       const buildTimelinePath = () => {
+        if (!journeySection) return;
         const jRect = journeySection.getBoundingClientRect();
         const width = jRect.width;
         const height = jRect.height;
@@ -951,26 +1426,27 @@ And wherever you go:
         if (!isMobile) {
           stages.forEach((stage, idx) => {
             const card = stage.querySelector('.stage-card');
+            if (!card) return;
             const cRect = card.getBoundingClientRect();
-            
             const nodeY = (cRect.top - jRect.top) + 36;
 
             nodePositions.push({ x: centerX, y: nodeY, index: idx });
 
             const node = stageNodes[idx];
-            node.style.left = `${centerX}px`;
-            node.style.top = `${nodeY}px`;
+            if (node) {
+              node.style.left = `${centerX}px`;
+              node.style.top = `${nodeY}px`;
+            }
           });
 
-        } else {
+        } else if (svgElement && pathElement) {
           svgElement.setAttribute('viewBox', `0 0 ${width} ${height}`);
           const mobileAxisX = 24;
-          const points = [];
-
-          points.push({ x: mobileAxisX, y: 0 });
+          const points = [{ x: mobileAxisX, y: 0 }];
 
           stages.forEach((stage, idx) => {
             const card = stage.querySelector('.stage-card');
+            if (!card) return;
             const cRect = card.getBoundingClientRect();
             
             const nodeY = (cRect.top - jRect.top) + 28;
@@ -980,8 +1456,10 @@ And wherever you go:
             nodePositions.push({ x: mobileAxisX, y: nodeY, index: idx });
 
             const node = stageNodes[idx];
-            node.style.left = `${mobileAxisX}px`;
-            node.style.top = `${nodeY}px`;
+            if (node) {
+              node.style.left = `${mobileAxisX}px`;
+              node.style.top = `${nodeY}px`;
+            }
 
             points.push({ x: mobileAxisX, y: nodeY });
             points.push({ x: curveX, y: cardMidY });
@@ -1011,7 +1489,7 @@ And wherever you go:
       };
 
       const updateCoverPositionOnScroll = () => {
-        if (!nodePositions.length) return;
+        if (!nodePositions.length || !journeySection || !movingCover) return;
 
         const jRect = journeySection.getBoundingClientRect();
         const viewportTargetY = window.innerHeight * 0.45;
@@ -1039,6 +1517,7 @@ And wherever you go:
 
         nodePositions.forEach((nodePos, idx) => {
           const nodeEl = stageNodes[idx];
+          if (!nodeEl) return;
 
           if (currentTargetY >= nodePos.y - 15) {
             nodeEl.classList.add('is-transformed');
@@ -1061,11 +1540,13 @@ And wherever you go:
 
         const firstNodeY = nodePositions[0].y;
         const lastStage = stages[stages.length - 1];
-        const lastStageBottomY = (lastStage.getBoundingClientRect().bottom - jRect.top);
+        const lastStageBottomY = lastStage ? (lastStage.getBoundingClientRect().bottom - jRect.top) : 0;
 
         if (!isOverlappingNode && currentTargetY >= firstNodeY && currentTargetY <= lastStageBottomY) {
           movingCover.style.transform = `translate3d(${targetX}px, ${targetY}px, 0) translate(-50%, -50%)`;
-          movingCoverImg.src = stages[activeSectionIdx].dataset.cover;
+          if (movingCoverImg && stages[activeSectionIdx]) {
+            movingCoverImg.src = stages[activeSectionIdx].dataset.cover;
+          }
           movingCover.classList.add('is-visible');
         } else {
           movingCover.classList.remove('is-visible');
@@ -1086,29 +1567,30 @@ And wherever you go:
         requestAnimationFrame(updateCoverPositionOnScroll);
       }, { passive: true });
 
-      if ('ResizeObserver' in window) {
+      if ('ResizeObserver' in window && journeySection) {
         const resizeObserver = new ResizeObserver(() => rebuildTimeline());
         resizeObserver.observe(journeySection);
       }
 
       [0, 150, 400, 800, 1500].forEach((delay) => setTimeout(rebuildTimeline, delay));
-
       window.addEventListener('load', rebuildTimeline);
 
-      journeySection.querySelectorAll('img').forEach((img) => {
-        if (!img.complete) {
-          img.addEventListener('load', rebuildTimeline, { once: true });
-        }
-      });
+      if (journeySection) {
+        journeySection.querySelectorAll('img').forEach((img) => {
+          if (!img.complete) {
+            img.addEventListener('load', rebuildTimeline, { once: true });
+          }
+        });
+      }
 
       if (document.fonts && document.fonts.ready) {
         document.fonts.ready.then(rebuildTimeline);
       }
 
-      // Explicit Button Audio Controls
+      // Audio Toggle Handlers
       const toggleAudioState = async () => {
         hasInteracted = true;
-        if (!userMuted && !audio.paused) {
+        if (audio && !userMuted && !audio.paused) {
           userMuted = true;
           audio.pause();
           updateAudioUI();
@@ -1120,7 +1602,7 @@ And wherever you go:
 
       if (unlockAudioBtn) unlockAudioBtn.addEventListener('click', toggleAudioState);
       if (unlockHeroBtn) unlockHeroBtn.addEventListener('click', toggleAudioState);
-      movingCover.addEventListener('click', toggleAudioState);
+      if (movingCover) movingCover.addEventListener('click', toggleAudioState);
 
       stages.forEach((stage, idx) => {
         const btn = stage.querySelector('.audio-btn');
@@ -1129,7 +1611,7 @@ And wherever you go:
         const handleClick = async (e) => {
           e.stopPropagation();
           hasInteracted = true;
-          if (currentActiveIndex === idx && !userMuted && !audio.paused) {
+          if (audio && currentActiveIndex === idx && !userMuted && !audio.paused) {
             userMuted = true;
             audio.pause();
             updateAudioUI();
